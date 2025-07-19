@@ -1,0 +1,21 @@
+# IDEs & Editoren
+.idea/
+/.vscode/
+/*.sublime-project
+/*.sublime-workspace
+
+# Container-Volumes oder Secrets
+*.pem
+*.crt
+*.key
+
+# Logs
+*.log
+
+# Optional: Cache-Ordner von Tools
+/.cache/
+
+# Backup-/Swap-Dateien
+*~
+*.swp
+*.bak
