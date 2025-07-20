@@ -31,6 +31,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(type:"string", length:100)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(type:"string", length:100)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(type:"date", nullable: true)]
+    private ?\DateTimeInterface $hireDate = null;
+
+    #[ORM\Column(type:"string", length:100, nullable:true)]
+    private ?string $department = null;
+
+    #[ORM\Column(type:"boolean")]
+    private bool $isActive = true;
+
+    #[ORM\Column(type:"datetime", nullable: true)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type:"datetime", nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +114,76 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getHireDate(): ?\DateTimeInterface
+    {
+        return $this->hireDate;
+    }
+
+    public function setHireDate(?\DateTimeInterface $hireDate): void
+    {
+        $this->hireDate = $hireDate;
+    }
+
+    public function getDepartment(): ?string
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(?string $department): void
+    {
+        $this->department = $department;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 
     /**

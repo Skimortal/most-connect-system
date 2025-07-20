@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Adminator Dashboard{% endblock %}</title>
+    <title>{{ 'homepage_title'|trans }}{% block title %}{% endblock %}</title>
 
     {# Adminator CSS #}
     <link rel="stylesheet" href="{{ asset('adminator/style.css') }}">
