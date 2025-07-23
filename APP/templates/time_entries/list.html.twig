@@ -1,0 +1,45 @@
+{% extends 'base_logged_in.html.twig' %}
+
+{% block title %}Arbeitszeiten{% endblock %}
+
+{% block logged_in_content %}
+    <h1 class="mb-4">Arbeitszeiten</h1>
+
+    <a href="{{ path('time_entry_new') }}" class="btn btn-primary mb-3">Neuen Eintrag anlegen</a>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Beginn</th>
+            <th>Ende</th>
+            <th>Pausen (Min.)</th>
+            <th>Dauer (Min.)</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th>Benutzer</th>
+            {% endif %}
+            <th>Notizen</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entry in entries %}
+            <tr>
+                <td>{{ entry.date|date('d.m.Y') }}</td>
+                <td>{{ entry.startTime|date('H:i') }}</td>
+                <td>{{ entry.endTime|date('H:i') }}</td>
+                <td>{{ entry.breakMinutes }}</td>
+                <td>{{ entry.duration }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>{{ entry.user.email }}</td>
+                {% endif %}
+                <td>{{ entry.notes|default('-') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{{ is_granted('ROLE_ADMIN') ? 7 : 6 }}" class="text-center">Keine Einträge gefunden.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

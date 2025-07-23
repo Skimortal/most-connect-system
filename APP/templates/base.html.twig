@@ -1,0 +1,22 @@
+{# templates/adminator/base.html.twig #}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ 'homepage_title'|trans }}{% block title %}{% endblock %}</title>
+
+    {# Adminator CSS #}
+    <link rel="stylesheet" href="{{ asset('adminator/style.css') }}">
+    {% block stylesheets %}{% endblock %}
+    <script src="{{ asset('adminator/main.js') }}"></script>
+</head>
+<body class="app">
+
+{% include 'adminator/partials/_loader.html.twig' %}
+
+{% block body %}{% endblock %}
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% extends 'base_logged_in.html.twig' %}
+
+{% block title %}Neuen Zeiteintrag anlegen{% endblock %}
+
+{% block logged_in_content %}
+    <h1 class="mb-4">Neuen Zeiteintrag anlegen</h1>
+
+    {% form_theme form 'form/adminator_bootstrap_5_layout.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.startTime) }}
+    {{ form_row(form.endTime) }}
+    {{ form_row(form.breakMinutes) }}
+    {{ form_row(form.notes) }}
+    <button type="submit" class="btn btn-primary">Speichern</button>
+    <a href="{{ path('time_entry_list') }}" class="btn btn-secondary">Abbrechen</a>
+    {{ form_end(form) }}
+
+
+    <form>
+        <div class="mb-3 row">
+            <label for="inputEmail3" class="form-label col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="inputPassword3" class="form-label col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+            </div>
+        </div>
+        <fieldset class="mb-3">
+            <div class="row">
+                <legend class="col-form-legend col-sm-2">Radios</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <label class="form-label form-check-label">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="checked">
+                            Option one is this and that&mdash;be sure to include why it's great
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-label form-check-label">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                            Option two can be something else and selecting it will deselect option one
+                        </label>
+                    </div>
+                    <div class="form-check disabled">
+                        <label class="form-label form-check-label">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled="disabled">
+                            Option three is disabled
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="mb-3 row">
+            <div class="col-sm-2">Checkbox</div>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <label class="form-label form-check-label">
+                        <input class="form-check-input" type="checkbox">
+                        Check me out
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary btn-color">Sign in</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
