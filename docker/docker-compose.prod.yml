@@ -1,0 +1,38 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: ${PHP_CONTAINER_NAME}
+        working_dir: /var/www/html
+        volumes:
+            - ${APP_PATH}:/var/www/html:cached
+        depends_on:
+            - db
+
+    nginx:
+        image: nginx:${NGINX_VERSION}
+        container_name: ${NGINX_CONTAINER_NAME}
+        ports:
+            - "${HOST_HTTP_PORT}:80"
+        volumes:
+            - ${APP_PATH}:/var/www/html:cached
+            - ./vhost.conf:/etc/nginx/conf.d/default.conf:ro
+            - ../certs/fullchain.pem:/etc/nginx/certs/fullchain.pem:ro
+            - ../certs/privkey.pem:/etc/nginx/certs/privkey.pem:ro
+        depends_on:
+            - php
+
+    db:
+        image: ${DB_IMAGE}
+        container_name: ${DB_CONTAINER_NAME}
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE:      ${MYSQL_DATABASE}
+            MYSQL_USER:          ${MYSQL_USER}
+            MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
+        volumes:
+            - ${DB_PATH}:/var/lib/mysql
