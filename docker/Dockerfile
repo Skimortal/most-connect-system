@@ -12,3 +12,6 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/local/bin/composer
 ENV COMPOSER_HOME=/var/www/.composer
 
 WORKDIR /var/www/html
+
+RUN chown -R www-data:www-data /usr/share/nginx/html/var \
+ && chmod -R 775 /usr/share/nginx/html/var \
