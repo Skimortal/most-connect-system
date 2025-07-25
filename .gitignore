@@ -23,5 +23,6 @@
 APP/composer.phar
 APP/public/.htaccess
 APP/public/stats/*
+APP/bin/*
 
 docker/.env
