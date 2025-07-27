@@ -7,14 +7,25 @@
     <title>{{ 'homepage_title'|trans }}{% block title %}{% endblock %}</title>
 
     {# Adminator CSS #}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% if app.environment == 'dev' %}
+        {# Lokale Umgebung #}
+        {{ encore_entry_link_tags('app') }}
+    {% else %}
+        {# Produktion #}
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% endif %}
     <link rel="stylesheet" href="{{ asset('adminator/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     {% block stylesheets %}{% endblock %}
 
-
-    <script src="{{ asset('build/app.js') }}"></script>
+    {% if app.environment == 'dev' %}
+        {# Lokale Umgebung #}
+        {{ encore_entry_script_tags('app') }}
+    {% else %}
+        {# Produktion #}
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endif %}
     <script src="{{ asset('adminator/main.js') }}"></script>
     <script src="{{ asset('js/datatables.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
