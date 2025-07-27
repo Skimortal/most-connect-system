@@ -13,6 +13,16 @@
     </div>
 {% endblock form_row %}
 
+{% block checkbox_row %}
+    <div class="mb-3 row {{ block_prefixes|join('-') }}">
+        <div class="offset-sm-2 col-sm-10">
+            {{ form_widget(form) }}
+            {{ form_help(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock %}
+
 {% block form_label %}
     {# 1) Nur rendern, wenn nicht explizit label=false #}
     {% if label is not same as(false) %}

@@ -1,2 +1,14 @@
 homepage_title: MOST-ERP
 date.label: Datum
+username.label: Benutzername
+company.label: Firma
+firstName.label: Vorname
+lastName.label: Nachname
+email.label: E-Mail
+phoneNumber.label: Telefon
+mobileNumber.label: Mobil
+faxNumber.label: Fax
+position.label: Position
+department.label: Abteilung
+username.password: Passwort
+my_profile: Mein Profil

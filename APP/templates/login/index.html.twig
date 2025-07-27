@@ -24,11 +24,11 @@
 
             <form method="post" action="{{ path('app_login') }}">
                 <div class="mb-3">
-                    <label class="text-normal text-dark form-label">Username</label>
+                    <label class="text-normal text-dark form-label">{{ 'username.label'|trans }}</label>
                     <input type="text" class="form-control" name="_username" value="{{ last_username }}" required autofocus>
                 </div>
                 <div class="mb-3">
-                    <label class="text-normal text-dark form-label">Password</label>
+                    <label class="text-normal text-dark form-label">{{ 'username.password'|trans }}</label>
                     <input type="password" class="form-control" name="_password" required>
                 </div>
                 <div class="">

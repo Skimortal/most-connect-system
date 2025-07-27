@@ -37,11 +37,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type:"string", length:100)]
     private ?string $lastName = null;
 
-    #[ORM\Column(type:"date", nullable: true)]
-    private ?\DateTimeInterface $hireDate = null;
-
     #[ORM\Column(type:"string", length:100, nullable:true)]
     private ?string $department = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $position = null;
+
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    private ?string $email = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $phoneNumber = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $mobileNumber = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $faxNumber = null;
+
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Company $company = null;
 
     #[ORM\Column(type:"boolean")]
     private bool $isActive = true;
@@ -156,6 +174,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->department = $department;
     }
 
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?string $position): void
+    {
+        $this->position = $position;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): void
+    {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getMobileNumber(): ?string
+    {
+        return $this->mobileNumber;
+    }
+
+    public function setMobileNumber(?string $mobileNumber): void
+    {
+        $this->mobileNumber = $mobileNumber;
+    }
+
+    public function getFaxNumber(): ?string
+    {
+        return $this->faxNumber;
+    }
+
+    public function setFaxNumber(?string $faxNumber): void
+    {
+        $this->faxNumber = $faxNumber;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): void
+    {
+        $this->company = $company;
+    }
+
     public function isActive(): bool
     {
         return $this->isActive;
@@ -202,4 +280,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // @deprecated, to be removed when upgrading to Symfony 8
     }
+
+    public function getFullname(): ?string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
 }

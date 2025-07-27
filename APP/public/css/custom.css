@@ -1,0 +1,14 @@
+.mcDataTable th {
+    background-colorrgb(32, 35, 42)
+}
+
+table.dataTable thead > tr > th.dt-orderable-asc,
+table.dataTable thead > tr > th.dt-orderable-desc,
+table.dataTable thead > tr > td.dt-orderable-asc,
+table.dataTable thead > tr > td.dt-orderable-desc,
+table.table.dataTable>:not(caption)>*>*,
+.table.table-bordered,
+.table.table-bordered td,
+.table.table-bordered th {
+    background-color: transparent;
+}
