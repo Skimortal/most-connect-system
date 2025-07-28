@@ -13,5 +13,5 @@ ENV COMPOSER_HOME=/var/www/.composer
 
 WORKDIR /var/www/html
 
-RUN chown -R www-data:www-data /usr/share/nginx/html/ \
- && chmod -R 775 /usr/share/nginx/html/ \
+RUN chown -R www-data:www-data /var \
+ && chmod -R 775 /var \
