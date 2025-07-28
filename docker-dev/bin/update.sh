@@ -16,5 +16,5 @@ else
 fi
 
 docker exec "$PHP_CONTAINER_NAME" bin/console make:migration
-docker exec "$PHP_CONTAINER_NAME" bin/console doctrine:migrations:migrate --no-interaction
+docker exec "$PHP_CONTAINER_NAME" bin/console doctrine:migrations:migrate
 docker exec "$PHP_CONTAINER_NAME" bin/console cache:clear

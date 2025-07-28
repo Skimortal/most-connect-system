@@ -32,7 +32,9 @@
 </head>
 <body class="app">
 
+{% if app.environment != 'dev' %}
 {% include 'adminator/partials/_loader.html.twig' %}
+{% endif %}
 
 {% block body %}{% endblock %}
 

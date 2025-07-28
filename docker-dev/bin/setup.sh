@@ -16,3 +16,6 @@ else
 fi
 
 docker exec "$PHP_CONTAINER_NAME" composer install
+docker exec "$PHP_CONTAINER_NAME" bin/console doctrine:migrations:migrate
+yarn install
+yarn build

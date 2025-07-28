@@ -26,4 +26,5 @@ APP/public/stats/*
 APP/bin/*
 APP/config/packages/webpack_encore.yaml
 
-docker/.env
+docker-dev/.env
+docker-prod/.env
