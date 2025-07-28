@@ -20,7 +20,7 @@ services:
             - "${HOST_HTTP_PORT}:80"
         volumes:
             - ${APP_PATH}:/var/www/html:cached
-            - conf/vhost.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./conf/vhost.conf:/etc/nginx/conf.d/default.conf:ro
         depends_on:
             - php
 
