@@ -6,8 +6,10 @@ use App\Entity\Company;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
@@ -16,7 +18,20 @@ class UserType extends AbstractType
         $builder
             ->add('username')
 //            ->add('roles')
-//            ->add('password')
+            ->add('password',PasswordType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => $options['is_edit'] ? [] : [
+                    new NotBlank([
+                        'message' => 'Bitte ein Passwort eingeben',
+                    ]),
+                ],
+            ])
+            ->add('company', EntityType::class, [
+                'class' => Company::class,
+                'required' => false,
+                'placeholder' => '--',
+            ])
             ->add('firstName')
             ->add('lastName')
             ->add('department')
@@ -26,10 +41,6 @@ class UserType extends AbstractType
             ->add('mobileNumber')
             ->add('faxNumber')
             ->add('isActive')
-            ->add('company', EntityType::class, [
-                'class' => Company::class,
-                'choice_label' => 'id',
-            ])
         ;
     }
 
@@ -37,6 +48,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_edit' => false,
         ]);
     }
 }

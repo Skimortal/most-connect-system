@@ -16,6 +16,12 @@ services:
     App\:
         resource: '../src/'
 
+    Imagine\Gd\Imagine: ~
+    Imagine\Image\ImagineInterface: '@Imagine\Gd\Imagine'
+    App\EventListener\ImageResizeSubscriber:
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.post_upload }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

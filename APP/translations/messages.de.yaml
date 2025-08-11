@@ -1,6 +1,7 @@
 homepage_title: MOST-ERP
 date.label: Datum
 username.label: Benutzername
+username.password: Passwort
 company.label: Firma
 firstName.label: Vorname
 lastName.label: Nachname
@@ -10,6 +11,17 @@ mobileNumber.label: Mobil
 faxNumber.label: Fax
 position.label: Position
 department.label: Abteilung
-username.password: Passwort
+password.label: Passwort
 my_profile: Mein Profil
 isActive.label: Aktiv
+confirm_delete: "Möchten Sie den Datensatz wirklich löschen?"
+delete: Löschen
+type.label: Typ
+uid.label: UID
+name.label: Name
+phone.label: Telefon
+website.label: Webseite
+logoFile.label: Logo
+categories.label: Kategorien
+id.label: ID
+logo.label: Logo

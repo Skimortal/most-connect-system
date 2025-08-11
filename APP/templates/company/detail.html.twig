@@ -1,0 +1,34 @@
+{% extends 'base_logged_in.html.twig' %}
+
+{% block title %}Company Detail{% endblock %}
+
+{% block logged_in_content %}
+    <h1 class="mb-4">Company Detail</h1>
+
+    {% form_theme form 'form/adminator_bootstrap_5_layout.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <div class="row">
+        <div class="col-sm-10 offset-md-2">
+            {% if company.logoName %}
+                <img src="{{ asset('uploads/company_logos/' ~ company.logoName) }}" alt="{{ company.name }} Logo" style="width: 200px;">
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Speichern</button>
+            <a href="{{ path('company_list') }}" class="btn btn-secondary">Abbrechen</a>
+            {% if company.id %}
+            <a href="{{ path('company_delete', {'id': company.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

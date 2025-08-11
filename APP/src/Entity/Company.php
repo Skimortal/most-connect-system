@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
+use AllowDynamicProperties;
+use App\Enum\CompanyCategoryType;
 use App\Enum\CompanyType;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
-#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[AllowDynamicProperties] #[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[Vich\Uploadable]
+#[ORM\HasLifecycleCallbacks]
 class Company
 {
     #[ORM\Id]
@@ -20,7 +26,7 @@ class Company
     #[ORM\Column(length: 255, enumType: CompanyType::class)]
     private CompanyType $type;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: 'json', enumType: CompanyCategoryType::class)]
     private array $categories = [];
 
     #[ORM\Column(length: 20, nullable: true)]
@@ -44,8 +50,11 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $addresses;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $logo = null; // Pfad zur Datei, z.B. /uploads/logo.png
+    #[Vich\UploadableField(mapping: 'company_logo', fileNameProperty: 'logoName')]
+    private ?File $logoFile = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $logoName = null;
 
     public function __construct()
     {
@@ -142,14 +151,27 @@ class Company
         $this->addresses = $addresses;
     }
 
-    public function getLogo(): ?string
+    public function getLogoFile(): ?File
     {
-        return $this->logo;
+        return $this->logoFile;
     }
 
-    public function setLogo(?string $logo): void
+    public function setLogoFile(?File $logoFile): void
     {
-        $this->logo = $logo;
+        $this->logoFile = $logoFile;
+        if (null !== $logoFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getLogoName(): ?string
+    {
+        return $this->logoName;
+    }
+
+    public function setLogoName(?string $logoName): void
+    {
+        $this->logoName = $logoName;
     }
 
     public function __toString(): string

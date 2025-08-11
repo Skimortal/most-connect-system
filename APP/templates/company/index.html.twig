@@ -1,0 +1,71 @@
+{% extends 'base_logged_in.html.twig' %}
+
+{% block title %}User-List{% endblock %}
+
+{% block logged_in_content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                    <h4 class="c-grey-900 mB-20">
+                        Companies
+
+                        <div class="float-end">
+                            <a href="{{ path('company_new') }}" class="btn btn-success">Create new</a>
+                        </div>
+                    </h4>
+                    <table id="dataTables" class="mcDataTable table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>{{ 'logo.label'|trans }}</th>
+                            <th>{{ 'type.label'|trans }}</th>
+                            <th>{{ 'categories.label'|trans }}</th>
+                            <th>{{ 'uid.label'|trans }}</th>
+                            <th>{{ 'name.label'|trans }}</th>
+                            <th>{{ 'phone.label'|trans }}</th>
+                            <th>{{ 'email.label'|trans }}</th>
+                            <th>{{ 'website.label'|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>{{ 'logo.label'|trans }}</th>
+                            <th>{{ 'type.label'|trans }}</th>
+                            <th>{{ 'categories.label'|trans }}</th>
+                            <th>{{ 'uid.label'|trans }}</th>
+                            <th>{{ 'name.label'|trans }}</th>
+                            <th>{{ 'phone.label'|trans }}</th>
+                            <th>{{ 'email.label'|trans }}</th>
+                            <th>{{ 'website.label'|trans }}</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for company in companies %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('company_edit', { id: company.id }) }}">
+                                        {% if company.logoName %}
+                                            <img src="{{ asset('uploads/company_logos/' ~ company.logoName) }}" alt="{{ company.name }} Logo" style="max-height: 50px;">
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td><a href="{{ path('company_edit', { id: company.id }) }}">{{ company.type.value }}</a></td>
+                                <td><a href="{{ path('company_edit', { id: company.id }) }}">{{ company.categories|map(category => category.label())|join(', ') }}</a></td>
+                                <td><a href="{{ path('company_edit', { id: company.id }) }}">{{ company.uid }}</a></td>
+                                <td><a href="{{ path('company_edit', { id: company.id }) }}">{{ company.name }}</a></td>
+                                <td><a href="{{ path('company_edit', { id: company.id }) }}">{{ company.phone }}</a></td>
+                                <td><a href="{{ path('company_edit', { id: company.id }) }}">{{ company.email }}</a></td>
+                                <td><a href="{{ path('company_edit', { id: company.id }) }}">{{ company.website }}</a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="9">Keine Firmen gefunden</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
