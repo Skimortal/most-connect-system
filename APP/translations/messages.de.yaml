@@ -25,3 +25,14 @@ logoFile.label: Logo
 categories.label: Kategorien
 id.label: ID
 logo.label: Logo
+company_detail_title: Firma Detail
+save: Speichern
+cancel: Abbrechen
+dashboard: Dashboard
+users: Benutzer
+companies: Firmen
+user_list: Benutzer Liste
+create_new: Neuer Eintrag
+no_data_found: Keine Daten gefunden
+company_list: Firmen Liste
+user_detail_title: Benutzer Detail

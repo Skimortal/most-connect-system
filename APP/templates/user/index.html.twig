@@ -1,6 +1,6 @@
 {% extends 'base_logged_in.html.twig' %}
 
-{% block title %}User-List{% endblock %}
+{% block title %}{{ 'user_list'|trans }}{% endblock %}
 
 {% block logged_in_content %}
     <div class="container-fluid">
@@ -8,10 +8,10 @@
             <div class="col-md-12">
                 <div class="bgc-white bd bdrs-3 p-20 mB-20">
                     <h4 class="c-grey-900 mB-20">
-                        Users
+                        {{ 'user_list'|trans }}
 
                         <div class="float-end">
-                            <a href="{{ path('user_new') }}" class="btn btn-success">Create new</a>
+                            <a href="{{ path('user_new') }}" class="btn btn-success">{{ 'create_new'|trans }}</a>
                         </div>
                     </h4>
                     <table id="dataTables" class="mcDataTable table table-striped table-bordered" cellspacing="0" width="100%">
@@ -59,7 +59,7 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="9">Keine Benutzer gefunden</td>
+                                <td colspan="9">{{ 'no_data_found'|trans }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
