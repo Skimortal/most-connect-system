@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\Company;
 use App\Entity\User;
+use App\Form\AddressType;
 use App\Form\CompanyTypeFormType;
 use App\Repository\CompanyRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,12 +85,68 @@ final class CompanyController extends AbstractController
         ]);
     }
 
-
     #[Route('/{id}', name: 'company_delete')]
     public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($company);
         $entityManager->flush();
         return $this->redirectToRoute('company_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/address/new', name: 'company_address_new')]
+    public function newAddress(Request $request, Company $company, EntityManagerInterface $entityManager): Response
+    {
+        $address = new Address();
+        // Die Adresse direkt mit der Firma verknüpfen
+        $address->setCompany($company);
+
+        $form = $this->createForm(AddressType::class, $address);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($address);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+        }
+
+        return $this->render('address/detail.html.twig', [
+            'form' => $form->createView(),
+            'company' => $company,
+            'address' => $address,
+        ]);
+    }
+
+    #[Route('/address/{id}', name: 'company_address_edit')]
+    public function editAddress(Request $request, Address $address, EntityManagerInterface $entityManager): Response
+    {
+        $company = $address->getCompany();
+        $form = $this->createForm(AddressType::class, $address);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($address);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+        }
+
+        return $this->render('address/detail.html.twig', [
+            'form' => $form->createView(),
+            'company' => $company,
+            'address' => $address,
+        ]);
+    }
+
+    #[Route('/address/delete/{id}', name: 'company_address_delete')]
+    public function deleteAddress(Request $request, Address $address, EntityManagerInterface $entityManager): Response
+    {
+        $company = $address->getCompany();
+        if($company) {
+            $company->removeAddress($address);
+        }
+        $entityManager->remove($address);
+        $entityManager->flush();
+        return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
     }
 }

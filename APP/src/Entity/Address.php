@@ -29,6 +29,9 @@ class Address
     #[ORM\JoinColumn(nullable: false)]
     private Company $company;
 
+    #[ORM\Column(type:"boolean")]
+    private bool $isMain = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +90,24 @@ class Address
     public function setCompany(Company $company): void
     {
         $this->company = $company;
+    }
+
+    public function isMain(): bool
+    {
+        return $this->isMain;
+    }
+
+    public function setIsMain(bool $isMain): void
+    {
+        if ($isMain === $this->isMain) {
+            return;
+        }
+
+        $this->isMain = $isMain;
+
+        if ($isMain && $this->getCompany()) {
+            $this->getCompany()->setMainAddress($this);
+        }
     }
 
     public function __toString(): string

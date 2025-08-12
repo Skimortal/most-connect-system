@@ -7,28 +7,86 @@
 
     {% form_theme form 'form/adminator_bootstrap_5_layout.html.twig' %}
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="row gap-20 pos-r">
+        <div class="col-md-6">
+            <div class="bgc-white p-20 bd">
+                <h6 class="c-grey-900">{{ 'company_data'|trans }}</h6>
+                <div class="mT-30">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
 
-    <div class="row">
-        <div class="col-sm-10 offset-md-2">
-            {% if company.logoName %}
-                <img src="{{ asset('uploads/company_logos/' ~ company.logoName) }}" alt="{{ company.name }} Logo" style="width: 200px;">
-            {% endif %}
+                    <div class="row">
+                        <div class="col-sm-10 offset-md-2">
+                            {% if company.logoName %}
+                                <img src="{{ asset('uploads/company_logos/' ~ company.logoName) }}" alt="{{ company.name }} Logo" style="width: 200px;">
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
+                            <a href="{{ path('company_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
+                            {% if company.id %}
+                                <a href="{{ path('company_delete', {'id': company.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="bgc-white p-20 bd">
+                <h6 class="c-grey-900">
+                    {{ 'adress_list'|trans }}
+                    <div class="float-end">
+                        <a href="{{ path('company_address_new', {'id': company.id}) }}" class="btn btn-success">{{ 'create_new'|trans }}</a>
+                    </div>
+                </h6>
+                <div class="mT-30">
+                    <table id="dataTables" class="mcDataTable1 table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>{{ 'street.label'|trans }}</th>
+                            <th>{{ 'zip.label'|trans }}</th>
+                            <th>{{ 'city.label'|trans }}</th>
+                            <th>{{ 'country.label'|trans }}</th>
+                            <th>{{ 'isMain.label'|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>{{ 'street.label'|trans }}</th>
+                            <th>{{ 'city.label'|trans }}</th>
+                            <th>{{ 'zip.label'|trans }}</th>
+                            <th>{{ 'country.label'|trans }}</th>
+                            <th>{{ 'isMain.label'|trans }}</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for address in company.getAddresses() %}
+                            <tr>
+                                <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{{ address.street }}</a></td>
+                                <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{{ address.zip }}</a></td>
+                                <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{{ address.city }}</a></td>
+                                <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{{ address.country }}</a></td>
+                                <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{% if address.isMain %}<i class="ti-check"></i>{% endif %}</a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">{{ 'no_data_found'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="mb-3 row">
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
-            <a href="{{ path('company_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
-            {% if company.id %}
-            <a href="{{ path('company_delete', {'id': company.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
-            {% endif %}
-        </div>
-    </div>
 
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
 
 {% endblock %}

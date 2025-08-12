@@ -151,6 +151,44 @@ class Company
         $this->addresses = $addresses;
     }
 
+    public function addAddress(Address $address): static
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setCompany($this);
+
+            if ($this->addresses->count() === 1) {
+                $address->setIsMain(true);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): static
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getCompany() === $this) {
+                $address->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setMainAddress(Address $mainAddress): void
+    {
+        // Sicherstellen, dass die Adresse auch wirklich zu dieser Firma gehört
+        if (!$this->addresses->contains($mainAddress)) {
+            throw new \InvalidArgumentException("Diese Adresse gehört nicht zur Firma.");
+        }
+
+        foreach ($this->getAddresses() as $address) {
+            $address->setIsMain($address === $mainAddress);
+        }
+    }
+
     public function getLogoFile(): ?File
     {
         return $this->logoFile;

@@ -36,3 +36,11 @@ create_new: Neuer Eintrag
 no_data_found: Keine Daten gefunden
 company_list: Firmen Liste
 user_detail_title: Benutzer Detail
+adress_list: Adressen
+company_data: Firmendaten
+street.label: Straße
+city.label: Ort
+zip.label: PLZ
+country.label: Land
+address_detail_title: Adresse Detail
+isMain.label: Hauptadresse
