@@ -8,7 +8,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 if [ -f ../.env ]; then
   # Export aller Variablen aus .env
   set -o allexport
-  source .env
+  source ../.env
   set +o allexport
 else
   echo "⚠️  .env nicht gefunden, breche ab."
