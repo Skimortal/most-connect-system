@@ -12,3 +12,7 @@ table.table.dataTable>:not(caption)>*>*,
 .table.table-bordered th {
     background-color: transparent;
 }
+
+.form-control:disabled {
+    color: black;
+}

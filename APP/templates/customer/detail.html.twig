@@ -1,0 +1,74 @@
+{% extends 'base_logged_in.html.twig' %}
+
+{% block title %}{{ 'customer_detail_title'|trans }}{% endblock %}
+
+{% block logged_in_content %}
+    <h1 class="mb-4">{{ 'customer_detail_title'|trans }}</h1>
+
+    {% form_theme form 'form/adminator_bootstrap_5_layout.html.twig' %}
+
+    <div class="row gap-20 pos-r">
+        <div class="col-md-6">
+            <div class="bgc-white p-20 bd">
+                <h6 class="c-grey-900">{{ 'customer_data'|trans }}</h6>
+                <div class="mT-30">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+
+                    <div class="mb-3 row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
+                            <a href="{{ path('customer_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
+                            {% if customer.id %}
+                                <a href="{{ path('customer_delete', {'id': customer.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="bgc-white p-20 bd">
+                <h6 class="c-grey-900">
+                    {{ 'invoice_list'|trans }}
+                    {% if customer.id %}
+                    <div class="float-end">
+                        <a href="{{ path('invoice_new', {'customerId': customer.id}) }}" class="btn btn-success">{{ 'create_new'|trans }}</a>
+                    </div>
+                    {% endif %}
+                </h6>
+                <div class="mT-30">
+                    <table id="dataTables" class="mcDataTable1 table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>{{ 'invoiceNumber.label'|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>{{ 'invoiceNumber.label'|trans }}</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for invoice in customer.getInvoices() %}
+                            <tr>
+                                <td><a href="{{ path('invoice_edit', { id: invoice.id }) }}">{{ invoice.invoiceNumber }}</a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">{{ 'no_data_found'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

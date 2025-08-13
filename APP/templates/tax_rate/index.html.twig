@@ -1,0 +1,50 @@
+{% extends 'base_logged_in.html.twig' %}
+
+{% block title %}{{ 'tax_rate_list'|trans }}{% endblock %}
+
+{% block logged_in_content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                    <h4 class="c-grey-900 mB-20">
+                        {{ 'tax_rate_list'|trans }}
+
+                        <div class="float-end">
+                            <a href="{{ path('tax_rate_new') }}" class="btn btn-success">{{ 'create_new'|trans }}</a>
+                        </div>
+                    </h4>
+                    <table id="dataTables" class="mcDataTable table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>{{ 'company.label'|trans }}</th>
+                            <th>{{ 'name.label'|trans }}</th>
+                            <th>{{ 'rate.label'|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>{{ 'company.label'|trans }}</th>
+                            <th>{{ 'name.label'|trans }}</th>
+                            <th>{{ 'rate.label'|trans }}</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for tax_rate in tax_rates %}
+                            <tr>
+                                <td><a href="{{ path('tax_rate_edit', { id: tax_rate.id }) }}">{{ tax_rate.company }}</a></td>
+                                <td><a href="{{ path('tax_rate_edit', { id: tax_rate.id }) }}">{{ tax_rate.name }}</a></td>
+                                <td><a href="{{ path('tax_rate_edit', { id: tax_rate.id }) }}">{{ tax_rate.rate }}</a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">{{ 'no_data_found'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

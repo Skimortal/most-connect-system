@@ -44,3 +44,28 @@ zip.label: PLZ
 country.label: Land
 address_detail_title: Adresse Detail
 isMain.label: Hauptadresse
+rate.label: Steuersatz
+tax_rates: Steuersätze
+tax_rate_list: Steuersatz Liste
+tax_rate_detail_title: Steuersatz Detail
+customers: Kunden
+customer_detail_title: Kunde Detail
+customer_data: Kundendaten
+invoice_list: Rechnungen
+firstname.label: Vorname
+lastname.label: Nachname
+invoiceNumber.label: Rechnungsnummer
+companyName.label: Firmenname
+invoiceDate.label: Rechnungsdatum
+invoice_detail_title: Rechnung Detail
+invoices: Rechnungen
+title.label: Titel
+description.label: Beschreibung
+quantity.label: Menge
+unitPrice.label: Einzelpreis
+taxRate.label: Steuersatz
+customer.label: Kunde
+invoice_items: Rechnungspositionen
+remove: Entfernen
+addInvoiceItem: Position hinzufügen
+action: Aktion

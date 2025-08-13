@@ -1,0 +1,102 @@
+{% extends 'base_logged_in.html.twig' %}
+
+{% block title %}{{ 'invoice_detail_title'|trans }}{% endblock %}
+
+{% block logged_in_content %}
+    <h1 class="mb-4">{{ 'invoice_detail_title'|trans }}</h1>
+
+    {% form_theme form 'form/adminator_bootstrap_5_layout.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.customer) }}
+    {{ form_row(form.company) }}
+    {{ form_row(form.invoiceNumber) }}
+    {{ form_row(form.invoiceDate) }}
+
+    <div class="bd bgc-white p-20 mb-5">
+        <div class="layers">
+            <div class="layer w-100 mB-10">
+                <h6 class="lh-1">{{ 'invoice_items'|trans }}</h6>
+                {{ form_errors(form.invoiceItems) }}
+            </div>
+
+            <div class="layer w-100"
+                 data-controller="form-collection"
+                 data-form-collection-index-value="{{ form.invoiceItems|length }}">
+
+                <template data-form-collection-target="prototype">
+                    <tr data-collection-item>
+                        <td><span data-collection-counter>__n__</span></td>
+                        <td>{{ form_widget(form.invoiceItems.vars.prototype.title) }}</td>
+                        <td>{{ form_widget(form.invoiceItems.vars.prototype.description) }}</td>
+                        <td>{{ form_widget(form.invoiceItems.vars.prototype.quantity) }}</td>
+                        <td>{{ form_widget(form.invoiceItems.vars.prototype.unitPrice) }}</td>
+                        <td>{{ form_widget(form.invoiceItems.vars.prototype.taxRate) }}</td>
+                        <td><button type="button" class="btn btn-outline-danger" data-action="click->form-collection#remove">{{ 'remove'|trans }}</button></td>
+                    </tr>
+                </template>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col" style="width: 20%;">{{ 'title.label'|trans }}</th>
+                        <th scope="col" style="width: 50%;">{{ 'description.label'|trans }}</th>
+                        <th scope="col" style="width: 10%;">{{ 'quantity.label'|trans }}</th>
+                        <th scope="col" style="width: 10%;">{{ 'unitPrice.label'|trans }}</th>
+                        <th scope="col" style="width: 10%;">{{ 'taxRate.label'|trans }}</th>
+                        <th scope="col" style="width: 10%;">{{ 'action'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody data-form-collection-target="list">
+                    {% for itemForm in form.invoiceItems %}
+                        <tr data-collection-item>
+                            <td scope="row"><span data-collection-counter>{{ loop.index }}</span></td>
+                            <td>{{ form_widget(itemForm.title) }}</td>
+                            <td>{{ form_widget(itemForm.description) }}</td>
+                            <td>{{ form_widget(itemForm.quantity) }}</td>
+                            <td>{{ form_widget(itemForm.unitPrice) }}</td>
+                            <td>{{ form_widget(itemForm.taxRate) }}</td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-outline-danger"
+                                        data-action="click->form-collection#remove">
+                                    {{ 'remove'|trans }}
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                    <tr>
+                        <td colspan="7">
+                            <button type="button"
+                                    class="btn btn-success mt-3"
+                                    data-action="click->form-collection#add">
+                                {{ 'addInvoiceItem'|trans }}
+                            </button>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mb-3 row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
+            <a href="{{ path('invoice_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
+            {% if invoice.id %}
+            <a href="{{ path('invoice_delete', {'id': invoice.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {{ form_widget(form._token) }}
+    {{ form_end(form, { 'render_rest': false }) }}
+
+{% endblock %}
