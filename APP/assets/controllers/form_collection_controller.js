@@ -1,4 +1,4 @@
-// assets/controllers/form_collection_controller.js
+console.log("form collection loaded");
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
