@@ -27,7 +27,7 @@ class Invoice
     private Collection $invoiceItems;
 
     #[ORM\Column(length: 50, unique: true)]
-    private string $invoiceNumber;
+    private ?string $invoiceNumber = null;
 
 
     #[ORM\Column(type: 'datetime')]
@@ -101,9 +101,9 @@ class Invoice
         return $this;
     }
 
-    public function getInvoiceNumber(): string
+    public function getInvoiceNumber(): ?string
     {
-        return $this->invoiceNumber;
+        return $this->invoiceNumber ?? null;
     }
 
     public function setInvoiceNumber(string $invoiceNumber): void
