@@ -92,6 +92,15 @@
             <a href="{{ path('invoice_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
             {% if invoice.id %}
             <a href="{{ path('invoice_delete', {'id': invoice.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+            <a class="btn btn-outline-secondary"
+               href="{{ path('invoice_pdf', {id: invoice.id}) }}"
+               target="_blank" rel="noopener">
+                {{ 'print_pdf'|trans }}
+            </a>
+            <a href="{{ path('invoice_send_pdf', { id: invoice.id }) }}"
+               class="btn btn-primary">
+                <i class="ti-envelope"></i> {{ 'send_pdf_to_customer'|trans }}
+            </a>
             {% endif %}
         </div>
     </div>

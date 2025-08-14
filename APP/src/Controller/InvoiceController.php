@@ -95,4 +95,35 @@ class InvoiceController extends AbstractController {
         return $this->redirectToRoute('invoice_list', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}/send-pdf', name: 'invoice_send_pdf', methods: ['GET'])]
+    public function sendPdf(Invoice $invoice, \Symfony\Component\Mailer\MailerInterface $mailer): Response
+    {
+        // 1. PDF generieren (z. B. über Dompdf oder TCPDF)
+        $pdfContent = $this->renderView('invoice/pdf/design1.html.twig', [
+            'invoice' => $invoice,
+        ]);
+
+        // Beispiel mit Dompdf:
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->loadHtml($pdfContent);
+        $dompdf->render();
+        $pdfOutput = $dompdf->output();
+
+        // 2. Mail zusammenstellen
+        $email = (new \Symfony\Component\Mime\Email())
+            ->from('info@deine-domain.tld')
+            ->to($invoice->getCustomer()->getEmail()) // Empfänger aus Customer-Entität
+            ->subject('Ihre Rechnung ' . $invoice->getInvoiceNumber())
+            ->text('Sehr geehrte/r ' . $invoice->getCustomer() . ', im Anhang finden Sie Ihre Rechnung.')
+            ->attach($pdfOutput, 'Rechnung-' . $invoice->getInvoiceNumber() . '.pdf', 'application/pdf');
+
+        // 3. Mail versenden
+        $mailer->send($email);
+
+        // 4. Feedback geben
+        $this->addFlash('success', 'Die Rechnung wurde an den Kunden gesendet.');
+
+        return $this->redirectToRoute('invoice_edit', ['id' => $invoice->getId()]);
+    }
+
 }

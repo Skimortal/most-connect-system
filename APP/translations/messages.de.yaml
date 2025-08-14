@@ -69,3 +69,5 @@ invoice_items: Rechnungspositionen
 remove: Entfernen
 addInvoiceItem: Position hinzufügen
 action: Aktion
+print_pdf: PDF drucken
+send_pdf_to_customer: PDF an Kunden senden

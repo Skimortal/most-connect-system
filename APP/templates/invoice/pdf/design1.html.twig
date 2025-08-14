@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Rechnung {{ invoice.invoiceNumber ?? invoice.id }}</title>
+    <style>
+        /* Minimal-PDF-Styles (dompdf mag inline/embedded CSS) */
+        @page { margin: 20mm; }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; color: #222; }
+        h1 { font-size: 18px; margin: 0 0 10px; }
+        .meta { margin-bottom: 16px; }
+        .meta div { line-height: 1.4; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 6px 8px; vertical-align: top; }
+        th { background: #f4f4f4; text-align: left; }
+        .right { text-align: right; }
+        .totals td { border: none; }
+        .totals .label { text-align: right; padding-right: 0; }
+        .totals .value { width: 120px; border: 1px solid #ddd; }
+        .small { font-size: 11px; color: #666; }
+        .logo { margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+{# Optional: Logo (absolute URL verwenden) #}
+{# <img class="logo" src="{{ absolute_url(asset('images/logo.png')) }}" alt="Logo" height="40"> #}
+
+<h1>Rechnung {{ invoice.invoiceNumber ?? invoice.id }}</h1>
+
+<div class="meta">
+    <div><strong>Datum:</strong> {{ invoice.invoiceDate ? invoice.invoiceDate|date('d.m.Y') : '' }}</div>
+    {# Passe an deine Struktur an: #}
+    <div><strong>Kunde:</strong> {{ invoice.customer ? invoice.customer : '' }}</div>
+    <div class="small">Rechnungs-ID: {{ invoice.id }}</div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th style="width: 4%;">#</th>
+        <th style="width: 28%;">Titel</th>
+        <th>Beschreibung</th>
+        <th style="width: 10%;">Menge</th>
+        <th style="width: 14%;">Einzelpreis</th>
+        <th style="width: 10%;">MwSt. %</th>
+        <th style="width: 14%;">Summe</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in invoice.invoiceItems %}
+        <tr>
+            <td class="right">{{ loop.index }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.description }}</td>
+            <td class="right">{{ item.quantity }}</td>
+            <td class="right">{{ item.unitPrice|number_format(2, ',', '.') }} €</td>
+            <td class="right">{{ item.taxRate is not null ? item.taxRate.rate|number_format(2, ',', '.') : '0,00' }}</td>
+            <td class="right">
+                {# Wenn du lineTotal speicherst: item.total; sonst berechnen: #}
+                {% set line = (item.quantity|default(0)) * (item.unitPrice|default(0)) %}
+                {{ line|number_format(2, ',', '.') }} €
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="7" class="small">Keine Positionen</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table style="margin-top: 12px;">
+    {% set netto = 0 %}
+    {% for item in invoice.invoiceItems %}
+        {% set netto = netto + (item.quantity|default(0) * item.unitPrice|default(0)) %}
+    {% endfor %}
+    {% set taxSum = 0 %}
+    {% for item in invoice.invoiceItems %}
+        {% set taxSum = taxSum + ((item.quantity|default(0) * item.unitPrice|default(0)) * (item.taxRate.rate|default(0) / 100)) %}
+    {% endfor %}
+    {% set brutto = netto + taxSum %}
+
+    <tr class="totals">
+        <td class="label"><strong>Zwischensumme (netto):</strong></td>
+        <td class="value right">{{ netto|number_format(2, ',', '.') }} €</td>
+    </tr>
+    <tr class="totals">
+        <td class="label"><strong>Summe MwSt.:</strong></td>
+        <td class="value right">{{ taxSum|number_format(2, ',', '.') }} €</td>
+    </tr>
+    <tr class="totals">
+        <td class="label"><strong>Gesamt (brutto):</strong></td>
+        <td class="value right"><strong>{{ brutto|number_format(2, ',', '.') }} €</strong></td>
+    </tr>
+</table>
+
+<p class="small" style="margin-top: 18px;">
+    Zahlungsziel: 14 Tage ohne Abzug. Vielen Dank für Ihren Auftrag!
+</p>
+</body>
+</html>
