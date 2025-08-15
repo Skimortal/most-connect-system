@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/tax_rate')]
 class TaxRateController extends AbstractController {
@@ -43,16 +44,21 @@ class TaxRateController extends AbstractController {
     }
 
     #[Route('/{id}/edit', name: 'tax_rate_edit')]
-    public function edit(Request $request, TaxRate $taxRate, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, TaxRate $taxRate, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $form = $this->createForm(TaxRateType::class, $taxRate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($taxRate);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($taxRate);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('tax_rate_edit', ['id' => $taxRate->getId()]);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('tax_rate_edit', ['id' => $taxRate->getId()]);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('tax_rate/detail.html.twig', [
@@ -62,17 +68,22 @@ class TaxRateController extends AbstractController {
     }
 
     #[Route('/new', name: 'tax_rate_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $taxRate = new TaxRate();
         $form = $this->createForm(TaxRateType::class, $taxRate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($taxRate);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($taxRate);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('tax_rate_list', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('tax_rate_list', [], Response::HTTP_SEE_OTHER);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('tax_rate/detail.html.twig', [
@@ -82,10 +93,11 @@ class TaxRateController extends AbstractController {
     }
 
     #[Route('/{id}', name: 'tax_rate_delete')]
-    public function delete(Request $request, TaxRate $taxRate, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, TaxRate $taxRate, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $entityManager->remove($taxRate);
         $entityManager->flush();
+        $this->addFlash('warning', $t->trans('data_deleted_success'));
         return $this->redirectToRoute('tax_rate_list', [], Response::HTTP_SEE_OTHER);
     }
 

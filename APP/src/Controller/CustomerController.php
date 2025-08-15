@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/customer')]
 final class CustomerController extends AbstractController
@@ -45,16 +46,21 @@ final class CustomerController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'customer_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Customer $customer, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Customer $customer, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($customer);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($customer);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('customer/detail.html.twig', [
@@ -64,17 +70,22 @@ final class CustomerController extends AbstractController
     }
 
     #[Route('/new', name: 'customer_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $customer = new Customer();
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($customer);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($customer);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('customer_list', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('customer_list', [], Response::HTTP_SEE_OTHER);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('customer/detail.html.twig', [
@@ -84,10 +95,11 @@ final class CustomerController extends AbstractController
     }
 
     #[Route('/{id}', name: 'customer_delete')]
-    public function delete(Request $request, Customer $customer, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Customer $customer, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $entityManager->remove($customer);
         $entityManager->flush();
+        $this->addFlash('warning', $t->trans('data_deleted_success'));
         return $this->redirectToRoute('customer_list', [], Response::HTTP_SEE_OTHER);
     }
 

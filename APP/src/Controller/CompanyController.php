@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/company')]
 final class CompanyController extends AbstractController
@@ -47,16 +48,21 @@ final class CompanyController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'company_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Company $company, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Company $company, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $form = $this->createForm(CompanyTypeFormType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($company);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($company);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('company/detail.html.twig', [
@@ -66,17 +72,22 @@ final class CompanyController extends AbstractController
     }
 
     #[Route('/new', name: 'company_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $company = new Company();
         $form = $this->createForm(CompanyTypeFormType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($company);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($company);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('company_list', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('company_list', [], Response::HTTP_SEE_OTHER);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('company/detail.html.twig', [
@@ -86,15 +97,16 @@ final class CompanyController extends AbstractController
     }
 
     #[Route('/{id}', name: 'company_delete')]
-    public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Company $company, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $entityManager->remove($company);
         $entityManager->flush();
+        $this->addFlash('warning', $t->trans('data_deleted_success'));
         return $this->redirectToRoute('company_list', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/address/new', name: 'company_address_new')]
-    public function newAddress(Request $request, Company $company, EntityManagerInterface $entityManager): Response
+    public function newAddress(Request $request, Company $company, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $address = new Address();
         // Die Adresse direkt mit der Firma verknüpfen
@@ -104,10 +116,15 @@ final class CompanyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($address);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($address);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('address/detail.html.twig', [
@@ -118,17 +135,22 @@ final class CompanyController extends AbstractController
     }
 
     #[Route('/address/{id}', name: 'company_address_edit')]
-    public function editAddress(Request $request, Address $address, EntityManagerInterface $entityManager): Response
+    public function editAddress(Request $request, Address $address, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $company = $address->getCompany();
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($address);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($address);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+                $this->addFlash('success', $t->trans('data_saved_success'));
+                return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+            } catch (\Throwable $e) {
+                $this->addFlash('danger', $t->trans('data_save_error'));
+            }
         }
 
         return $this->render('address/detail.html.twig', [
@@ -139,7 +161,7 @@ final class CompanyController extends AbstractController
     }
 
     #[Route('/address/delete/{id}', name: 'company_address_delete')]
-    public function deleteAddress(Request $request, Address $address, EntityManagerInterface $entityManager): Response
+    public function deleteAddress(Request $request, Address $address, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $company = $address->getCompany();
         if($company) {
@@ -147,6 +169,7 @@ final class CompanyController extends AbstractController
         }
         $entityManager->remove($address);
         $entityManager->flush();
+        $this->addFlash('warning', $t->trans('data_deleted_success'));
         return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
     }
 }

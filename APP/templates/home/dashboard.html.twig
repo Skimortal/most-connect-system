@@ -3,10 +3,32 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block logged_in_content %}
-    <div class="full-container">
-        <div class="content">
-            <h1>Willkommen, {{ user.username }}!</h1>
-            <p>Das ist dein Dashboard.</p>
+    <div class="main-content bgc-grey-100">
+        <div class="mainContent">
+            <div class="layers bd bgc-white p-20">
+                <div class="layer w-100 mB-10">
+                    <h1>Willkommen, {{ user }},</h1>
+                </div>
+                <div class="layer w-100">
+                    <p>
+                        bei inEasy.at – der einfachen Art, Ihr Tagesgeschäft übersichtlich zu steuern.
+                    </p>
+                    <p>
+                        Mit wenigen Klicks behalten Sie den Überblick und erledigen Routineaufgaben schneller und zuverlässiger.
+                    </p>
+
+                    <h2>Was inEasy.at für Sie übernimmt:</h2>
+                    <ul>
+                        <li>Firmendaten verwalten: Stammdaten zentral pflegen – von Adresse und Steuernummer bis Logo und Bankverbindung.</li>
+                        <li>Kunden verwalten: Kontakte anlegen, bearbeiten und organisieren – damit Sie alle Infos zu Ihren Kunden sofort parat haben.</li>
+                        <li>Rechnungen verwalten: Rechnungen erstellen, drucken und nachvollziehen – inklusive Statusübersicht für offene und erledigte Vorgänge.</li>
+                    </ul>
+
+                    <p class="mt-3">
+                        Los geht’s: Wählen Sie einfach den gewünschten Bereich im Menü – inEasy.at führt Sie Schritt für Schritt durch alle Aufgaben.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

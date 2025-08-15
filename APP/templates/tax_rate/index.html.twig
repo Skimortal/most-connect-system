@@ -14,6 +14,16 @@
                             <a href="{{ path('tax_rate_new') }}" class="btn btn-success">{{ 'create_new'|trans }}</a>
                         </div>
                     </h4>
+
+                    {% for label, messages in app.flashes(['success', 'danger', 'warning', 'info']) %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                                {{ message|raw }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+
                     <table id="dataTables" class="mcDataTable table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
