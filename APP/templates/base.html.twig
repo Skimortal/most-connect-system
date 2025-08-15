@@ -6,13 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ 'homepage_title'|trans }}{% block title %}{% endblock %}</title>
 
-    {{ encore_entry_link_tags('app') }}
+    {% if app.environment == 'dev' %}
+        {# Lokale Umgebung #}
+        {{ encore_entry_link_tags('app') }}
+    {% else %}
+        {# Produktion #}
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% endif %}
     <link rel="stylesheet" href="{{ asset('adminator/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     {% block stylesheets %}{% endblock %}
 
-    {{ encore_entry_script_tags('app') }}
+    {% if app.environment == 'dev' %}
+        {# Lokale Umgebung #}
+        {{ encore_entry_script_tags('app') }}
+    {% else %}
+        {# Produktion #}
+        <script src="{{ asset('build/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ar-81d16d.js"') }}"></script>
+        <script src="{{ asset('build/runtime.js"') }}"></script>
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endif %}
     <script src="{{ asset('adminator/main.js') }}"></script>
     <script src="{{ asset('js/datatables.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
