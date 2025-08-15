@@ -97,10 +97,15 @@ final class CustomerController extends AbstractController
     #[Route('/{id}', name: 'customer_delete')]
     public function delete(Request $request, Customer $customer, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
-        $entityManager->remove($customer);
-        $entityManager->flush();
-        $this->addFlash('warning', $t->trans('data_deleted_success'));
-        return $this->redirectToRoute('customer_list', [], Response::HTTP_SEE_OTHER);
+        try {
+            $entityManager->remove($customer);
+            $entityManager->flush();
+            $this->addFlash('warning', $t->trans('data_deleted_success'));
+            return $this->redirectToRoute('customer_list', [], Response::HTTP_SEE_OTHER);
+        } catch (\Throwable $e) {
+            $this->addFlash('danger', $t->trans('data_save_error').": ".$e->getMessage());
+            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+        }
     }
 
 }

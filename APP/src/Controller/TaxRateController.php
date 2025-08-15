@@ -95,10 +95,15 @@ class TaxRateController extends AbstractController {
     #[Route('/{id}', name: 'tax_rate_delete')]
     public function delete(Request $request, TaxRate $taxRate, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
-        $entityManager->remove($taxRate);
-        $entityManager->flush();
-        $this->addFlash('warning', $t->trans('data_deleted_success'));
-        return $this->redirectToRoute('tax_rate_list', [], Response::HTTP_SEE_OTHER);
+        try {
+            $entityManager->remove($taxRate);
+            $entityManager->flush();
+            $this->addFlash('warning', $t->trans('data_deleted_success'));
+            return $this->redirectToRoute('tax_rate_list', [], Response::HTTP_SEE_OTHER);
+        } catch (\Throwable $e) {
+            $this->addFlash('danger', $t->trans('data_save_error').": ".$e->getMessage());
+            return $this->redirectToRoute('tax_rate_edit', ['id' => $taxRate->getId()]);
+        }
     }
 
 }

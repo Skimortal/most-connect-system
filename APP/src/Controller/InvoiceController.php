@@ -101,10 +101,15 @@ class InvoiceController extends AbstractController {
     #[Route('/{id}', name: 'invoice_delete')]
     public function delete(Request $request, Invoice $invoice, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
-        $entityManager->remove($invoice);
-        $entityManager->flush();
-        $this->addFlash('warning', $t->trans('data_deleted_success'));
-        return $this->redirectToRoute('invoice_list', [], Response::HTTP_SEE_OTHER);
+        try {
+            $entityManager->remove($invoice);
+            $entityManager->flush();
+            $this->addFlash('warning', $t->trans('data_deleted_success'));
+            return $this->redirectToRoute('invoice_list', [], Response::HTTP_SEE_OTHER);
+        } catch (\Throwable $e) {
+            $this->addFlash('danger', $t->trans('data_save_error').": ".$e->getMessage());
+            return $this->redirectToRoute('invoice_edit', ['id' => $invoice->getId()]);
+        }
     }
 
     #[Route('/{id}/send-pdf', name: 'invoice_send_pdf', methods: ['GET'])]

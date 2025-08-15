@@ -5,12 +5,14 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function PHPUnit\Framework\throwException;
 
 #[Route('/user')]
 class UserController extends AbstractController {
@@ -105,10 +107,18 @@ class UserController extends AbstractController {
     #[Route('/{id}', name: 'user_delete')]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
-        $entityManager->remove($user);
-        $entityManager->flush();
-        $this->addFlash('warning', $t->trans('data_deleted_success'));
-        return $this->redirectToRoute('user_list', [], Response::HTTP_SEE_OTHER);
+        try {
+            if($user->getId() == 1) {
+                throw new Exception($t->trans('superadmin_delete_error'));
+            }
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('warning', $t->trans('data_deleted_success'));
+            return $this->redirectToRoute('user_list', [], Response::HTTP_SEE_OTHER);
+        } catch (\Throwable $e) {
+            $this->addFlash('danger', $t->trans('data_save_error').": ".$e->getMessage());
+            return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
+        }
     }
 
 }

@@ -75,3 +75,4 @@ confirm_remove: Wollen Sie diesen Eintrag wirklich löschen?
 data_saved_success: Die Daten wurden erfolgreich gespeichert!
 data_save_error: Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal. Falls der Fehler weiterhin auftreten soll, melden Sie sich bitte Ihrem Administrator.
 data_deleted_success: Daten erfolgreich gelöscht!
+superadmin_delete_error: "!!!Superadmin darf nicht gelöscht werden!!!"

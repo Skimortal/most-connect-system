@@ -99,10 +99,15 @@ final class CompanyController extends AbstractController
     #[Route('/{id}', name: 'company_delete')]
     public function delete(Request $request, Company $company, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
-        $entityManager->remove($company);
-        $entityManager->flush();
-        $this->addFlash('warning', $t->trans('data_deleted_success'));
-        return $this->redirectToRoute('company_list', [], Response::HTTP_SEE_OTHER);
+        try {
+            $entityManager->remove($company);
+            $entityManager->flush();
+            $this->addFlash('warning', $t->trans('data_deleted_success'));
+            return $this->redirectToRoute('company_list', [], Response::HTTP_SEE_OTHER);
+        } catch (\Throwable $e) {
+            $this->addFlash('danger', $t->trans('data_save_error').": ".$e->getMessage());
+            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+        }
     }
 
     #[Route('/{id}/address/new', name: 'company_address_new')]
@@ -163,13 +168,18 @@ final class CompanyController extends AbstractController
     #[Route('/address/delete/{id}', name: 'company_address_delete')]
     public function deleteAddress(Request $request, Address $address, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
-        $company = $address->getCompany();
-        if($company) {
-            $company->removeAddress($address);
+        try {
+            $company = $address->getCompany();
+            if($company) {
+                $company->removeAddress($address);
+            }
+            $entityManager->remove($address);
+            $entityManager->flush();
+            $this->addFlash('warning', $t->trans('data_deleted_success'));
+            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
+        } catch (\Throwable $e) {
+            $this->addFlash('danger', $t->trans('data_save_error').": ".$e->getMessage());
+            return $this->redirectToRoute('company_address_edit', ['id' => $address->getId()]);
         }
-        $entityManager->remove($address);
-        $entityManager->flush();
-        $this->addFlash('warning', $t->trans('data_deleted_success'));
-        return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
     }
 }
