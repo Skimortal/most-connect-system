@@ -71,3 +71,4 @@ addInvoiceItem: Position hinzufügen
 action: Aktion
 print_pdf: PDF drucken
 send_pdf_to_customer: PDF an Kunden senden
+confirm_remove: Wollen Sie diesen Eintrag wirklich löschen?

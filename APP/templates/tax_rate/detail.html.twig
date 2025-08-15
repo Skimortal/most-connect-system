@@ -15,7 +15,7 @@
             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
             <a href="{{ path('tax_rate_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
             {% if tax_rate.id %}
-            <a href="{{ path('tax_rate_delete', {'id': tax_rate.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+            <a href="{{ path('tax_rate_delete', {'id': tax_rate.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
             {% endif %}
         </div>
     </div>

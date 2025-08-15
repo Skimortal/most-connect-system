@@ -12,4 +12,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    document.addEventListener('click', function (e) {
+        const el = e.target.closest('.confirmRemoveItem');
+        if (!el) return;
+
+        const msg = el.dataset.confirmMessage || 'Eintrag wirklich löschen?';
+        if (!window.confirm(msg)) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    }, true);
 });

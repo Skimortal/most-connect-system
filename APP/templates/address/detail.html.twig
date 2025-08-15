@@ -15,7 +15,7 @@
             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
             <a href="{{ path('company_edit', {'id': company.id}) }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
             {% if address.id %}
-                <a href="{{ path('company_address_delete', {'id': address.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+                <a href="{{ path('company_address_delete', {'id': address.id}) }}" class="btn btn-danger" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
             {% endif %}
         </div>
     </div>

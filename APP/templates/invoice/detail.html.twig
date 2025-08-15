@@ -32,7 +32,7 @@
                         <td>{{ form_widget(form.invoiceItems.vars.prototype.quantity) }}</td>
                         <td>{{ form_widget(form.invoiceItems.vars.prototype.unitPrice) }}</td>
                         <td>{{ form_widget(form.invoiceItems.vars.prototype.taxRate) }}</td>
-                        <td><button type="button" class="btn btn-outline-danger" data-action="click->form-collection#remove">{{ 'remove'|trans }}</button></td>
+                        <td><button type="button" class="btn btn-outline-danger confirmRemoveItem" data-action="click->form-collection#remove" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'remove'|trans }}</button></td>
                     </tr>
                 </template>
 
@@ -60,8 +60,9 @@
                             <td>{{ form_widget(itemForm.taxRate) }}</td>
                             <td>
                                 <button type="button"
-                                        class="btn btn-outline-danger"
-                                        data-action="click->form-collection#remove">
+                                        class="btn btn-outline-danger confirmRemoveItem"
+                                        data-action="click->form-collection#remove"
+                                        data-confirm-message="{{ 'confirm_remove'|trans }}">
                                     {{ 'remove'|trans }}
                                 </button>
                             </td>
@@ -91,7 +92,7 @@
             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
             <a href="{{ path('invoice_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
             {% if invoice.id %}
-            <a href="{{ path('invoice_delete', {'id': invoice.id}) }}" class="btn btn-danger" onclick="return confirm({{ 'confirm_delete'|trans }});">{{ 'delete'|trans }}</a>
+            <a href="{{ path('invoice_delete', {'id': invoice.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
             <a class="btn btn-outline-secondary"
                href="{{ path('invoice_pdf', {id: invoice.id}) }}"
                target="_blank" rel="noopener">
