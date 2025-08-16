@@ -35,6 +35,9 @@ class CompanyTypeFormType extends AbstractType
             ->add('logoFile', FileType::class, [
                 'required' => false,
             ])
+            ->add('logoSmallFile', FileType::class, [
+                'required' => false,
+            ])
         ;
     }
 

@@ -35,6 +35,7 @@ class InvoicePdfController extends AbstractController
         // 1) HTML via Twig rendern
         $html = $this->renderView('invoice/pdf/design1.html.twig', [
             'invoice' => $invoice,
+            'invoiceAddress' => $invoice->getCompany()->getMainAddress(),
             'logoDataUri' => $logoDataUri,
             'footerLogoDataUri' => $footerLogoDataUri,
             'baseUrl' => $this->getParameter('router.request_context.scheme').'://'.$this->getParameter('router.request_context.host'),

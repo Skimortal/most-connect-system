@@ -16,21 +16,21 @@
         {% endfor %}
     {% endfor %}
 
+    {{ form_start(form) }}
     <div class="row gap-20 pos-r">
         <div class="col-md-6">
             <div class="bgc-white p-20 bd">
                 <h6 class="c-grey-900">{{ 'company_data'|trans }}</h6>
                 <div class="mT-30">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
 
-                    <div class="row">
-                        <div class="col-sm-10 offset-md-2">
-                            {% if company.logoName %}
-                                <img src="{{ asset('uploads/company_logos/' ~ company.logoName) }}" alt="{{ company.name }} Logo" style="width: 200px;">
-                            {% endif %}
-                        </div>
-                    </div>
+
+                    {{ form_row(form.type) }}
+                    {{ form_row(form.categories) }}
+                    {{ form_row(form.uid) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.phone) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.website) }}
 
                     <div class="mb-3 row">
                         <div class="col-sm-8">
@@ -43,9 +43,6 @@
                             {% endif %}
                         </div>
                     </div>
-
-                    {{ form_rest(form) }}
-                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
@@ -95,7 +92,38 @@
                     </table>
                 </div>
             </div>
+
+            <div class="bgc-white mt-4 p-20 bd">
+                <h6 class="c-grey-900">
+                    {{ 'logos'|trans }}
+                </h6>
+
+                <div class="row mt-5 mb-5">
+                    <div class="col-sm-6">
+                        {{ form_row(form.logoFile) }}
+                        <div class="row">
+                            <div class="col-sm-10 offset-md-2">
+                                {% if company.logoName %}
+                                    <img src="{{ asset('uploads/company_logos/' ~ company.logoName) }}" alt="{{ company.name }} Logo" style="width: 200px;">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form_row(form.logoSmallFile) }}
+                        <div class="row">
+                            <div class="col-sm-10 offset-md-2">
+                                {% if company.logoSmallName %}
+                                    <img src="{{ asset('uploads/company_logos/' ~ company.logoSmallName) }}" alt="{{ company.name }} Logo" style="width: 200px;">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        {{ form_end(form) }}
     </div>
 
 

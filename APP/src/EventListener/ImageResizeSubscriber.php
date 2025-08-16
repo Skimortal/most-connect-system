@@ -20,11 +20,17 @@ class ImageResizeSubscriber
         $mapping = $event->getMapping();
 
         // Prüfe, ob es sich um das Logo-Mapping handelt
-        if ($mapping->getMappingName() !== 'company_logo' || !$object->getLogoFile()) {
+        if (
+            ($mapping->getMappingName() !== 'company_logo' || !$object->getLogoFile()) &&
+            ($mapping->getMappingName() !== 'company_logo_small' || !$object->getLogoSmallFile())
+        ) {
             return;
         }
 
         $filePath = $mapping->getUploadDestination() . '/' . $object->getLogoName();
+        if ($mapping->getMappingName() == 'company_logo_small') {
+            $filePath = $mapping->getUploadDestination() . '/' . $object->getLogoSmallName();
+        }
         chmod($filePath, 0664);
         $image = $this->imagine->open($filePath);
 

@@ -38,10 +38,9 @@
     <tr>
         <td>
             <b>{{ invoice.company.name }}</b><br/>
-            Aleksandar Stojakovic<br/>
-            Schusterbergweg 12<br/>
-            6020 Innsbruck<br/>
-            Austria<br/>
+            {{ invoiceAddress.street }}<br/>
+            {{ invoiceAddress.zip }} {{ invoiceAddress.city }}<br/>
+            {{ invoiceAddress.country }}<br/>
             {{ 'uid.label'|trans }}: {{ invoice.company.uid }}
         </td>
         <td class="right">
@@ -83,7 +82,7 @@
 </table>
 
 
-<h1>Rechnung {{ invoice.invoiceNumber ?? invoice.id }}</h1>
+<h1>{{ 'invoice.label' }} {{ invoice.invoiceNumber ?? invoice.id }}</h1>
 <p>
     Vielen Dank für Ihren Auftrag zur Umsetzung von:
 </p>

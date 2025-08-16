@@ -36,18 +36,6 @@ class Company extends Base
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private string $street;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private string $city;
-
-    #[ORM\Column(length: 10, nullable: true)]
-    private string $zip;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private string $country;
-
-    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Email]
     private ?string $email = null;
 
@@ -193,6 +181,16 @@ class Company extends Base
         }
     }
 
+    public function getMainAddress(): Address
+    {
+        foreach ($this->getAddresses() as $address) {
+            if($address->getIsMain()) {
+                return $address;
+            }
+        }
+        return $this->addresses->first();
+    }
+
     public function getLogoFile(): ?File
     {
         return $this->logoFile;
@@ -224,6 +222,9 @@ class Company extends Base
     public function setLogoSmallFile(?File $logoSmallFile): void
     {
         $this->logoSmallFile = $logoSmallFile;
+        if (null !== $logoSmallFile) {
+            $this->touch();
+        }
     }
 
     public function getLogoSmallName(): ?string
@@ -234,46 +235,6 @@ class Company extends Base
     public function setLogoSmallName(?string $logoSmallName): void
     {
         $this->logoSmallName = $logoSmallName;
-    }
-
-    public function getStreet(): string
-    {
-        return $this->street;
-    }
-
-    public function setStreet(string $street): void
-    {
-        $this->street = $street;
-    }
-
-    public function getCity(): string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): void
-    {
-        $this->city = $city;
-    }
-
-    public function getZip(): string
-    {
-        return $this->zip;
-    }
-
-    public function setZip(string $zip): void
-    {
-        $this->zip = $zip;
-    }
-
-    public function getCountry(): string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(string $country): void
-    {
-        $this->country = $country;
     }
 
     public function __toString(): string

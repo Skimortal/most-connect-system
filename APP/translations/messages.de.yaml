@@ -85,3 +85,6 @@ no_invoice_items: Keine Positionen
 our_banc_information: Unsere Kontoinformationen
 tax_rate_short: Steuer
 unitPrice_short: EPr.
+logoSmallFile.label: Logo klein
+logos: Logos
+invoice.label: Rechnung
