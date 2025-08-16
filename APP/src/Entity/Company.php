@@ -64,7 +64,7 @@ class Company extends Base
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $logoName = null;
 
-    #[Vich\UploadableField(mapping: 'company_logo', fileNameProperty: 'logoName')]
+    #[Vich\UploadableField(mapping: 'company_logo_small', fileNameProperty: 'logoSmallName')]
     private ?File $logoSmallFile = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
