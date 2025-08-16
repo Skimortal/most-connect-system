@@ -6,12 +6,9 @@ use App\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
-class InvoiceItem
+#[ORM\HasLifecycleCallbacks]
+class InvoiceItem extends Base
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'invoiceItems')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -35,16 +32,6 @@ class InvoiceItem
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private float $total = 0.0;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
 
     public function getInvoice(): ?Invoice
     {

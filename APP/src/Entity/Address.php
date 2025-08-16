@@ -6,13 +6,9 @@ use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-class Address
+#[ORM\HasLifecycleCallbacks]
+class Address extends Base
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255)]
     private string $street;
 
@@ -31,16 +27,6 @@ class Address
 
     #[ORM\Column(type:"boolean")]
     private bool $isMain = false;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
 
     public function getStreet(): string
     {

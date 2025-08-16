@@ -16,12 +16,8 @@ use Symfony\Component\HttpFoundation\File\File;
 #[AllowDynamicProperties] #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[Vich\Uploadable]
 #[ORM\HasLifecycleCallbacks]
-class Company
+class Company extends Base
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 255, enumType: CompanyType::class)]
     private CompanyType $type;
@@ -40,6 +36,18 @@ class Company
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private string $street;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private string $city;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private string $zip;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private string $country;
+
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Email]
     private ?string $email = null;
 
@@ -56,19 +64,15 @@ class Company
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $logoName = null;
 
+    #[Vich\UploadableField(mapping: 'company_logo', fileNameProperty: 'logoName')]
+    private ?File $logoSmallFile = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $logoSmallName = null;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getType(): CompanyType
@@ -198,7 +202,7 @@ class Company
     {
         $this->logoFile = $logoFile;
         if (null !== $logoFile) {
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->touch();
         }
     }
 
@@ -210,6 +214,66 @@ class Company
     public function setLogoName(?string $logoName): void
     {
         $this->logoName = $logoName;
+    }
+
+    public function getLogoSmallFile(): ?File
+    {
+        return $this->logoSmallFile;
+    }
+
+    public function setLogoSmallFile(?File $logoSmallFile): void
+    {
+        $this->logoSmallFile = $logoSmallFile;
+    }
+
+    public function getLogoSmallName(): ?string
+    {
+        return $this->logoSmallName;
+    }
+
+    public function setLogoSmallName(?string $logoSmallName): void
+    {
+        $this->logoSmallName = $logoSmallName;
+    }
+
+    public function getStreet(): string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(string $street): void
+    {
+        $this->street = $street;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function getZip(): string
+    {
+        return $this->zip;
+    }
+
+    public function setZip(string $zip): void
+    {
+        $this->zip = $zip;
+    }
+
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
     }
 
     public function __toString(): string

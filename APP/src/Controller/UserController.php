@@ -79,7 +79,7 @@ class UserController extends AbstractController {
     }
 
     #[Route('/new', name: 'user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
+    public function new(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -87,6 +87,13 @@ class UserController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $plainPassword = $form->get('password')->getData();
+
+                if (!empty($plainPassword)) {
+                    $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+                    $user->setPassword($hashedPassword);
+                }
+
                 $entityManager->persist($user);
                 $entityManager->flush();
 
@@ -97,10 +104,17 @@ class UserController extends AbstractController {
             }
         }
 
-        return $this->render('user/detail.html.twig', [
+        $response = $this->render('user/detail.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
+        if ($form->isSubmitted() && !$form->isValid()) {
+
+            $this->addFlash('danger', $t->trans('data_save_error'));
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY); // 422
+        }
+
+        return $response;
     }
 
     #[Route('/{id}', name: 'user_delete')]

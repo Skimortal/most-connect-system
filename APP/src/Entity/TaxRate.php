@@ -6,12 +6,9 @@ use App\Repository\TaxRateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaxRateRepository::class)]
-class TaxRate
+#[ORM\HasLifecycleCallbacks]
+class TaxRate extends Base
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     private string $name;
@@ -22,11 +19,6 @@ class TaxRate
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Company $company = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getName(): string
     {

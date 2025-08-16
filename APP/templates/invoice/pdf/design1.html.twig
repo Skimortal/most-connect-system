@@ -11,64 +11,112 @@
         .meta { margin-bottom: 16px; }
         .meta div { line-height: 1.4; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 6px 8px; vertical-align: top; }
-        th { background: #f4f4f4; text-align: left; }
+        th, td { border: 0; padding: 6px 0; vertical-align: top; }
+        th { border-bottom: 1px solid black; text-align: left; }
         .right { text-align: right; }
-        .totals td { border: none; }
+        .totals td { border-top: 1px solid black; }
         .totals .label { text-align: right; padding-right: 0; }
-        .totals .value { width: 120px; border: 1px solid #ddd; }
+        .totals .value { width: 120px; }
         .small { font-size: 11px; color: #666; }
-        .logo { margin-bottom: 12px; }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20mm;
+            text-align: center;
+            font-size: 10px;
+            padding-top: 4px;
+        }
     </style>
 </head>
 <body>
 
-{# Optional: Logo (absolute URL verwenden) #}
-{# <img class="logo" src="{{ absolute_url(asset('images/logo.png')) }}" alt="Logo" height="40"> #}
-
-<h1>Rechnung {{ invoice.invoiceNumber ?? invoice.id }}</h1>
-
-<div class="meta">
-    <div><strong>Datum:</strong> {{ invoice.invoiceDate ? invoice.invoiceDate|date('d.m.Y') : '' }}</div>
-    {# Passe an deine Struktur an: #}
-    <div><strong>Kunde:</strong> {{ invoice.customer ? invoice.customer : '' }}</div>
-    <div class="small">Rechnungs-ID: {{ invoice.id }}</div>
-</div>
 
 <table>
+    <tbody>
+    <tr>
+        <td>
+            <b>{{ invoice.company.name }}</b><br/>
+            Aleksandar Stojakovic<br/>
+            Schusterbergweg 12<br/>
+            6020 Innsbruck<br/>
+            Austria<br/>
+            {{ 'uid.label'|trans }}: {{ invoice.company.uid }}
+        </td>
+        <td class="right">
+            <img src="{{ logoDataUri }}" alt="{{ invoice.company.name }} Logo" style="height:100px;">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table style="margin-top: 30px; margin-bottom: 30px;">
+    <tbody>
+    <tr>
+        <td>
+            <b>{{ 'receiver'|trans }}:</b><br/>
+            {{ invoice.customer.companyName }}<br/>
+            {{ invoice.customer.firstname }} {{ invoice.customer.lastname }}<br/>
+            {{ invoice.customer.zip }} {{ invoice.customer.city }}<br/>
+            {{ invoice.customer.country }}<br/>
+            {{ 'uid.label'|trans }}: {{ invoice.customer.uid }}
+        </td>
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td class="right" style="width:72%;">
+                        <b>{{ 'invoiceNumber.label'|trans }}</b>:<br/>
+                        <b>{{ 'invoiceDate.label'|trans }}</b>:<br/>
+                    </td>
+                    <td class="right">
+                        {{ invoice.invoiceNumber }}<br/>
+                        {{ invoice.invoiceDate ? invoice.invoiceDate|date('d.m.Y') : '' }}<br/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<h1>Rechnung {{ invoice.invoiceNumber ?? invoice.id }}</h1>
+<p>
+    Vielen Dank für Ihren Auftrag zur Umsetzung von:
+</p>
+
+<table style="margin-top: 30px;">
     <thead>
     <tr>
         <th style="width: 4%;">#</th>
-        <th style="width: 28%;">Titel</th>
-        <th>Beschreibung</th>
-        <th style="width: 10%;">Menge</th>
-        <th style="width: 14%;">Einzelpreis</th>
-        <th style="width: 10%;">MwSt. %</th>
-        <th style="width: 14%;">Summe</th>
+        <th>{{ 'description.label'|trans }}</th>
+        <th class="right" style="width: 10%;">{{ 'quantity.label'|trans }}</th>
+        <th class="right" style="width: 14%;">{{ 'unitPrice_short'|trans }}</th>
+        <th class="right" style="width: 10%;">{{ 'tax_rate_short'|trans }}</th>
+        <th class="right" style="width: 14%;">{{ 'netto_price'|trans }}</th>
     </tr>
     </thead>
     <tbody>
     {% for item in invoice.invoiceItems %}
         <tr>
-            <td class="right">{{ loop.index }}</td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.description }}</td>
+            <td>{{ loop.index }}</td>
+            <td><b>{{ item.title }}</b><br/>{{ item.description }}</td>
             <td class="right">{{ item.quantity }}</td>
             <td class="right">{{ item.unitPrice|number_format(2, ',', '.') }} €</td>
-            <td class="right">{{ item.taxRate is not null ? item.taxRate.rate|number_format(2, ',', '.') : '0,00' }}</td>
+            <td class="right">{{ item.taxRate is not null ? item.taxRate.rate|number_format(0, ',', '.') : '0' }} %</td>
             <td class="right">
-                {# Wenn du lineTotal speicherst: item.total; sonst berechnen: #}
-                {% set line = (item.quantity|default(0)) * (item.unitPrice|default(0)) %}
-                {{ line|number_format(2, ',', '.') }} €
+                {{ item.total|number_format(2, ',', '.') }} €
             </td>
         </tr>
     {% else %}
-        <tr><td colspan="7" class="small">Keine Positionen</td></tr>
+        <tr><td colspan="6" class="small">{{ 'no_invoice_items'|trans }}</td></tr>
     {% endfor %}
     </tbody>
 </table>
-
-<table style="margin-top: 12px;">
+<table style="border-top: 1px solid black;">
     {% set netto = 0 %}
     {% for item in invoice.invoiceItems %}
         {% set netto = netto + (item.quantity|default(0) * item.unitPrice|default(0)) %}
@@ -80,21 +128,64 @@
     {% set brutto = netto + taxSum %}
 
     <tr class="totals">
-        <td class="label"><strong>Zwischensumme (netto):</strong></td>
+        <td class="label"><strong>Zwischensumme Netto:</strong></td>
         <td class="value right">{{ netto|number_format(2, ',', '.') }} €</td>
     </tr>
     <tr class="totals">
-        <td class="label"><strong>Summe MwSt.:</strong></td>
+        <td class="label"><strong>Summe Steuern:</strong></td>
         <td class="value right">{{ taxSum|number_format(2, ',', '.') }} €</td>
     </tr>
     <tr class="totals">
-        <td class="label"><strong>Gesamt (brutto):</strong></td>
+        <td colspan="2" style="height: 1px; padding: 0;"></td>
+    </tr>
+    <tr class="totals">
+        <td class="label"><strong>Gesamtsumme:</strong></td>
         <td class="value right"><strong>{{ brutto|number_format(2, ',', '.') }} €</strong></td>
     </tr>
 </table>
 
 <p class="small" style="margin-top: 18px;">
-    Zahlungsziel: 14 Tage ohne Abzug. Vielen Dank für Ihren Auftrag!
+    Zahlung: Bitte überweisen Sie den Betrag innerhalb von zwei Wochen auf das angegebene Bankkonto.
 </p>
+
+<p style="margin-top: 18px;">
+    <b>{{ 'our_banc_information'|trans }}:</b><br/>
+    Institut: Tiroler Sparkasse<br/>
+    Inhaber: Aleksandar Stojakovic<br/>
+    IBAN: AT78 2050 3033 0291 6543<br/>
+    BIC: SPIHAT22XXX
+</p>
+
+<p>
+    Mit freundlichen Grüßen
+</p>
+
+
+<footer>
+    <table>
+        <tbody>
+        <tr>
+            <td><img src="{{ footerLogoDataUri }}" alt="{{ invoice.company.name }} Logo" style="width:50px;"></td>
+            <td>
+                {{ invoice.company.name }}<br/>
+                Schusterbergweg 12<br/>
+                6020 Innsbruck, Austria<br/>
+{#                {{ invoice.company.street }}<br/>#}
+{#                {{ invoice.company.zip }} {{ invoice.company.city }}#}
+            </td>
+            <td>
+                T: {{ invoice.company.phone }}<br/>
+                E: {{ invoice.company.email }}<br>
+                {{ 'uid.label'|trans }} {{ invoice.company.uid }}
+            </td>
+            <td>
+                Institut: Tiroler Sparkasse<br/>
+                IBAN: AT78 2050 3033 0291 6543<br/>
+                BIC: SPIHAT22XXX
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</footer>
 </body>
 </html>

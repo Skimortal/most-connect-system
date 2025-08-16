@@ -9,13 +9,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\HasLifecycleCallbacks]
+class User extends Base implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 180)]
     private ?string $username = null;
 
@@ -62,17 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type:"boolean")]
     private bool $isActive = true;
-
-    #[ORM\Column(type:"datetime", nullable: true)]
-    private ?\DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type:"datetime", nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getUsername(): ?string
     {
@@ -243,34 +228,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isActive = $isActive;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(?\DateTimeInterface $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
-     */
     public function __serialize(): array
     {
         $data = (array) $this;
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-
         return $data;
     }
 
@@ -287,7 +248,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-        return $this->firstName . ' ' . $this->lastName;
+        return $this->getFullname();
     }
 
 }
