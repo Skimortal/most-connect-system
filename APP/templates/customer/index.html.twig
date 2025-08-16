@@ -54,7 +54,7 @@
                         <tbody>
                         {% for customer in customers %}
                             <tr>
-                                <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.type.value }}</a></td>
+                                <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.type.label }}</a></td>
                                 <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.firstname }}</a></td>
                                 <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.lastname }}</a></td>
                                 <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.email }}</a></td>

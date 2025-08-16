@@ -25,9 +25,11 @@
                     {{ form_widget(form) }}
 
                     <div class="mb-3 row">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
+                            <a href="{{ path('customer_list') }}" class="btn btn-secondary">{{ 'back_to_list'|trans }}</a>
                             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
-                            <a href="{{ path('customer_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
+                        </div>
+                        <div class="col-sm-4" style="text-align: right;">
                             {% if customer.id %}
                                 <a href="{{ path('customer_delete', {'id': customer.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
                             {% endif %}
@@ -54,17 +56,30 @@
                         <thead>
                         <tr>
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
+                            <th>{{ 'status.label'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
+                            <th>{{ 'status.label'|trans }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
                         {% for invoice in customer.getInvoices() %}
                             <tr>
                                 <td><a href="{{ path('invoice_edit', { id: invoice.id }) }}">{{ invoice.invoiceNumber }}</a></td>
+                                <td>
+                                    {% set label = invoice.status.label %}
+                                    {% set class = {
+                                        'Offen': 'bg-warning',
+                                        'Versendet': 'bg-info',
+                                        'Bezahlt': 'bg-success'
+                                    }[label] %}
+                                    <a href="{{ path('invoice_edit', { id: invoice.id }) }}">
+                                        <span class="badge {{ class }}">{{ label }}</span>
+                                    </a>
+                                </td>
                             </tr>
                         {% else %}
                             <tr>

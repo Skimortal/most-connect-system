@@ -28,17 +28,30 @@
                         <thead>
                         <tr>
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
+                            <th>{{ 'status.label'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
+                            <th>{{ 'status.label'|trans }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
                         {% for invoice in invoices %}
                             <tr>
                                 <td><a href="{{ path('invoice_edit', { id: invoice.id }) }}">{{ invoice.invoiceNumber }}</a></td>
+                                <td>
+                                    {% set label = invoice.status.label %}
+                                    {% set class = {
+                                        'Offen': 'bg-warning',
+                                        'Versendet': 'bg-info',
+                                        'Bezahlt': 'bg-success'
+                                    }[label] %}
+                                    <a href="{{ path('invoice_edit', { id: invoice.id }) }}">
+                                        <span class="badge {{ class }}">{{ label }}</span>
+                                    </a>
+                                </td>
                             </tr>
                         {% else %}
                             <tr>

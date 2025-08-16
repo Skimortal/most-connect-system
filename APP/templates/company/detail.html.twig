@@ -33,9 +33,11 @@
                     </div>
 
                     <div class="mb-3 row">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
+                            <a href="{{ path('company_list') }}" class="btn btn-secondary">{{ 'back_to_list'|trans }}</a>
                             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
-                            <a href="{{ path('company_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
+                        </div>
+                        <div class="col-sm-4" style="text-align: right;">
                             {% if company.id %}
                                 <a href="{{ path('company_delete', {'id': company.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
                             {% endif %}

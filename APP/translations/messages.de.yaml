@@ -28,6 +28,7 @@ logo.label: Logo
 company_detail_title: Firma Detail
 save: Speichern
 cancel: Abbrechen
+back_to_list: Zurück zur Liste
 dashboard: Dashboard
 users: Benutzer
 companies: Firmen
@@ -77,3 +78,4 @@ data_save_error: Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch
 data_deleted_success: Daten erfolgreich gelöscht!
 superadmin_delete_error: "!!!Superadmin darf nicht gelöscht werden!!!"
 customer_list: Kundenliste
+status.label: Status

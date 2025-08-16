@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\InvoiceStatus;
 use App\Repository\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,12 +30,14 @@ class Invoice
     #[ORM\Column(length: 50, unique: true)]
     private ?string $invoiceNumber = null;
 
-
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $invoiceDate;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private float $total = 0.00;
+
+    #[ORM\Column(enumType: InvoiceStatus::class)]
+    private InvoiceStatus $status = InvoiceStatus::OFFEN;
 
     public function __construct()
     {
@@ -138,6 +141,16 @@ class Invoice
     public function calcInvoiceTotal(): float
     {
         return array_sum($this->invoiceItems->map(fn(InvoiceItem $i) => $i->calcLineTotal())->toArray());
+    }
+
+    public function getStatus(): InvoiceStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(InvoiceStatus $status): void
+    {
+        $this->status = $status;
     }
 
 }

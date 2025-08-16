@@ -20,11 +20,13 @@
     {{ form_widget(form) }}
 
     <div class="mb-3 row">
-        <div class="col-sm-10">
+        <div class="col-sm-8">
+            <a href="{{ path('tax_rate_list') }}" class="btn btn-secondary">{{ 'back_to_list'|trans }}</a>
             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
-            <a href="{{ path('tax_rate_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
+        </div>
+        <div class="col-sm-4" style="text-align: right;">
             {% if tax_rate.id %}
-            <a href="{{ path('tax_rate_delete', {'id': tax_rate.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
+                <a href="{{ path('tax_rate_delete', {'id': tax_rate.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
             {% endif %}
         </div>
     </div>

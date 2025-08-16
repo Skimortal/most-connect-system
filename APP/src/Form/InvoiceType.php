@@ -3,12 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Invoice;
+use App\Enum\InvoiceStatus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 class InvoiceType extends AbstractType
 {
@@ -34,7 +36,11 @@ class InvoiceType extends AbstractType
                 'by_reference' => false,
                 'prototype'    => true,
                 'delete_empty' => true,
-            ]);
+            ])
+            ->add('status', EnumType::class, [
+                'class' => InvoiceStatus::class,
+                'choice_label' => fn (InvoiceStatus $status) => $status->label(),
+            ])
             ;
 
 

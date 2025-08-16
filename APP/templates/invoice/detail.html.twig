@@ -21,6 +21,7 @@
     {{ form_row(form.company) }}
     {{ form_row(form.invoiceNumber) }}
     {{ form_row(form.invoiceDate) }}
+    {{ form_row(form.status) }}
 
     <div class="bd bgc-white p-20 mb-5">
         <div class="layers">
@@ -97,20 +98,24 @@
 
 
     <div class="mb-3 row">
-        <div class="col-sm-10">
+        <div class="col-sm-8">
+            <a href="{{ path('invoice_list') }}" class="btn btn-secondary">{{ 'back_to_list'|trans }}</a>
             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
-            <a href="{{ path('invoice_list') }}" class="btn btn-secondary">{{ 'cancel'|trans }}</a>
             {% if invoice.id %}
-            <a href="{{ path('invoice_delete', {'id': invoice.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
-            <a class="btn btn-outline-secondary"
+            <a class="btn btn-warning"
                href="{{ path('invoice_pdf', {id: invoice.id}) }}"
                target="_blank" rel="noopener">
                 {{ 'print_pdf'|trans }}
             </a>
-            <a href="{{ path('invoice_send_pdf', { id: invoice.id }) }}"
-               class="btn btn-primary">
-                <i class="ti-envelope"></i> {{ 'send_pdf_to_customer'|trans }}
-            </a>
+{#            <a href="{{ path('invoice_send_pdf', { id: invoice.id }) }}"#}
+{#               class="btn btn-info">#}
+{#                <i class="ti-envelope"></i> {{ 'send_pdf_to_customer'|trans }}#}
+{#            </a>#}
+            {% endif %}
+        </div>
+        <div class="col-sm-4" style="text-align: right;">
+            {% if invoice.id %}
+                <a href="{{ path('invoice_delete', {'id': invoice.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
             {% endif %}
         </div>
     </div>

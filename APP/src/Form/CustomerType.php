@@ -16,6 +16,7 @@ class CustomerType extends AbstractType
             ->add('company')
             ->add('type', EnumType::class, [
                 'class' => \App\Enum\CustomerType::class,
+                'choice_label' => fn (\App\Enum\CustomerType $status) => $status->label(),
             ])
             ->add('companyName')
             ->add('firstname')
