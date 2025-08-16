@@ -38,6 +38,7 @@ class ProfileController extends AbstractController
 
             $em->flush();
             $this->addFlash('success', $t->trans('data_saved_success'));
+            return $this->redirectToRoute('my_profile', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/my_profile.html.twig', [
