@@ -59,6 +59,9 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
     #[ORM\Column(type:"boolean")]
     private bool $isActive = true;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatarFilename = null;
+
     public function getUsername(): ?string
     {
         return $this->username;
@@ -244,6 +247,17 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
     public function getFullname(): ?string
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function getAvatarFilename(): ?string
+    {
+        return $this->avatarFilename;
+    }
+
+    public function setAvatarFilename(?string $f): self
+    {
+        $this->avatarFilename = $f;
+        return $this;
     }
 
     public function __toString(): string

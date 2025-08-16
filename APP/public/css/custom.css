@@ -36,3 +36,7 @@ table.table.dataTable>:not(caption)>*>*,
     background: color-mix(in srgb, var(--vmap-scale-start) 85%, var(--c-border));
     border-color: var(--vmap-scale-start);
 }
+
+.help-text {
+    color: wheat;
+}
