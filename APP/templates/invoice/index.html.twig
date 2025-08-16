@@ -28,12 +28,14 @@
                         <thead>
                         <tr>
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
+                            <th>{{ 'invoiceDate.label'|trans }}</th>
                             <th>{{ 'status.label'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
+                            <th>{{ 'invoiceDate.label'|trans }}</th>
                             <th>{{ 'status.label'|trans }}</th>
                         </tr>
                         </tfoot>
@@ -41,6 +43,7 @@
                         {% for invoice in invoices %}
                             <tr>
                                 <td><a href="{{ path('invoice_edit', { id: invoice.id }) }}">{{ invoice.invoiceNumber }}</a></td>
+                                <td><a href="{{ path('invoice_edit', { id: invoice.id }) }}">{{ invoice.invoiceDate ? invoice.invoiceDate|date('d.m.Y') : '' }}</a></td>
                                 <td>
                                     {% set label = invoice.status.label %}
                                     {% set class = {
