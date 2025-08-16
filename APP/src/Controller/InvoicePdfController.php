@@ -25,7 +25,7 @@ class InvoicePdfController extends AbstractController
 
         // ------- LOGO Footer ---------
         $logoPath = $this->getParameter('kernel.project_dir')
-            . '/public/uploads/company_logos/' . $invoice->getCompany()->getLogoName();
+            . '/public/uploads/company_logos/' . $invoice->getCompany()->getLogoSmallName();
         $footerLogoDataUri = null;
         if (is_file($logoPath)) {
             $mime = mime_content_type($logoPath) ?: 'image/png';

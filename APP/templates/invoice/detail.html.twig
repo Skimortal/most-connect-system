@@ -22,8 +22,9 @@
     {{ form_row(form.invoiceNumber) }}
     {{ form_row(form.invoiceDate) }}
     {{ form_row(form.status) }}
+    {{ form_row(form.entryText) }}
 
-    <div class="bd bgc-white p-20 mb-5">
+    <div class="bd bgc-white p-20 mt-5 mb-5">
         <div class="layers">
             <div class="layer w-100 mB-10">
                 <h6 class="lh-1">{{ 'invoice_items'|trans }}</h6>
@@ -96,6 +97,8 @@
         </div>
     </div>
 
+    {{ form_row(form.paymentInfoText) }}
+    {{ form_row(form.bottomText) }}
 
     <div class="mb-3 row">
         <div class="col-sm-8">

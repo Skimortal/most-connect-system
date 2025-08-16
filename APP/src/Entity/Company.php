@@ -58,6 +58,18 @@ class Company extends Base
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $logoSmallName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bancAccountInstitute = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bancAccountOwner = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bancAccountIBAN = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bancAccountBIC = null;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -183,8 +195,9 @@ class Company extends Base
 
     public function getMainAddress(): Address
     {
+        /** @var Address $address */
         foreach ($this->getAddresses() as $address) {
-            if($address->getIsMain()) {
+            if($address->isMain()) {
                 return $address;
             }
         }
@@ -235,6 +248,46 @@ class Company extends Base
     public function setLogoSmallName(?string $logoSmallName): void
     {
         $this->logoSmallName = $logoSmallName;
+    }
+
+    public function getBancAccountInstitute(): ?string
+    {
+        return $this->bancAccountInstitute;
+    }
+
+    public function setBancAccountInstitute(?string $bancAccountInstitute): void
+    {
+        $this->bancAccountInstitute = $bancAccountInstitute;
+    }
+
+    public function getBancAccountOwner(): ?string
+    {
+        return $this->bancAccountOwner;
+    }
+
+    public function setBancAccountOwner(?string $bancAccountOwner): void
+    {
+        $this->bancAccountOwner = $bancAccountOwner;
+    }
+
+    public function getBancAccountIBAN(): ?string
+    {
+        return $this->bancAccountIBAN;
+    }
+
+    public function setBancAccountIBAN(?string $bancAccountIBAN): void
+    {
+        $this->bancAccountIBAN = $bancAccountIBAN;
+    }
+
+    public function getBancAccountBIC(): ?string
+    {
+        return $this->bancAccountBIC;
+    }
+
+    public function setBancAccountBIC(?string $bancAccountBIC): void
+    {
+        $this->bancAccountBIC = $bancAccountBIC;
     }
 
     public function __toString(): string

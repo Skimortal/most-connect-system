@@ -88,3 +88,11 @@ unitPrice_short: EPr.
 logoSmallFile.label: Logo klein
 logos: Logos
 invoice.label: Rechnung
+banc_account_informations: Kontoinformationen
+bancAccountInstitute.label: Institut
+bancAccountOwner.label: Inhaber
+bancAccountIBAN.label: IBAN
+bancAccountBIC.label: BIC
+entryText.label: Einleitungstext
+paymentInfoText.label: Zahlungsinformation
+bottomText.label: Abschlusstext

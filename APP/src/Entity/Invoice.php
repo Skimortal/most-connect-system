@@ -36,6 +36,15 @@ class Invoice extends Base
     #[ORM\Column(enumType: InvoiceStatus::class)]
     private InvoiceStatus $status = InvoiceStatus::OFFEN;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $entryText = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $paymentInfoText = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bottomText = null;
+
     public function __construct()
     {
         $this->invoiceItems = new ArrayCollection();
@@ -138,6 +147,36 @@ class Invoice extends Base
     public function setStatus(InvoiceStatus $status): void
     {
         $this->status = $status;
+    }
+
+    public function getEntryText(): ?string
+    {
+        return $this->entryText;
+    }
+
+    public function setEntryText(?string $entryText): void
+    {
+        $this->entryText = $entryText;
+    }
+
+    public function getPaymentInfoText(): ?string
+    {
+        return $this->paymentInfoText;
+    }
+
+    public function setPaymentInfoText(?string $paymentInfoText): void
+    {
+        $this->paymentInfoText = $paymentInfoText;
+    }
+
+    public function getBottomText(): ?string
+    {
+        return $this->bottomText;
+    }
+
+    public function setBottomText(?string $bottomText): void
+    {
+        $this->bottomText = $bottomText;
     }
 
 }

@@ -38,6 +38,10 @@ class CompanyTypeFormType extends AbstractType
             ->add('logoSmallFile', FileType::class, [
                 'required' => false,
             ])
+            ->add('bancAccountInstitute')
+            ->add('bancAccountOwner')
+            ->add('bancAccountIBAN')
+            ->add('bancAccountBIC')
         ;
     }
 

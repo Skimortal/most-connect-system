@@ -82,9 +82,9 @@
 </table>
 
 
-<h1>{{ 'invoice.label' }} {{ invoice.invoiceNumber ?? invoice.id }}</h1>
+<h1>{{ 'invoice.label'|trans }} {{ invoice.invoiceNumber ?? invoice.id }}</h1>
 <p>
-    Vielen Dank für Ihren Auftrag zur Umsetzung von:
+    {{ invoice.entryText }}
 </p>
 
 <table style="margin-top: 30px;">
@@ -144,19 +144,19 @@
 </table>
 
 <p class="small" style="margin-top: 18px;">
-    Zahlung: Bitte überweisen Sie den Betrag innerhalb von zwei Wochen auf das angegebene Bankkonto.
+    {{ invoice.paymentInfoText }}
 </p>
 
 <p style="margin-top: 18px;">
     <b>{{ 'our_banc_information'|trans }}:</b><br/>
-    Institut: Tiroler Sparkasse<br/>
-    Inhaber: Aleksandar Stojakovic<br/>
-    IBAN: AT78 2050 3033 0291 6543<br/>
-    BIC: SPIHAT22XXX
+    {{ 'bancAccountInstitute.label'|trans }}: {{ invoice.company.bancAccountInstitute }}<br/>
+    {{ 'bancAccountOwner.label'|trans }}: {{ invoice.company.bancAccountOwner }}<br/>
+    {{ 'bancAccountIBAN.label'|trans }}: {{ invoice.company.bancAccountIBAN }}<br/>
+    {{ 'bancAccountBIC.label'|trans }}: {{ invoice.company.bancAccountBIC }}
 </p>
 
 <p>
-    Mit freundlichen Grüßen
+    {{ invoice.bottomText }}
 </p>
 
 
@@ -167,10 +167,8 @@
             <td><img src="{{ footerLogoDataUri }}" alt="{{ invoice.company.name }} Logo" style="width:50px;"></td>
             <td>
                 {{ invoice.company.name }}<br/>
-                Schusterbergweg 12<br/>
-                6020 Innsbruck, Austria<br/>
-{#                {{ invoice.company.street }}<br/>#}
-{#                {{ invoice.company.zip }} {{ invoice.company.city }}#}
+                {{ invoiceAddress.street }}<br/>
+                {{ invoiceAddress.zip }} {{ invoiceAddress.city }}, {{ invoiceAddress.country }}
             </td>
             <td>
                 T: {{ invoice.company.phone }}<br/>
@@ -178,9 +176,9 @@
                 {{ 'uid.label'|trans }} {{ invoice.company.uid }}
             </td>
             <td>
-                Institut: Tiroler Sparkasse<br/>
-                IBAN: AT78 2050 3033 0291 6543<br/>
-                BIC: SPIHAT22XXX
+                {{ 'bancAccountInstitute.label'|trans }}: {{ invoice.company.bancAccountInstitute }}<br/>
+                {{ 'bancAccountIBAN.label'|trans }}: {{ invoice.company.bancAccountIBAN }}<br/>
+                {{ 'bancAccountBIC.label'|trans }}: {{ invoice.company.bancAccountBIC }}
             </td>
         </tr>
         </tbody>

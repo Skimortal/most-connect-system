@@ -7,6 +7,7 @@ use App\Enum\InvoiceStatus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -40,6 +41,18 @@ class InvoiceType extends AbstractType
             ->add('status', EnumType::class, [
                 'class' => InvoiceStatus::class,
                 'choice_label' => fn (InvoiceStatus $status) => $status->label(),
+            ])
+            ->add('entryText', TextareaType::class, [
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('paymentInfoText', TextareaType::class, [
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('bottomText', TextareaType::class, [
+                'required' => false,
+                'empty_data' => null,
             ])
             ;
 
