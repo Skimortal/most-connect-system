@@ -29,6 +29,12 @@ services:
             - ${APP_PATH}/var/tmp:/var/www/html/var/tmp
         depends_on:
             - php
+        command: >
+            sh -c '
+              if id -u nginx >/dev/null 2>&1; then U=nginx; else U=www-data; fi;
+              mkdir -p /var/cache/nginx/{client_temp,proxy_temp,fastcgi_temp} &&
+              chown -R "$U:$U" /var/cache/nginx &&
+              exec nginx -g "daemon off;"'
         networks:
             webnet:
                 aliases:
