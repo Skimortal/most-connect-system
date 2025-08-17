@@ -40,3 +40,25 @@ table.table.dataTable>:not(caption)>*>*,
 .help-text {
     color: wheat;
 }
+@media screen and (max-width: 767px) {
+    .header .nav-left:before {
+        content: "" !important;
+        display: inline-block !important;
+        background-image: url("/images/logo-in-easy-white.svg") !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: contain !important;
+        background-color: transparent !important;
+    }
+}
+@media screen and (max-width: 479px) {
+    .header .nav-left:before {
+        content: "" !important;
+        display: inline-block !important;
+        background-image: url("/images/logo-in-easy-white.svg") !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: contain !important;
+        background-color: transparent !important;
+    }
+}
