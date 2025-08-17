@@ -29,6 +29,8 @@ services:
             - ${APP_PATH}/var/tmp:/var/www/html/var/tmp
         depends_on:
             - php
+        tmpfs:
+            - /var/cache/nginx   
         command: >
             sh -c '
               if id -u nginx >/dev/null 2>&1; then U=nginx; else U=www-data; fi;
