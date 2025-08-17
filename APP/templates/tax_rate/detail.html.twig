@@ -16,7 +16,7 @@
         {% endfor %}
     {% endfor %}
 
-    {{ form_start(form) }}
+    {{ form_start(form, { attr: { 'data-turbo': 'false' } }) }}
     {{ form_widget(form) }}
 
     <div class="mb-3 row">

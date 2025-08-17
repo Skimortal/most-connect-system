@@ -27,14 +27,16 @@
         <script src="{{ asset('build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ar-81d16d.js') }}"></script>
         <script src="{{ asset('build/app.js') }}"></script>
     {% endif %}
-    <script src="{{ asset('adminator/main.js') }}"></script>
-    <script src="{{ asset('js/datatables.min.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
 </head>
 <body class="app">
+{% include 'adminator/partials/_loader.html.twig' %}
 
 {% block body %}{% endblock %}
 
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('adminator/main.js') }}" defer></script>
+    <script src="{{ asset('js/datatables.min.js') }}" defer></script>
+    <script src="{{ asset('js/custom.js') }}" defer></script>
+{% endblock %}
 </body>
 </html>

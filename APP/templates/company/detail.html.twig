@@ -16,7 +16,7 @@
         {% endfor %}
     {% endfor %}
 
-    {{ form_start(form) }}
+    {{ form_start(form, { attr: { 'data-turbo': 'false' } }) }}
     <div class="row gap-20 pos-r">
         <div class="col-md-6">
             <div class="bgc-white p-20 bd mb-4">
