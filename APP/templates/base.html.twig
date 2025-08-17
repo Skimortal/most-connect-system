@@ -42,6 +42,12 @@
 {% block body %}{% endblock %}
 
 {% block javascripts %}
+    <script>
+        window.appConfig = {
+            locale: {{ app.request.locale|json_encode|raw }},
+            datatables_locale_json: "/css/de-DE.json",
+        };
+    </script>
     <script src="{{ asset('adminator/main.js') }}" defer></script>
     <script src="{{ asset('js/datatables.min.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>

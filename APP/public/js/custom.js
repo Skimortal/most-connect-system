@@ -1,3 +1,5 @@
+var cfg = window.appConfig || {};
+
 function initPage() {
     console.log('custom.js geladen.');
     initDataTables();
@@ -33,7 +35,7 @@ function initDataTables() {
             ordering: true,
             // dataSrc: "",
             language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/de-DE.json',
+                url: cfg.datatables_locale_json,
                 emptyTable: 'Keine Daten gefunden',
             }
         });
