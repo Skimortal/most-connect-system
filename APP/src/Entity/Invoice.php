@@ -30,6 +30,12 @@ class Invoice extends Base
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $invoiceDate;
 
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    private float $taxSum = 0.00;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    private float $totalNetto = 0.00;
+
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private float $total = 0.00;
 
@@ -124,6 +130,26 @@ class Invoice extends Base
         $this->invoiceDate = $invoiceDate;
     }
 
+    public function getTaxSum(): float
+    {
+        return $this->taxSum;
+    }
+
+    public function setTaxSum(float $taxSum): void
+    {
+        $this->taxSum = $taxSum;
+    }
+
+    public function getTotalNetto(): float
+    {
+        return $this->totalNetto;
+    }
+
+    public function setTotalNetto(float $totalNetto): void
+    {
+        $this->totalNetto = $totalNetto;
+    }
+
     public function getTotal(): float
     {
         return $this->total;
@@ -134,9 +160,27 @@ class Invoice extends Base
         $this->total = $total;
     }
 
+    public function calcInvoiceTotalNetto(): float
+    {
+        return array_sum($this->invoiceItems->map(fn(InvoiceItem $i) => $i->calcLineTotalNetto())->toArray());
+    }
+
+    public function calcInvoiceTaxSum(): float
+    {
+        return array_sum($this->invoiceItems->map(fn(InvoiceItem $i) => $i->calcTaxSum())->toArray());
+    }
+
     public function calcInvoiceTotal(): float
     {
         return array_sum($this->invoiceItems->map(fn(InvoiceItem $i) => $i->calcLineTotal())->toArray());
+    }
+
+    public function setAllPrices(): void
+    {
+        $this->invoiceItems->map(fn(InvoiceItem $i) => $i->setAllPrices());
+        $this->setTotalNetto($this->calcInvoiceTotalNetto());
+        $this->setTaxSum($this->calcInvoiceTaxSum());
+        $this->setTotal($this->calcInvoiceTotal());
     }
 
     public function getStatus(): InvoiceStatus

@@ -52,11 +52,7 @@ class InvoiceController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                /** @var InvoiceItem $item */
-                foreach ($invoice->getInvoiceItems() as $item) {
-                    $item->setTotal($item->calcLineTotal());
-                }
-                $invoice->setTotal($invoice->calcInvoiceTotal());
+                $invoice->setAllPrices();
                 $entityManager->persist($invoice);
                 $entityManager->flush();
 
@@ -82,6 +78,7 @@ class InvoiceController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $invoice->setAllPrices();
                 $entityManager->persist($invoice);
                 $entityManager->flush();
 

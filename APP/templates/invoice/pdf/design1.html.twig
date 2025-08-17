@@ -107,7 +107,7 @@
             <td class="right">{{ item.unitPrice|number_format(2, ',', '.') }} €</td>
             <td class="right">{{ item.taxRate is not null ? item.taxRate.rate|number_format(0, ',', '.') : '0' }} %</td>
             <td class="right">
-                {{ item.total|number_format(2, ',', '.') }} €
+                {{ item.totalNetto|number_format(2, ',', '.') }} €
             </td>
         </tr>
     {% else %}
@@ -116,30 +116,20 @@
     </tbody>
 </table>
 <table style="border-top: 1px solid black;">
-    {% set netto = 0 %}
-    {% for item in invoice.invoiceItems %}
-        {% set netto = netto + (item.quantity|default(0) * item.unitPrice|default(0)) %}
-    {% endfor %}
-    {% set taxSum = 0 %}
-    {% for item in invoice.invoiceItems %}
-        {% set taxSum = taxSum + ((item.quantity|default(0) * item.unitPrice|default(0)) * (item.taxRate.rate|default(0) / 100)) %}
-    {% endfor %}
-    {% set brutto = netto + taxSum %}
-
     <tr class="totals">
         <td class="label"><strong>Zwischensumme Netto:</strong></td>
-        <td class="value right">{{ netto|number_format(2, ',', '.') }} €</td>
+        <td class="value right">{{ invoice.totalNetto|number_format(2, ',', '.') }} €</td>
     </tr>
     <tr class="totals">
         <td class="label"><strong>Summe Steuern:</strong></td>
-        <td class="value right">{{ taxSum|number_format(2, ',', '.') }} €</td>
+        <td class="value right">{{ invoice.taxSum|number_format(2, ',', '.') }} €</td>
     </tr>
     <tr class="totals">
         <td colspan="2" style="height: 1px; padding: 0;"></td>
     </tr>
     <tr class="totals">
         <td class="label"><strong>Gesamtsumme:</strong></td>
-        <td class="value right"><strong>{{ brutto|number_format(2, ',', '.') }} €</strong></td>
+        <td class="value right"><strong>{{ invoice.total|number_format(2, ',', '.') }} €</strong></td>
     </tr>
 </table>
 

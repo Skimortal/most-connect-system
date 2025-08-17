@@ -31,6 +31,12 @@ class InvoiceItem extends Base
     private ?TaxRate $taxRate = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    private float $taxSum = 0.0;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    private float $totalNetto = 0.0;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private float $total = 0.0;
 
     public function getInvoice(): ?Invoice
@@ -94,6 +100,26 @@ class InvoiceItem extends Base
         $this->taxRate = $taxRate;
     }
 
+    public function getTaxSum(): float
+    {
+        return $this->taxSum;
+    }
+
+    public function setTaxSum(float $taxSum): void
+    {
+        $this->taxSum = $taxSum;
+    }
+
+    public function getTotalNetto(): float
+    {
+        return $this->totalNetto;
+    }
+
+    public function setTotalNetto(float $totalNetto): void
+    {
+        $this->totalNetto = $totalNetto;
+    }
+
     public function getTotal(): float
     {
         return $this->total;
@@ -104,9 +130,26 @@ class InvoiceItem extends Base
         $this->total = $total;
     }
 
-    public function calcLineTotal(): float
+    public function calcTaxSum(): float
+    {
+        return ($this->quantity * $this->unitPrice) * ($this->taxRate->getRate() / 100);
+    }
+
+    public function calcLineTotalNetto(): float
     {
         return $this->quantity * $this->unitPrice;
+    }
+
+    public function calcLineTotal(): float
+    {
+        return ($this->quantity * $this->unitPrice) * (1 + $this->taxRate->getRate() / 100);
+    }
+
+    public function setAllPrices(): void
+    {
+        $this->setTotalNetto($this->calcLineTotalNetto());
+        $this->setTaxSum($this->calcTaxSum());
+        $this->setTotal($this->calcLineTotal());
     }
 
 }
