@@ -16,6 +16,16 @@
     <link rel="stylesheet" href="{{ asset('adminator/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
+    <link rel="icon" href="{{ asset('images/favicon/favicon.ico') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-32x32.png') }}" sizes="32x32">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-16x16.png') }}" sizes="16x16">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon/apple-touch-icon.png') }}"> {# 180×180 #}
+    <link rel="manifest" href="{{ asset('images/favicon/site.webmanifest') }}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-dark.svg') }}" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-light.svg') }}" type="image/svg+xml" media="(prefers-color-scheme: light)">
+
     {% block stylesheets %}{% endblock %}
 
     {% if app.environment == 'dev' %}
