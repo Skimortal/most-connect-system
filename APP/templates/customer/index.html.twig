@@ -36,6 +36,7 @@
                             <th>{{ 'zip.label'|trans }}</th>
                             <th>{{ 'country.label'|trans }}</th>
                             <th>{{ 'uid.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -49,6 +50,7 @@
                             <th>{{ 'zip.label'|trans }}</th>
                             <th>{{ 'country.label'|trans }}</th>
                             <th>{{ 'uid.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -63,10 +65,16 @@
                                 <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.zip }}</a></td>
                                 <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.country }}</a></td>
                                 <td><a href="{{ path('customer_edit', { id: customer.id }) }}">{{ customer.uid }}</a></td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td>{{ 'no_data_found'|trans }}</td>
+                                <td class="text-nowrap">
+                                    <a href="{{ path('customer_edit', {id: customer.id}) }}" title="{{ 'edit'|trans }}">
+                                        <span class="badge bg-info"><i class="ti-pencil-alt"></i></span>
+                                    </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('customer_delete', {id: customer.id}) }}" class="confirmRemoveItem" title="{{ 'delete'|trans }}" data-confirm-message="{{ 'confirm_remove'|trans }}">
+                                            <span class="badge bg-danger"><i class="ti-trash"></i></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

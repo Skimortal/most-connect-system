@@ -30,6 +30,7 @@
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
                             <th>{{ 'invoiceDate.label'|trans }}</th>
                             <th>{{ 'status.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -37,6 +38,7 @@
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
                             <th>{{ 'invoiceDate.label'|trans }}</th>
                             <th>{{ 'status.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -55,10 +57,16 @@
                                         <span class="badge {{ class }}">{{ label }}</span>
                                     </a>
                                 </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="3">{{ 'no_data_found'|trans }}</td>
+                                <td class="text-nowrap">
+                                    <a href="{{ path('invoice_edit', {id: invoice.id}) }}" title="{{ 'edit'|trans }}">
+                                        <span class="badge bg-info"><i class="ti-pencil-alt"></i></span>
+                                    </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('invoice_delete', {id: invoice.id}) }}" class="confirmRemoveItem" title="{{ 'delete'|trans }}" data-confirm-message="{{ 'confirm_remove'|trans }}">
+                                            <span class="badge bg-danger"><i class="ti-trash"></i></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

@@ -38,7 +38,7 @@
                             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
                         </div>
                         <div class="col-sm-4" style="text-align: right;">
-                            {% if company.id %}
+                            {% if company.id and is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('company_delete', {'id': company.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
                             {% endif %}
                         </div>
@@ -54,7 +54,7 @@
                     </div>
                 </h6>
                 <div class="mT-30">
-                    <table id="dataTables" class="mcDataTable1 table table-striped table-bordered" cellspacing="0" width="100%">
+                    <table id="dataTables" class="mcDataTable table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>{{ 'street.label'|trans }}</th>
@@ -62,6 +62,7 @@
                             <th>{{ 'city.label'|trans }}</th>
                             <th>{{ 'country.label'|trans }}</th>
                             <th>{{ 'isMain.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -71,6 +72,7 @@
                             <th>{{ 'zip.label'|trans }}</th>
                             <th>{{ 'country.label'|trans }}</th>
                             <th>{{ 'isMain.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -81,10 +83,16 @@
                                 <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{{ address.city }}</a></td>
                                 <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{{ address.country }}</a></td>
                                 <td><a href="{{ path('company_address_edit', { id: address.id }) }}">{% if address.isMain %}<i class="ti-check"></i>{% endif %}</a></td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4">{{ 'no_data_found'|trans }}</td>
+                                <td class="text-nowrap">
+                                    <a href="{{ path('company_address_edit', {id: address.id}) }}" title="{{ 'edit'|trans }}">
+                                        <span class="badge bg-info"><i class="ti-pencil-alt"></i></span>
+                                    </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('company_address_delete', {id: address.id}) }}" class="confirmRemoveItem" title="{{ 'delete'|trans }}" data-confirm-message="{{ 'confirm_remove'|trans }}">
+                                            <span class="badge bg-danger"><i class="ti-trash"></i></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

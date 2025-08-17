@@ -25,7 +25,7 @@
             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
         </div>
         <div class="col-sm-4" style="text-align: right;">
-            {% if tax_rate.id %}
+            {% if tax_rate.id and is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('tax_rate_delete', {'id': tax_rate.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
             {% endif %}
         </div>

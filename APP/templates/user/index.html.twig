@@ -29,6 +29,7 @@
                         <tr>
                             <th>{{ 'company.label'|trans }}</th>
                             <th>{{ 'username.label'|trans }}</th>
+                            <th>{{ 'roles.label'|trans }}</th>
                             <th>{{ 'firstName.label'|trans }}</th>
                             <th>{{ 'lastName.label'|trans }}</th>
                             <th>{{ 'email.label'|trans }}</th>
@@ -37,12 +38,14 @@
                             <th>{{ 'phoneNumber.label'|trans }}</th>
                             <th>{{ 'mobileNumber.label'|trans }}</th>
                             <th>{{ 'faxNumber.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
                             <th>{{ 'company.label'|trans }}</th>
                             <th>{{ 'username.label'|trans }}</th>
+                            <th>{{ 'roles.label'|trans }}</th>
                             <th>{{ 'firstName.label'|trans }}</th>
                             <th>{{ 'lastName.label'|trans }}</th>
                             <th>{{ 'email.label'|trans }}</th>
@@ -51,6 +54,7 @@
                             <th>{{ 'phoneNumber.label'|trans }}</th>
                             <th>{{ 'mobileNumber.label'|trans }}</th>
                             <th>{{ 'faxNumber.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -58,6 +62,7 @@
                             <tr>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.company }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.username }}</a></td>
+                                <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.roles|join(', ') }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.firstName }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.lastName }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.email }}</a></td>
@@ -66,10 +71,16 @@
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.phoneNumber }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.mobileNumber }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.faxNumber }}</a></td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="9">{{ 'no_data_found'|trans }}</td>
+                                <td class="text-nowrap">
+                                    <a href="{{ path('user_edit', {id: user.id}) }}" title="{{ 'edit'|trans }}">
+                                        <span class="badge bg-info"><i class="ti-pencil-alt"></i></span>
+                                    </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('user_delete', {id: user.id}) }}" class="confirmRemoveItem" title="{{ 'delete'|trans }}" data-confirm-message="{{ 'confirm_remove'|trans }}">
+                                            <span class="badge bg-danger"><i class="ti-trash"></i></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

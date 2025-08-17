@@ -34,13 +34,37 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/dashboard, roles: ROLE_USER }
-        - { path: ^/time-entries, roles: ROLE_ADMIN }
-        - { path: ^/timesheet, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+
+        # --- Öffentlich ---
+        - { path: ^/login$,  roles: PUBLIC_ACCESS }
+        - { path: ^/logout$, roles: PUBLIC_ACCESS }
+
+        # --- Strengeres zuerst: Lösch-Endpunkte ---
+        - { path: ^/company/address/delete/\d+$, roles: ROLE_ADMIN }
+        - { path: ^/(company|customer|invoice|tax_rate|user)/\d+$, roles: ROLE_ADMIN }
+        # Hinweis: Deine *delete*-Routen liegen genau auf /{resource}/{id}
+
+        # --- Schreibend: new/edit ---
+        - { path: ^/(company|customer|invoice|tax_rate|user)/new$, roles: ROLE_EDITOR }
+        - { path: ^/(company|customer|invoice|tax_rate|user)/\d+/edit$, roles: ROLE_EDITOR }
+        - { path: ^/company/\d+/address/new$, roles: ROLE_EDITOR }
+        - { path: ^/company/address/\d+$, roles: ROLE_EDITOR }     # address edit
+
+        # --- Spezialfälle Rechnungen ---
+        - { path: ^/invoice/\d+/send-pdf$, roles: ROLE_EDITOR }    # z.B. Mailversand nur Editor+
+        - { path: ^/invoice/\d+/pdf$,      roles: ROLE_USER }      # PDF anzeigen darf jeder eingeloggte
+
+        # --- Lesen/Listen & sonstige Seiten ---
+        - { path: ^/(company|customer|invoice|tax_rate|user)$, roles: ROLE_USER }
+        - { path: ^/(|dashboard|me)$, roles: ROLE_USER }           # "/", "/dashboard", "/me"
+
+        # --- Fallback: alles andere erfordert Login ---
+        - { path: ^/, roles: ROLE_USER }
 
     role_hierarchy:
-        ROLE_SUPERUSER: [ ROLE_ADMIN, ROLE_USER ]
-        ROLE_ADMIN: [ ROLE_USER ]
+        ROLE_SUPERUSER: [ ROLE_ADMIN ]
+        ROLE_ADMIN: [ ROLE_EDITOR ]
+        ROLE_EDITOR: [ ROLE_USER ]
 
 when@test:
     security:

@@ -117,7 +117,7 @@
             {% endif %}
         </div>
         <div class="col-sm-4" style="text-align: right;">
-            {% if invoice.id %}
+            {% if invoice.id and is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('invoice_delete', {'id': invoice.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
             {% endif %}
         </div>

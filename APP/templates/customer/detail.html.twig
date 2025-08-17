@@ -30,7 +30,7 @@
                             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
                         </div>
                         <div class="col-sm-4" style="text-align: right;">
-                            {% if customer.id %}
+                            {% if customer.id and is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('customer_delete', {'id': customer.id}) }}" class="btn btn-danger confirmRemoveItem" data-confirm-message="{{ 'confirm_remove'|trans }}">{{ 'delete'|trans }}</a>
                             {% endif %}
                         </div>
@@ -52,12 +52,13 @@
                     {% endif %}
                 </h6>
                 <div class="mT-30">
-                    <table id="dataTables" class="mcDataTable1 table table-striped table-bordered" cellspacing="0" width="100%">
+                    <table id="dataTables" class="mcDataTable table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
                             <th>{{ 'invoiceDate.label'|trans }}</th>
                             <th>{{ 'status.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -65,6 +66,7 @@
                             <th>{{ 'invoiceNumber.label'|trans }}</th>
                             <th>{{ 'invoiceDate.label'|trans }}</th>
                             <th>{{ 'status.label'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -83,10 +85,16 @@
                                         <span class="badge {{ class }}">{{ label }}</span>
                                     </a>
                                 </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4">{{ 'no_data_found'|trans }}</td>
+                                <td class="text-nowrap">
+                                    <a href="{{ path('invoice_edit', {id: invoice.id}) }}" title="{{ 'edit'|trans }}">
+                                        <span class="badge bg-info"><i class="ti-pencil-alt"></i></span>
+                                    </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('invoice_delete', {id: invoice.id}) }}" class="confirmRemoveItem" title="{{ 'delete'|trans }}" data-confirm-message="{{ 'confirm_remove'|trans }}">
+                                            <span class="badge bg-danger"><i class="ti-trash"></i></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

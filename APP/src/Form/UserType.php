@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\Company;
 use App\Entity\User;
+use App\Enum\UserRole;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +19,16 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-//            ->add('roles')
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Rollen',
+                'choices' => array_combine(
+                    array_map(fn(UserRole $r) => $r->label(), UserRole::cases()), // Labels
+                    array_map(fn(UserRole $r) => $r->value, UserRole::cases())     // Werte (Strings)
+                ),
+                'multiple' => true,
+                'expanded' => true,                 // Checkboxen
+                'choice_translation_domain' => false,
+            ])
             ->add('password',PasswordType::class, [
                 'mapped' => false,
                 'required' => false,

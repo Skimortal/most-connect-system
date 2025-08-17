@@ -34,7 +34,7 @@ final class CustomerController extends AbstractController
         // Admin sieht nur Benutzer in derselben Company
         elseif ($this->isGranted('ROLE_ADMIN')) {
             $company = $currentUser->getCompany();
-            $customers = $customerRepository->find($company->getId());
+            $customers = $customerRepository->findBy(['company' => $company->getId()]);
         }
         else {
             $customers = [];
