@@ -1,9 +1,11 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Customer;
 use App\Entity\Invoice;
-use App\Entity\InvoiceItem;
+use App\Entity\User;
 use App\Form\InvoiceType;
+use App\Repository\CustomerRepository;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,13 +46,39 @@ class InvoiceController extends AbstractController {
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'invoice_edit')]
-    public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
+    #[Route('/{id}/edit/{customer}', name: 'invoice_edit', defaults: ['customer' => null])]
+    public function edit(
+        Request $request,
+        Invoice $invoice,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $t,
+        ?Customer $customer,
+        CustomerRepository $customerRepository): Response
     {
-        $form = $this->createForm(InvoiceType::class, $invoice);
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+
+        $allowedCustomers = $customerRepository->findAllForUser($currentUser);
+
+        if ($customer) {
+            if (!in_array($customer, $allowedCustomers, true)) {
+                throw $this->createAccessDeniedException('Customer not allowed.');
+            }
+            $invoice->setCustomer($customer);
+        }
+
+        $form = $this->createForm(InvoiceType::class, $invoice, [
+            'customers' => $allowedCustomers,
+            'hide_customer' => (bool) $customer,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $chosen = $invoice->getCustomer();
+            if (!in_array($chosen, $allowedCustomers, true)) {
+                throw $this->createAccessDeniedException('Customer not allowed.');
+            }
+
             try {
                 $invoice->setAllPrices();
                 $entityManager->persist($invoice);
@@ -66,17 +94,48 @@ class InvoiceController extends AbstractController {
         return $this->render('invoice/detail.html.twig', [
             'invoice' => $invoice,
             'form' => $form,
+            'hide_customer' => (bool) $customer,
         ]);
     }
 
-    #[Route('/new', name: 'invoice_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
+    #[Route('/new/{customer}', name: 'invoice_new', defaults: ['customer' => null], methods: ['GET', 'POST'])]
+    public function new(
+        Request                $request,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface    $t,
+        ?Customer              $customer,
+        CustomerRepository     $customerRepository): Response
     {
         $invoice = new Invoice();
-        $form = $this->createForm(InvoiceType::class, $invoice);
+
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+
+        $allowedCustomers = $customerRepository->findAllForUser($currentUser);
+
+        if ($customer) {
+            if (!in_array($customer, $allowedCustomers, true)) {
+                throw $this->createAccessDeniedException('Customer not allowed.');
+            }
+            $invoice->setCustomer($customer);
+        }
+
+        if($currentUser->getCompany()) {
+            $invoice->setCompany($currentUser->getCompany());
+        }
+
+        $form = $this->createForm(InvoiceType::class, $invoice, [
+            'customers' => $allowedCustomers,
+            'hide_customer' => (bool) $customer,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $chosen = $invoice->getCustomer();
+            if (!in_array($chosen, $allowedCustomers, true)) {
+                throw $this->createAccessDeniedException('Customer not allowed.');
+            }
+
             try {
                 $invoice->setAllPrices();
                 $entityManager->persist($invoice);
@@ -92,6 +151,7 @@ class InvoiceController extends AbstractController {
         return $this->render('invoice/detail.html.twig', [
             'invoice' => $invoice,
             'form' => $form,
+            'hide_customer' => (bool) $customer,
         ]);
     }
 

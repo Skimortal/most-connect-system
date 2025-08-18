@@ -46,6 +46,9 @@ class Company extends Base
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $addresses;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
+    private Collection $users;
+
     #[Vich\UploadableField(mapping: 'company_logo', fileNameProperty: 'logoName')]
     private ?File $logoFile = null;
 
@@ -288,6 +291,16 @@ class Company extends Base
     public function setBancAccountBIC(?string $bancAccountBIC): void
     {
         $this->bancAccountBIC = $bancAccountBIC;
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function setUsers(Collection $users): void
+    {
+        $this->users = $users;
     }
 
     public function __toString(): string

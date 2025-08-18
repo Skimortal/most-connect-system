@@ -23,18 +23,22 @@
                     <span class="title">{{ 'dashboard'|trans }}</span>
                 </a>
             </li>
+            {% if is_granted('ROLE_SUPERUSER') %}
             <li class="nav-item">
                 <a class="sidebar-link" href="{{ path('user_list') }}">
                     <span class="icon-holder"><i class="c-red-500 ti-user"></i> </span>
                     <span class="title">{{ 'users'|trans }}</span>
                 </a>
             </li>
+            {% endif %}
+            {% if is_granted('ROLE_SUPERUSER') %}
             <li class="nav-item">
                 <a class="sidebar-link" href="{{ path('company_list') }}">
                     <span class="icon-holder"><i class="c-brown-500 ti-briefcase"></i> </span>
                     <span class="title">{{ 'companies'|trans }}</span>
                 </a>
             </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="sidebar-link" href="{{ path('customer_list') }}">
                     <span class="icon-holder"><i class="c-deep-purple-500 ti-server"></i> </span>
@@ -47,12 +51,14 @@
                     <span class="title">{{ 'invoices'|trans }}</span>
                 </a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
                 <a class="sidebar-link" href="{{ path('tax_rate_list') }}">
                     <span class="icon-holder"><i class="c-deep-orange-500 ti-money"></i> </span>
                     <span class="title">{{ 'tax_rates'|trans }}</span>
                 </a>
             </li>
+            {% endif %}
 
 {#            <li class="nav-item"><a class="sidebar-link" href="charts.html"><span class="icon-holder"><i#}
 {#                class="c-indigo-500 ti-bar-chart"></i> </span><span class="title">Charts</span></a></li>#}

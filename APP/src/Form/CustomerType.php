@@ -13,7 +13,7 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('company')
+//            ->add('company')
             ->add('type', EnumType::class, [
                 'class' => \App\Enum\CustomerType::class,
                 'choice_label' => fn (\App\Enum\CustomerType $status) => $status->label(),

@@ -73,6 +73,13 @@ final class CustomerController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $t): Response
     {
         $customer = new Customer();
+
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if($currentUser->getCompany()) {
+            $customer->setCompany($currentUser->getCompany());
+        }
+
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
