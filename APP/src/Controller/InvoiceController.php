@@ -4,7 +4,9 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\User;
+use App\Form\InvoiceFilterType;
 use App\Form\InvoiceType;
+use App\Model\InvoiceFilter;
 use App\Repository\CustomerRepository;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,9 +20,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class InvoiceController extends AbstractController {
 
     #[Route(name: 'invoice_list', methods: ['GET'])]
-    public function index(InvoiceRepository $invoiceRepository): Response
+    public function index(Request $request, InvoiceRepository $invoiceRepository): Response
     {
         $currentUser = $this->getUser();
+        $companyFilter = null;
 
         // Zugriff verweigern für normale Benutzer
         if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_SUPERUSER')) {
@@ -33,16 +36,22 @@ class InvoiceController extends AbstractController {
         }
         // Admin sieht nur Benutzer in derselben Company
         elseif ($this->isGranted('ROLE_ADMIN')) {
-            $company = $currentUser->getCompany();
-            $invoices = $invoiceRepository->findBy(['company' => $company]);
+            $companyFilter = $currentUser->getCompany();
         }
         else {
             // Fallback – sollte nie erreicht werden
             $invoices = [];
         }
 
+        $filter = new InvoiceFilter();
+        $form = $this->createForm(InvoiceFilterType::class, $filter, ['method' => 'GET']);
+        $form->handleRequest($request);
+
+        $invoices = $invoiceRepository->findByFilter($filter, $companyFilter);
+
         return $this->render('invoice/index.html.twig', [
             'invoices' => $invoices,
+            'filterForm' => $form->createView(),
         ]);
     }
 

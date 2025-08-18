@@ -105,3 +105,10 @@ user_data: Benutzerdaten
 passwordRepeat.label: Password wiederholen
 password_change_headline: Neues Passwort vergeben
 change_password: Passwort ändern
+invoiceDate.from: Datum von
+invoiceDate.to: Datum bis
+total.from: Summe von
+total.to: Summe bis
+filter: Filtern
+reset: Reset
+filter_title: Filter
