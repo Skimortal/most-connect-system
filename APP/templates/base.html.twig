@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ 'homepage_title'|trans }}{% block title %}{% endblock %}</title>
+    <title>{{ 'homepage_title'|trans }} - {% block title %}{% endblock %}</title>
 
     {% if app.environment == 'dev' %}
         {# Lokale Umgebung #}
