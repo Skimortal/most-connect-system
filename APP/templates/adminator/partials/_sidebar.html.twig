@@ -17,42 +17,123 @@
             </div>
         </div><!-- ### $Sidebar Menu ### -->
 
+        {# --- Top-Level Basis --- #}
         {% set menu = [
             { route: 'app_dashboard', icon: 'ti-home c-blue-500',     label: 'dashboard',  roles: ['ROLE_USER'] },
-            { route: 'user_list',     icon: 'ti-user c-red-500',      label: 'users',      roles: ['ROLE_SUPERUSER'] },
-            { route: 'company_list',  icon: 'ti-briefcase c-brown-500',label: 'companies', roles: ['ROLE_SUPERUSER'] },
-            { route: 'customer_list', icon: 'ti-server c-deep-purple-500', label: 'customers', roles: ['ROLE_USER'] },
-            { route: 'invoice_list',  icon: 'ti-receipt c-indigo-500', label: 'invoices', roles: ['ROLE_USER'] },
-            { route: 'tax_rate_list', icon: 'ti-money c-deep-orange-500', label: 'tax_rates', roles: ['ROLE_ADMIN'] },
+            { route: 'my_profile',    icon: 'ti-user c-orange-500',   label: 'my_profile', roles: ['ROLE_USER'] },
         ] %}
+
+        {# Dynamischer Firmen-Link #}
+        {% if app.user and app.user.company %}
+            {% set menu = menu|merge([
+                {
+                    route: 'company_edit',
+                    icon: 'ti-briefcase c-green-600',
+                    label: 'my_company',
+                    roles: ['ROLE_USER'],
+                    params: { id: app.user.company.id }
+                }
+            ]) %}
+        {% endif %}
+
+        {# Weitere Top-Level Items #}
+        {% set menu = menu|merge([
+            { route: 'user_list',     icon: 'ti-user c-red-500',        label: 'users',      roles: ['ROLE_SUPERUSER'] },
+            { route: 'company_list',  icon: 'ti-briefcase c-brown-500', label: 'companies',  roles: ['ROLE_SUPERUSER'] },
+            { route: 'customer_list', icon: 'ti-server c-deep-purple-500', label: 'customers', roles: ['ROLE_USER'] },
+            { route: 'invoice_list',  icon: 'ti-receipt c-indigo-500',  label: 'invoices',   roles: ['ROLE_USER'] },
+        ]) %}
+
+        {# --- Settings Dropdown dynamisch zusammenbauen --- #}
+        {% set settingsChildren = [] %}
+
+        {# Beispiel: tax_rate_list nur für Admins #}
+        {% set settingsChildren = settingsChildren|merge([
+            { route: 'tax_rate_list', icon: 'ti-money c-deep-orange-500', label: 'tax_rates', roles: ['ROLE_ADMIN'] },
+        ]) %}
+
+        {# Hier kannst du beliebig weitere Settings einfügen, inkl. Parametern:
+        {% set settingsChildren = settingsChildren|merge([
+            { route: 'payment_method_list', icon: 'ti-credit-card c-blue-600', label: 'payment_methods', roles: ['ROLE_ADMIN','ROLE_USER'] },
+            { route: 'email_template_list', icon: 'ti-email c-purple-600',     label: 'email_templates', roles: ['ROLE_SUPERUSER'] },
+        ]) %}
+        #}
+
+        {# Settings nur anzeigen, wenn es mindestens EIN erlaubtes Kind gibt #}
+        {% set showSettings = false %}
+        {% for s in settingsChildren %}
+            {% set allowed = false %}
+            {% for r in s.roles %}{% if is_granted(r) %}{% set allowed = true %}{% endif %}{% endfor %}
+            {% if allowed %}{% set showSettings = true %}{% endif %}
+        {% endfor %}
+
+        {% if showSettings %}
+        {% set menu = menu|merge([
+            {
+                label: 'settings',
+                icon: 'ti-settings c-teal-500',
+                roles: ['ROLE_USER','ROLE_ADMIN','ROLE_SUPERUSER'],
+                children: settingsChildren
+            }
+        ]) %}
+        {% endif %}
+
         <ul class="sidebar-menu scrollable pos-r">
             {% for item in menu %}
-                {# any_granted: prüfe, ob der User eine der Rollen hat #}
-                {% set allowed = false %}
-                {% for r in item.roles %}
-                    {% if is_granted(r) %}
-                        {% set allowed = true %}
-                    {% endif %}
-                {% endfor %}
 
-                {% if allowed %}
-                    <li class="nav-item{% if loop.first %} mT-30{% endif %}">
-                        <a class="sidebar-link" href="{{ path(item.route) }}">
-                            <span class="icon-holder"><i class="{{ item.icon }}"></i></span>
-                            <span class="title">{{ (item.label)|trans }}</span>
-                        </a>
-                    </li>
+                {# Prüfe Rollen fürs Top-Level-Item #}
+                {% set itemAllowed = false %}
+                {% for r in item.roles %}{% if is_granted(r) %}{% set itemAllowed = true %}{% endif %}{% endfor %}
+
+                {% if item.children is defined %}
+                    {# Dropdown: erst schauen, ob es sichtbare Kinder gibt #}
+                    {% set hasChild = false %}
+                    {% for c in item.children %}
+                        {% set cAllowed = false %}
+                        {% for cr in c.roles %}{% if is_granted(cr) %}{% set cAllowed = true %}{% endif %}{% endfor %}
+                        {% if cAllowed %}{% set hasChild = true %}{% endif %}
+                    {% endfor %}
+
+                    {% if hasChild and itemAllowed %}
+                        <li class="nav-item dropdown{% if loop.first %} mT-30{% endif %}">
+                            <a class="dropdown-toggle" href="javascript:void(0);">
+                                <span class="icon-holder"><i class="{{ item.icon }}"></i></span>
+                                <span class="title">{{ item.label|trans }}</span>
+                                <span class="arrow"><i class="ti-angle-right"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for c in item.children %}
+                                    {% set cAllowed = false %}
+                                    {% for cr in c.roles %}{% if is_granted(cr) %}{% set cAllowed = true %}{% endif %}{% endfor %}
+                                    {% if cAllowed %}
+                                        <li class="nav-item">
+                                            <a class="sidebar-link" href="{{ path(c.route, c.params|default({})) }}">
+                                                <span class="icon-holder"><i class="{{ c.icon }}"></i></span>
+                                                <span>{{ c.label|trans }}</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    {# Normales Top-Level-Item #}
+                    {% if itemAllowed %}
+                        <li class="nav-item{% if loop.first %} mT-30{% endif %}">
+                            <a class="sidebar-link" href="{{ path(item.route, item.params|default({})) }}">
+                                <span class="icon-holder"><i class="{{ item.icon }}"></i></span>
+                                <span class="title">{{ item.label|trans }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </ul>
 
-        <ul class="sidebar-menu scrollable pos-r">
+{#        <ul class="sidebar-menu scrollable pos-r">#}
 
 
-{#            <li class="nav-item"><a class="sidebar-link" href="charts.html"><span class="icon-holder"><i#}
-{#                class="c-indigo-500 ti-bar-chart"></i> </span><span class="title">Charts</span></a></li>#}
-{#            <li class="nav-item"><a class="sidebar-link" href="forms.html"><span class="icon-holder"><i#}
-{#                class="c-light-blue-500 ti-pencil"></i> </span><span class="title">Forms</span></a></li>#}
 {#            <li class="nav-item dropdown"><a class="sidebar-link" href="ui.html"><span class="icon-holder"><i#}
 {#                class="c-pink-500 ti-palette"></i> </span><span class="title">UI Elements</span></a></li>#}
 {#            <li class="nav-item dropdown"><a class="dropdown-toggle" href="javascript:void(0);"><span#}
@@ -82,20 +163,7 @@
 {#                    <li><a class="sidebar-link" href="signup.html">Sign Up</a></li>#}
 {#                </ul>#}
 {#            </li>#}
-{#            <li class="nav-item dropdown"><a class="dropdown-toggle" href="javascript:void(0);"><span#}
-{#                class="icon-holder"><i class="c-teal-500 ti-view-list-alt"></i> </span><span class="title">Multiple Levels</span>#}
-{#                <span class="arrow"><i class="ti-angle-right"></i></span></a>#}
-{#                <ul class="dropdown-menu">#}
-{#                    <li class="nav-item dropdown"><a href="javascript:void(0);"><span>Menu Item</span></a></li>#}
-{#                    <li class="nav-item dropdown"><a href="javascript:void(0);"><span>Menu Item</span> <span#}
-{#                        class="arrow"><i class="ti-angle-right"></i></span></a>#}
-{#                        <ul class="dropdown-menu">#}
-{#                            <li><a href="javascript:void(0);">Menu Item</a></li>#}
-{#                            <li><a href="javascript:void(0);">Menu Item</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-        </ul>
+
+{#        </ul>#}
     </div>
 </div>

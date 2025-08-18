@@ -112,3 +112,13 @@ total.to: Summe bis
 filter: Filtern
 reset: Reset
 filter_title: Filter
+invoices_open: Rechnungen offen
+invoices_sent: Rechnungen versendet
+invoices_payed: Rechnungen bezahlt
+invoices_dashboard: Schnellübersicht Rechnungen
+invoices_open_sum: Summe offen
+invoices_sent_sum: Summe versendet
+invoices_payed_sum: Summe bezahlt
+goToInvoices: Zu den Rechnungen
+my_company: Meine Firmendaten
+settings: Einstellungen
