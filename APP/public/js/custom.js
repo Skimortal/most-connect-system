@@ -42,9 +42,8 @@ function initDataTables() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', initPage);
-document.addEventListener('turbo:load', initDataTables);
-document.addEventListener('turbo:frame-load', initDataTables);
+// document.addEventListener('DOMContentLoaded', initPage);
+document.addEventListener('turbo:render', initDataTables);
 
 // Vor dem Cachen DOM zurückbauen, damit beim nächsten Visit sauber neu initialisiert wird
 document.addEventListener('turbo:before-cache', () => {
