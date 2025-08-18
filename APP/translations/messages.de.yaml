@@ -101,3 +101,7 @@ my_profile_title: Mein Profil
 edit: Bearbeiten
 total.label: Gesamtsumme
 roles.label: Rollen
+user_data: Benutzerdaten
+passwordRepeat.label: Password wiederholen
+password_change_headline: Neues Passwort vergeben
+change_password: Passwort ändern

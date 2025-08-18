@@ -9,8 +9,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
@@ -29,13 +31,17 @@ class UserType extends AbstractType
                 'expanded' => true,                 // Checkboxen
                 'choice_translation_domain' => false,
             ])
-            ->add('password',PasswordType::class, [
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'mapped' => false,
-                'required' => false,
+                'required' => !$options['is_edit'], // beim Anlegen Pflicht, beim Edit optional
+                'invalid_message' => 'Die Passwörter stimmen nicht überein.',
+                'first_options'  => ['label' => 'password.label'],
+                'second_options' => ['label' => 'passwordRepeat.label'],
                 'constraints' => $options['is_edit'] ? [] : [
-                    new NotBlank([
-                        'message' => 'Bitte ein Passwort eingeben',
-                    ]),
+                    new NotBlank(['message' => 'Bitte ein Passwort eingeben']),
+                    new Length(['min' => 8, 'minMessage' => 'Mind. {{ limit }} Zeichen']),
+                    // new NotCompromisedPassword(), // optional
                 ],
             ])
             ->add('company', EntityType::class, [
