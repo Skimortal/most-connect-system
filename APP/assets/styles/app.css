@@ -46,7 +46,7 @@ table.table.dataTable>:not(caption)>*>*,
     .header .nav-left:before {
         content: "" !important;
         display: inline-block !important;
-        /*background-image: url("/images/logo-in-easy-white.svg") !important;*/
+        background-image: url("images/logo-in-easy-white.svg") !important;
         background-repeat: no-repeat !important;
         background-position: center !important;
         background-size: contain !important;
@@ -57,7 +57,7 @@ table.table.dataTable>:not(caption)>*>*,
     .header .nav-left:before {
         content: "" !important;
         display: inline-block !important;
-        /*background-image: url("/images/logo-in-easy-white.svg") !important;*/
+        background-image: url("images/logo-in-easy-white.svg") !important;
         background-repeat: no-repeat !important;
         background-position: center !important;
         background-size: contain !important;

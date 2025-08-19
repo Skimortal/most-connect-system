@@ -1,5 +1,5 @@
 {
-  "build/app.css": "/build/app.97d03acc.css",
+  "build/app.css": "/build/app.c92787a8.css",
   "build/app.js": "/build/app.57532260.js",
   "build/runtime.js": "/build/runtime.f82f4939.js",
   "build/354.f0b94320.css": "/build/354.f0b94320.css",
@@ -12,5 +12,6 @@
   "build/fonts/themify.eot": "/build/fonts/themify.9bad9444.eot",
   "build/fonts/themify.ttf?-fvbane": "/build/fonts/themify.eda8b943.ttf",
   "build/fonts/fontawesome-webfont.woff2?v=4.7.0": "/build/fonts/fontawesome-webfont.20fd1704.woff2",
-  "build/fonts/themify.woff?-fvbane": "/build/fonts/themify.29b39089.woff"
+  "build/fonts/themify.woff?-fvbane": "/build/fonts/themify.29b39089.woff",
+  "build/images/logo-in-easy-white.svg": "/build/images/logo-in-easy-white.95498dec.svg"
 }
