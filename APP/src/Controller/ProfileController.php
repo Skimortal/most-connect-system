@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -17,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ProfileController extends AbstractController
 {
     #[Route('/me', name: 'my_profile', methods: ['GET','POST'])]
-    public function edit(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, TranslatorInterface $t): Response {
+    public function edit(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em, SluggerInterface $slugger, TranslatorInterface $t): Response {
         /** @var User $user */
         $user = $this->getUser();
 
@@ -27,6 +28,13 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $form->get('password')->getData();
+
+            if (!empty($plainPassword)) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+                $user->setPassword($hashedPassword);
+            }
+
             $avatarFile = $form->get('avatarFile')->getData();
             if ($avatarFile) {
                 $original = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
