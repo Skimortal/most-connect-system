@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # 1) ins Projekt-Verzeichnis wechseln (falls Du das Script von woanders aufrufst)
@@ -11,7 +11,7 @@ if [ -f ../.env ]; then
   source ../.env
   set +o allexport
 else
-  echo "⚠️  .env nicht gefunden, breche ab."
+  echo "   .env nicht gefunden, breche ab."
   exit 1
 fi
 

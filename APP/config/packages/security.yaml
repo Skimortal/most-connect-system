@@ -38,6 +38,8 @@ security:
         # --- Öffentlich ---
         - { path: ^/login$,  roles: PUBLIC_ACCESS }
         - { path: ^/logout$, roles: PUBLIC_ACCESS }
+        - { path: ^/forgot-password$, roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password(?:/[ ^/ ]+)?$, roles: PUBLIC_ACCESS }
 
         # --- Strengeres zuerst: Lösch-Endpunkte ---
         - { path: ^/company/address/delete/\d+$, roles: ROLE_ADMIN }

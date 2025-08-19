@@ -37,7 +37,7 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $position = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
     private ?string $email = null;
 
@@ -59,6 +59,12 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatarFilename = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $resetTokenExpiresAt = null;
 
     public function getUsername(): ?string
     {
@@ -245,6 +251,35 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
     {
         $this->avatarFilename = $f;
         return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+        return $this;
+    }
+
+    public function getResetTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->resetTokenExpiresAt;
+    }
+
+    public function setResetTokenExpiresAt(?\DateTimeImmutable $expiresAt): self
+    {
+        $this->resetTokenExpiresAt = $expiresAt;
+        return $this;
+    }
+
+    public function isResetTokenValid(string $token): bool
+    {
+        return $this->resetToken === $token
+            && $this->resetTokenExpiresAt instanceof \DateTimeImmutable
+            && $this->resetTokenExpiresAt > new \DateTimeImmutable();
     }
 
     public function __toString(): string

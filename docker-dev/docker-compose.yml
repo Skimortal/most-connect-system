@@ -41,3 +41,20 @@ services:
         ports:
             - '1025:1025'
             - '8025:8025'
+
+    worker:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: messenger-worker
+        working_dir: /var/www/html
+        command: >
+            php bin/console messenger:consume async
+            --time-limit=3600
+            --memory-limit=128M
+            --no-interaction
+            -vv
+        volumes:
+            - ${APP_PATH}:/var/www/html:cached
+        depends_on:
+            - db

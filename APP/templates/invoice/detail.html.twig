@@ -150,10 +150,10 @@
                target="_blank" rel="noopener">
                 {{ 'print_pdf'|trans }}
             </a>
-{#            <a href="{{ path('invoice_send_pdf', { id: invoice.id }) }}"#}
-{#               class="btn btn-info">#}
-{#                <i class="ti-envelope"></i> {{ 'send_pdf_to_customer'|trans }}#}
-{#            </a>#}
+            <a href="{{ path('invoice_send_pdf', { id: invoice.id }) }}"
+               class="btn btn-info">
+                <i class="ti-envelope"></i> {{ 'send_pdf_to_customer'|trans }}
+            </a>
             {% endif %}
         </div>
         <div class="col-sm-4" style="text-align: right;">

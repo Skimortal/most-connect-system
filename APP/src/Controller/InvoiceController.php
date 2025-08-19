@@ -181,9 +181,31 @@ class InvoiceController extends AbstractController {
     #[Route('/{id}/send-pdf', name: 'invoice_send_pdf', methods: ['GET'])]
     public function sendPdf(Invoice $invoice, \Symfony\Component\Mailer\MailerInterface $mailer): Response
     {
+        // ------- LOGO ---------
+        $logoPath = $this->getParameter('kernel.project_dir')
+            . '/public/uploads/company_logos/' . $invoice->getCompany()->getLogoName();
+        $logoDataUri = null;
+        if (is_file($logoPath)) {
+            $mime = mime_content_type($logoPath) ?: 'image/png';
+            $logoDataUri = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($logoPath));
+        }
+
+        // ------- LOGO Footer ---------
+        $logoPath = $this->getParameter('kernel.project_dir')
+            . '/public/uploads/company_logos/' . $invoice->getCompany()->getLogoSmallName();
+        $footerLogoDataUri = null;
+        if (is_file($logoPath)) {
+            $mime = mime_content_type($logoPath) ?: 'image/png';
+            $footerLogoDataUri = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($logoPath));
+        }
+
         // 1. PDF generieren (z. B. über Dompdf oder TCPDF)
         $pdfContent = $this->renderView('invoice/pdf/design1.html.twig', [
             'invoice' => $invoice,
+            'invoiceAddress' => $invoice->getCompany()->getMainAddress(),
+            'logoDataUri' => $logoDataUri,
+            'footerLogoDataUri' => $footerLogoDataUri,
+            'baseUrl' => $this->getParameter('router.request_context.scheme').'://'.$this->getParameter('router.request_context.host'),
         ]);
 
         // Beispiel mit Dompdf:
