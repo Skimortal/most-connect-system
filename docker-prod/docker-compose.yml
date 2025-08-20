@@ -14,8 +14,6 @@ services:
             - ${APP_PATH}/var/tmp:/var/www/html/var/tmp
         depends_on:
             - db
-        env_file:
-            - .env.docker
         networks:
             webnet:
                 aliases:
@@ -59,8 +57,6 @@ services:
             interval: 5s
             timeout: 3s
             retries: 20
-        env_file:
-            - .env.docker
         networks:
             - webnet
 
@@ -82,8 +78,6 @@ services:
         depends_on:
             db:
                 condition: service_healthy
-        env_file:
-            - .env.docker
         restart: unless-stopped
         networks:
             - webnet
