@@ -10,9 +10,12 @@ use App\Model\InvoiceFilter;
 use App\Repository\CustomerRepository;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -179,7 +182,7 @@ class InvoiceController extends AbstractController {
     }
 
     #[Route('/{id}/send-pdf', name: 'invoice_send_pdf', methods: ['GET'])]
-    public function sendPdf(Invoice $invoice, \Symfony\Component\Mailer\MailerInterface $mailer): Response
+    public function sendPdf(Invoice $invoice, MailerInterface $mailer): Response
     {
         // ------- LOGO ---------
         $logoPath = $this->getParameter('kernel.project_dir')
@@ -209,15 +212,16 @@ class InvoiceController extends AbstractController {
         ]);
 
         // Beispiel mit Dompdf:
-        $dompdf = new \Dompdf\Dompdf();
+        $dompdf = new Dompdf();
         $dompdf->loadHtml($pdfContent);
         $dompdf->render();
         $pdfOutput = $dompdf->output();
 
         // 2. Mail zusammenstellen
-        $email = (new \Symfony\Component\Mime\Email())
-            ->from('info@deine-domain.tld')
-            ->to($invoice->getCustomer()->getEmail()) // Empfänger aus Customer-Entität
+        $email = (new Email())
+            ->from('no-reply@ineasy.at')
+//            ->to($invoice->getCustomer()->getEmail())
+            ->to("stojakovic.a@gmail.com")
             ->subject('Ihre Rechnung ' . $invoice->getInvoiceNumber())
             ->text('Sehr geehrte/r ' . $invoice->getCustomer() . ', im Anhang finden Sie Ihre Rechnung.')
             ->attach($pdfOutput, 'Rechnung-' . $invoice->getInvoiceNumber() . '.pdf', 'application/pdf');
