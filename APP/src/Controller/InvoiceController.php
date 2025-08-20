@@ -220,8 +220,7 @@ class InvoiceController extends AbstractController {
         // 2. Mail zusammenstellen
         $email = (new Email())
             ->from('no-reply@ineasy.at')
-//            ->to($invoice->getCustomer()->getEmail())
-            ->to("stojakovic.a@gmail.com")
+            ->to($invoice->getCustomer()->getEmail())
             ->subject('Ihre Rechnung ' . $invoice->getInvoiceNumber())
             ->text('Sehr geehrte/r ' . $invoice->getCustomer() . ', im Anhang finden Sie Ihre Rechnung.')
             ->attach($pdfOutput, 'Rechnung-' . $invoice->getInvoiceNumber() . '.pdf', 'application/pdf');
