@@ -62,11 +62,17 @@ services:
         container_name: ${WORKER_CONTAINER_NAME}
         working_dir: /var/www/html
         command: >
-            php bin/console messenger:consume async
-            --time-limit=3600
-            --memory-limit=128M
-            --no-interaction
-            -vv
+            sh -lc '
+            until php -r "
+            \$d=getenv(\"DATABASE_URL\");
+            try{ new PDO(\"mysql:host=db;port=3306\", getenv(\"MYSQL_USER\"), getenv(\"MYSQL_PASSWORD\")); echo \"ok\"; }
+            catch(Throwable \$e){ exit(1); }
+            " >/dev/null 2>&1; do
+            echo \"waiting for db\";
+            sleep 2;
+            done;
+            php bin/console messenger:consume async --time-limit=3600 --memory-limit=128M --no-interaction -vv
+            '
         volumes:
             - ${APP_PATH}:/var/www/html:cached
         depends_on:
