@@ -59,7 +59,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: messenger-worker
+        container_name: ${WORKER_CONTAINER_NAME}
         working_dir: /var/www/html
         command: >
             php bin/console messenger:consume async
@@ -71,6 +71,8 @@ services:
             - ${APP_PATH}:/var/www/html:cached
         depends_on:
             - db
+        networks:
+            - webnet
 
 networks:
     webnet:
