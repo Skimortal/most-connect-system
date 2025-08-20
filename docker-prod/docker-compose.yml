@@ -68,7 +68,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: ${ineasy_worker}
+        container_name: ${WORKER_CONTAINER_NAME}
         working_dir: /var/www/html
         command: >
             php bin/console messenger:consume async
