@@ -20,7 +20,7 @@ class Customer extends Base
     private CustomerType $type;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private string $companyName;
+    private ?string $companyName;
 
     #[ORM\Column(length: 255)]
     private string $firstname;
@@ -74,12 +74,12 @@ class Customer extends Base
         $this->type = $type;
     }
 
-    public function getCompanyName(): string
+    public function getCompanyName(): ?string
     {
         return $this->companyName;
     }
 
-    public function setCompanyName(string $companyName): void
+    public function setCompanyName(?string $companyName): void
     {
         $this->companyName = $companyName;
     }
