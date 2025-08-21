@@ -226,9 +226,41 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
 
     public function __serialize(): array
     {
-        $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-        return $data;
+        return [
+            // Doctrine identifier (required by EntityUserProvider)
+            'id'            => $this->id,                      // from Base
+            // Security identifier used by Symfony
+            'userIdentifier'=> $this->getUserIdentifier(),     // username
+            // Scalars only
+            'roles'         => $this->getRoles(),
+            'password'      => $this->password,                // stored hash
+            'isActive'      => $this->isActive,
+            'firstName'     => $this->firstName,
+            'lastName'      => $this->lastName,
+            'email'         => $this->email,
+            'avatarFilename'=> $this->avatarFilename,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        // Restore Doctrine identifier FIRST
+        $this->id            = $data['id'] ?? null;           // requires $id to be protected in Base
+
+        // Restore security identifier + other scalars
+        $this->username      = $data['userIdentifier'] ?? null;
+        $this->roles         = isset($data['roles']) && \is_array($data['roles'])
+            ? array_values(array_unique($data['roles'])) : [];
+        $this->password      = $data['password'] ?? null;
+
+        $this->isActive      = $data['isActive'] ?? true;
+        $this->firstName     = $data['firstName'] ?? null;
+        $this->lastName      = $data['lastName'] ?? null;
+        $this->email         = $data['email'] ?? null;
+        $this->avatarFilename= $data['avatarFilename'] ?? null;
+
+        // IMPORTANT: do NOT restore relations
+        $this->company       = null;
     }
 
     #[\Deprecated]
