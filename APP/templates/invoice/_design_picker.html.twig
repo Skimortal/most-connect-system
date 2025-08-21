@@ -1,0 +1,18 @@
+<div class="design-chooser">
+    {% for choice in form.design %}
+        {# value = enum backed value (z.B. "modern") #}
+        {% set val   = choice.vars.value %}
+        {% set label = choice.vars.label %}
+        {% set src   = choice.vars.attr['data-preview'] ?? asset('build/invoice-designs/' ~ val ~ '.png') %}
+
+        <label class="design-option">
+            {{ form_widget(choice, { attr: { class: 'design-input' } }) }}
+            <span class="design-card">
+        <img src="{{ src }}" alt="{{ label }} Preview" class="design-thumb">
+        <span class="design-name">{{ label }}</span>
+      </span>
+        </label>
+    {% endfor %}
+</div>
+
+{{ form_errors(form.design) }}

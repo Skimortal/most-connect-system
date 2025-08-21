@@ -64,3 +64,30 @@ table.table.dataTable>:not(caption)>*>*,
         background-color: transparent !important;
     }
 }
+
+.design-chooser {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 12px;
+}
+.design-option { display: block; cursor: pointer; }
+.design-input { position: absolute; opacity: 0; pointer-events: none; }
+
+.design-card {
+    display: flex; flex-direction: column; align-items: center;
+    border: 2px solid #e1e5ea; border-radius: 8px; padding: 10px;
+    transition: box-shadow .15s ease, border-color .15s ease, transform .05s ease;
+    background: #fff;
+}
+.design-card:hover { border-color: #9db7d3; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.design-thumb { width: 100%; height: auto; display: block; border-radius: 6px; }
+.design-name { margin-top: 8px; font-size: 12px; color: #333; }
+
+.design-input:focus + .design-card { outline: 2px solid #2b6cb0; outline-offset: 2px; }
+.design-input:checked + .design-card {
+    border-color: #2b6cb0;
+    box-shadow: 0 0 0 3px rgba(43,108,176,.15);
+    transform: translateY(-1px);
+}
+

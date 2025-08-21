@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
+use App\Enum\InvoiceDesign;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,7 +34,17 @@ class InvoicePdfController extends AbstractController
         }
 
         // 1) HTML via Twig rendern
-        $html = $this->renderView('invoice/pdf/design1.html.twig', [
+        $map = [
+            InvoiceDesign::MINIMAL->value    => 'minimal.html.twig',
+            InvoiceDesign::MODERN->value     => 'modern.html.twig',
+            InvoiceDesign::LETTERHEAD->value => 'letterhead.html.twig',
+            InvoiceDesign::GRID->value       => 'grid.html.twig',
+            InvoiceDesign::ELEGANT->value    => 'elegant.html.twig',
+        ];
+
+        $tpl = $map[$invoice->getDesign()->value] ?? $map[InvoiceDesign::MINIMAL->value];
+
+        $html = $this->renderView('invoice/pdf/'.$tpl, [
             'invoice' => $invoice,
             'invoiceAddress' => $invoice->getCompany()->getMainAddress(),
             'logoDataUri' => $logoDataUri,

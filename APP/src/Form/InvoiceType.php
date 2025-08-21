@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\Customer;
 use App\Entity\Invoice;
+use App\Enum\InvoiceDesign;
 use App\Enum\InvoiceStatus;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -67,6 +69,26 @@ class InvoiceType extends AbstractType
             ->add('bottomText', TextareaType::class, [
                 'required' => false,
                 'empty_data' => null,
+            ])
+            ->add('design', ChoiceType::class, [
+                'label' => 'Design',
+                'choices' => [
+                    'Minimal'    => InvoiceDesign::MINIMAL,
+                    'Modern'     => InvoiceDesign::MODERN,
+                    'Letterhead' => InvoiceDesign::LETTERHEAD,
+                    'Grid'       => InvoiceDesign::GRID,
+                    'Elegant'    => InvoiceDesign::ELEGANT,
+                ],
+                'expanded' => true,   // Radios nebeneinander
+                'multiple' => false,
+                // wir liefern pro Choice die Preview-URL als data-Attribut
+                'choice_attr' => function (?InvoiceDesign $choice) {
+                    if (!$choice) return [];
+                    return [
+                        'data-preview' => '/build/invoice-designs/'.$choice->value.'.png',
+                        'class' => 'design-radio',
+                    ];
+                },
             ])
             ;
 

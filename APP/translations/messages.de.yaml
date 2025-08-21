@@ -126,3 +126,7 @@ login.label: Login
 password_forgotten: Passwort vergessen
 forgot_password_headline: Neues Passwort generieren
 request_password_new_link: Link anfordern
+design.label: Design
+sums.label: Summen
+total_netto.label: Zwischensumme Netto
+tax_sum.label: Summe Steuern

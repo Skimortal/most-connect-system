@@ -113,16 +113,16 @@
     {{ form_row(form.bottomText) }}
 
     <div class="row mt-5 pt-3 border-top">
-        <h2>Summen</h2>
         <div class="col-sm-6">
+            <h2>{{ 'sums.label'|trans }}</h2>
             <table class="table">
                 <tbody>
                 <tr>
-                    <th scope="row"><h4>Summe Netto</h4></th>
+                    <th scope="row"><h4>{{ 'total_netto.label'|trans }}</h4></th>
                     <td style="text-align: right;"><h4>{{ invoice.totalNetto|number_format(2, ',', '.') }} €</h4></td>
                 </tr>
                 <tr>
-                    <th scope="row"><h4>Summe Steuern</h4></th>
+                    <th scope="row"><h4>{{ 'tax_sum.label'|trans }}</h4></th>
                     <td style="text-align: right;"><h4>{{ invoice.taxSum|number_format(2, ',', '.') }} €</h4></td>
                 </tr>
                 {% for item in invoice.invoiceItems %}
@@ -132,11 +132,15 @@
                     </tr>
                 {% endfor %}
                 <tr>
-                    <th scope="row"><h4>Gesamtsumme</h4></th>
+                    <th scope="row"><h4>{{ 'total.label'|trans }}</h4></th>
                     <td style="text-align: right;"><h4>{{ invoice.total|number_format(2, ',', '.') }} €</h4></td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="col-sm-6">
+            <h2>{{ 'design.label'|trans }}</h2>
+            {% include 'invoice/_design_picker.html.twig' %}
         </div>
     </div>
 

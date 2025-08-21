@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\User;
+use App\Enum\InvoiceDesign;
 use App\Enum\InvoiceStatus;
 use App\Form\InvoiceFilterType;
 use App\Form\InvoiceType;
@@ -204,7 +205,16 @@ class InvoiceController extends AbstractController {
         }
 
         // 1. PDF generieren (z. B. über Dompdf oder TCPDF)
-        $pdfContent = $this->renderView('invoice/pdf/design1.html.twig', [
+        $map = [
+            InvoiceDesign::MINIMAL->value    => 'minimal.html.twig',
+            InvoiceDesign::MODERN->value     => 'modern.html.twig',
+            InvoiceDesign::LETTERHEAD->value => 'letterhead.html.twig',
+            InvoiceDesign::GRID->value       => 'grid.html.twig',
+            InvoiceDesign::ELEGANT->value    => 'elegant.html.twig',
+        ];
+
+        $tpl = $map[$invoice->getDesign()->value] ?? $map[InvoiceDesign::MINIMAL->value];
+        $pdfContent = $this->renderView('invoice/pdf/'.$tpl, [
             'invoice' => $invoice,
             'invoiceAddress' => $invoice->getCompany()->getMainAddress(),
             'logoDataUri' => $logoDataUri,

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\InvoiceDesign;
 use App\Enum\InvoiceStatus;
 use App\Repository\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -51,6 +52,8 @@ class Invoice extends Base
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $bottomText = null;
 
+    #[ORM\Column(enumType: InvoiceDesign::class)]
+    private InvoiceDesign $design = InvoiceDesign::MINIMAL;
     public function __construct()
     {
         $this->invoiceItems = new ArrayCollection();
@@ -221,6 +224,22 @@ class Invoice extends Base
     public function setBottomText(?string $bottomText): void
     {
         $this->bottomText = $bottomText;
+    }
+
+    public function getDesign(): InvoiceDesign
+    {
+        return $this->design;
+    }
+
+    public function setDesign(InvoiceDesign $design): self
+    {
+        $this->design = $design;
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->invoiceNumber;
     }
 
 }

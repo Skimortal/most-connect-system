@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Rechnung {{ invoice.invoiceNumber ?? invoice.id }}</title>
+    <title>{{ 'invoice.label'|trans }} {{ invoice.invoiceNumber ?? invoice.id }}</title>
     <style>
         /* Minimal-PDF-Styles (dompdf mag inline/embedded CSS) */
         @page { margin: 20mm; }
@@ -117,18 +117,18 @@
 </table>
 <table style="border-top: 1px solid black;">
     <tr class="totals">
-        <td class="label"><strong>Zwischensumme Netto:</strong></td>
+        <td class="label"><strong>{{ 'total_netto.label'|trans }}:</strong></td>
         <td class="value right">{{ invoice.totalNetto|number_format(2, ',', '.') }} €</td>
     </tr>
     <tr class="totals">
-        <td class="label"><strong>Summe Steuern:</strong></td>
+        <td class="label"><strong>{{ 'tax_sum.label'|trans }}:</strong></td>
         <td class="value right">{{ invoice.taxSum|number_format(2, ',', '.') }} €</td>
     </tr>
     <tr class="totals">
         <td colspan="2" style="height: 1px; padding: 0;"></td>
     </tr>
     <tr class="totals">
-        <td class="label"><strong>Gesamtsumme:</strong></td>
+        <td class="label"><strong>{{ 'total.label'|trans }}:</strong></td>
         <td class="value right"><strong>{{ invoice.total|number_format(2, ',', '.') }} €</strong></td>
     </tr>
 </table>
