@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\User;
+use App\Enum\InvoiceStatus;
 use App\Form\InvoiceFilterType;
 use App\Form\InvoiceType;
 use App\Model\InvoiceFilter;
@@ -182,7 +183,7 @@ class InvoiceController extends AbstractController {
     }
 
     #[Route('/{id}/send-pdf', name: 'invoice_send_pdf', methods: ['GET'])]
-    public function sendPdf(Invoice $invoice, MailerInterface $mailer): Response
+    public function sendPdf(Invoice $invoice, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
         // ------- LOGO ---------
         $logoPath = $this->getParameter('kernel.project_dir')
@@ -227,6 +228,12 @@ class InvoiceController extends AbstractController {
 
         // 3. Mail versenden
         $mailer->send($email);
+
+        if($invoice->getStatus() == InvoiceStatus::OFFEN) {
+            $invoice->setStatus(InvoiceStatus::VERSENDET);
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+        }
 
         // 4. Feedback geben
         $this->addFlash('success', 'Die Rechnung wurde an den Kunden gesendet.');
