@@ -42,6 +42,10 @@ class InvoiceRepository extends ServiceEntityRepository
             $qb->andWhere('i.total <= :tmax')
                 ->setParameter('tmax', $f->totalMax);
         }
+        if ($f->status !== null && $f->status !== '') {
+            $qb->andWhere('i.status = :status')
+                ->setParameter('status', $f->status);
+        }
         if($companyFilter) {
             $qb->andWhere('i.company = :company')
                 ->setParameter('company', $companyFilter);
