@@ -12,8 +12,10 @@ class CustomerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        if ($options['show_company_field'] === true) {
+            $builder->add('company');
+        }
         $builder
-//            ->add('company')
             ->add('type', EnumType::class, [
                 'class' => \App\Enum\CustomerType::class,
                 'choice_label' => fn (\App\Enum\CustomerType $status) => $status->label(),
@@ -34,6 +36,7 @@ class CustomerType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Customer::class,
+            'show_company_field' => false,
         ]);
     }
 }

@@ -76,11 +76,14 @@ final class CustomerController extends AbstractController
 
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-        if($currentUser->getCompany()) {
+        $hasCompany = (bool) $currentUser?->getCompany();
+        if ($hasCompany) {
             $customer->setCompany($currentUser->getCompany());
         }
 
-        $form = $this->createForm(CustomerType::class, $customer);
+        $form = $this->createForm(CustomerType::class, $customer, [
+            'show_company_field' => !$hasCompany,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -91,6 +94,7 @@ final class CustomerController extends AbstractController
                 $this->addFlash('success', $t->trans('data_saved_success'));
                 return $this->redirectToRoute('customer_list', [], Response::HTTP_SEE_OTHER);
             } catch (\Throwable $e) {
+                dd($e);
                 $this->addFlash('danger', $t->trans('data_save_error'));
             }
         }

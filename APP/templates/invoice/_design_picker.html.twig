@@ -1,18 +1,24 @@
-<div class="design-chooser">
-    {% for choice in form.design %}
-        {# value = enum backed value (z.B. "modern") #}
-        {% set val   = choice.vars.value %}
-        {% set label = choice.vars.label %}
-        {% set src   = choice.vars.attr['data-preview'] ?? asset('build/invoice-designs/' ~ val ~ '.png') %}
+<div class="design-chooser container-fluid px-0" role="radiogroup" aria-label="Rechnungsdesign wählen">
+    <div class="row g-3">
+        {% for choice in form.design %}
+            {% set val    = choice.vars.value %}
+            {% set label  = choice.vars.label %}
+            {% set src    = choice.vars.attr['data-preview'] ?? asset('images/invoice_designs/' ~ val ~ '.jpg') %}
+            {% set active = choice.vars.checked %}
 
-        <label class="design-option">
-            {{ form_widget(choice, { attr: { class: 'design-input' } }) }}
-            <span class="design-card">
-        <img src="{{ src }}" alt="{{ label }} Preview" class="design-thumb">
-        <span class="design-name">{{ label }}</span>
-      </span>
-        </label>
-    {% endfor %}
+            <div class="col-2 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+                <label class="design-option d-block {{ active ? 'is-selected' : '' }}">
+                    {{ form_widget(choice, { attr: { class: 'design-input' } }) }}
+                    <div class="design-card card shadow-sm">
+                        <div class="ratio ratio-a4-portrait">
+                            <img src="{{ src }}" alt="{{ label }} Preview" class="img-obj-contain">
+                        </div>
+                        <div class="design-name card-body py-2 text-center">{{ label }}</div>
+                    </div>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 {{ form_errors(form.design) }}

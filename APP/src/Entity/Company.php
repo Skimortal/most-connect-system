@@ -186,11 +186,6 @@ class Company extends Base
 
     public function setMainAddress(Address $mainAddress): void
     {
-        // Sicherstellen, dass die Adresse auch wirklich zu dieser Firma gehört
-        if (!$this->addresses->contains($mainAddress)) {
-            throw new \InvalidArgumentException("Diese Adresse gehört nicht zur Firma.");
-        }
-
         foreach ($this->getAddresses() as $address) {
             $address->setIsMain($address === $mainAddress);
         }

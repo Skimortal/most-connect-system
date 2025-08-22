@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Company;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Enum\InvoiceDesign;
@@ -23,9 +24,10 @@ class InvoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $customers = $options['customers'] ?? [];
-        $hide = $options['hide_customer'] ?? false;
+        $hide_customer = $options['hide_customer'] ?? false;
+        $hide_company = $options['hide_company'] ?? false;
 
-        if(!$hide) {
+        if(!$hide_customer) {
             $builder->add('customer', EntityType::class, [
                 'class'        => Customer::class,
                 'choices'      => $customers,      // nur erlaubte Kunden
@@ -34,8 +36,15 @@ class InvoiceType extends AbstractType
             ]);
         }
 
+        if(!$hide_company) {
+            $builder->add('company', EntityType::class, [
+                'class'        => Company::class,
+                'placeholder'  => 'Bitte Firma wählen',
+                'required'     => true,
+            ]);
+        }
+
         $builder
-//            ->add('company')
             ->add('invoiceNumber', null, [
                 'disabled' => $builder->getData() && $builder->getData()->getId() !== null,
             ])
@@ -85,7 +94,7 @@ class InvoiceType extends AbstractType
                 'choice_attr' => function (?InvoiceDesign $choice) {
                     if (!$choice) return [];
                     return [
-                        'data-preview' => '/build/invoice-designs/'.$choice->value.'.png',
+                        'data-preview' => '/images/invoice_designs/'.$choice->value.'.jpg',
                         'class' => 'design-radio',
                     ];
                 },
@@ -106,6 +115,7 @@ class InvoiceType extends AbstractType
             'data_class'    => Invoice::class,
             'customers'     => [],
             'hide_customer' => false,
+            'hide_company' => true,
         ]);
 
         $resolver->setAllowedTypes('customers', ['array', Collection::class]);

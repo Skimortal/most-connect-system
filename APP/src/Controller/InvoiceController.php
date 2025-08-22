@@ -72,10 +72,15 @@ class InvoiceController extends AbstractController {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
 
-        $allowedCustomers = $customerRepository->findAllForUser($currentUser);
+        if($this->isGranted('ROLE_SUPERUSER')) {
+            $allowedCustomers = $customerRepository->findAll();
+        }
+        else {
+            $allowedCustomers = $customerRepository->findAllForUser($currentUser);
+        }
 
         if ($customer) {
-            if (!in_array($customer, $allowedCustomers, true)) {
+            if (!$this->isGranted('ROLE_SUPERUSER') && !in_array($customer, $allowedCustomers, true)) {
                 throw $this->createAccessDeniedException('Customer not allowed.');
             }
             $invoice->setCustomer($customer);
@@ -84,12 +89,13 @@ class InvoiceController extends AbstractController {
         $form = $this->createForm(InvoiceType::class, $invoice, [
             'customers' => $allowedCustomers,
             'hide_customer' => (bool) $customer,
+            'hide_company' => !$this->isGranted('ROLE_SUPERUSER'),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $chosen = $invoice->getCustomer();
-            if (!in_array($chosen, $allowedCustomers, true)) {
+            if (!$this->isGranted('ROLE_SUPERUSER') && !in_array($chosen, $allowedCustomers, true)) {
                 throw $this->createAccessDeniedException('Customer not allowed.');
             }
 
@@ -97,6 +103,14 @@ class InvoiceController extends AbstractController {
                 $invoice->setAllPrices();
                 $entityManager->persist($invoice);
                 $entityManager->flush();
+
+                $after = $request->request->get('after_save');
+                if ($after === 'pdf') {
+                    return $this->redirectToRoute('invoice_pdf', ['id' => $invoice->getId()]);
+                }
+                if ($after === 'send') {
+                    return $this->redirectToRoute('invoice_send_pdf', ['id' => $invoice->getId()]);
+                }
 
                 $this->addFlash('success', $t->trans('data_saved_success'));
                 return $this->redirectToRoute('invoice_edit', ['id' => $invoice->getId()]);
@@ -109,6 +123,7 @@ class InvoiceController extends AbstractController {
             'invoice' => $invoice,
             'form' => $form,
             'hide_customer' => (bool) $customer,
+            'hide_company' => !$this->isGranted('ROLE_SUPERUSER'),
         ]);
     }
 
@@ -125,10 +140,15 @@ class InvoiceController extends AbstractController {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
 
-        $allowedCustomers = $customerRepository->findAllForUser($currentUser);
+        if($this->isGranted('ROLE_SUPERUSER')) {
+            $allowedCustomers = $customerRepository->findAll();
+        }
+        else {
+            $allowedCustomers = $customerRepository->findAllForUser($currentUser);
+        }
 
         if ($customer) {
-            if (!in_array($customer, $allowedCustomers, true)) {
+            if (!$this->isGranted('ROLE_SUPERUSER') && !in_array($customer, $allowedCustomers, true)) {
                 throw $this->createAccessDeniedException('Customer not allowed.');
             }
             $invoice->setCustomer($customer);
@@ -141,12 +161,13 @@ class InvoiceController extends AbstractController {
         $form = $this->createForm(InvoiceType::class, $invoice, [
             'customers' => $allowedCustomers,
             'hide_customer' => (bool) $customer,
+            'hide_company' => !$this->isGranted('ROLE_SUPERUSER'),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $chosen = $invoice->getCustomer();
-            if (!in_array($chosen, $allowedCustomers, true)) {
+            if (!$this->isGranted('ROLE_SUPERUSER') && !in_array($chosen, $allowedCustomers, true)) {
                 throw $this->createAccessDeniedException('Customer not allowed.');
             }
 
@@ -158,6 +179,7 @@ class InvoiceController extends AbstractController {
                 $this->addFlash('success', $t->trans('data_saved_success'));
                 return $this->redirectToRoute('invoice_list', [], Response::HTTP_SEE_OTHER);
             } catch (\Throwable $e) {
+                dd($e);
                 $this->addFlash('danger', $t->trans('data_save_error'));
             }
         }
@@ -166,6 +188,7 @@ class InvoiceController extends AbstractController {
             'invoice' => $invoice,
             'form' => $form,
             'hide_customer' => (bool) $customer,
+            'hide_company' => !$this->isGranted('ROLE_SUPERUSER'),
         ]);
     }
 

@@ -29,8 +29,11 @@
             </div>
         </div>
     {% endif %}
-{#    {{ form_row(form.customer) }}#}
-{#    {{ form_row(form.company) }}#}
+
+    {% if form.company is defined %}
+        {{ form_row(form.company) }}
+    {% endif %}
+
     {{ form_row(form.invoiceNumber) }}
     {{ form_row(form.invoiceDate) }}
     {{ form_row(form.status) }}
@@ -140,7 +143,7 @@
         </div>
         <div class="col-sm-6">
             <h2>{{ 'design.label'|trans }}</h2>
-            {% include 'invoice/_design_picker.html.twig' %}
+            {% include 'invoice/_design_picker.html.twig' with { form: form, invoice: invoice } %}
         </div>
     </div>
 
@@ -149,15 +152,21 @@
             <a href="{{ path('invoice_list') }}" class="btn btn-secondary">{{ 'back_to_list'|trans }}</a>
             <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
             {% if invoice.id %}
-            <a class="btn btn-warning"
-               href="{{ path('invoice_pdf', {id: invoice.id}) }}"
-               target="_blank" rel="noopener">
-                {{ 'print_pdf'|trans }}
-            </a>
-            <a href="{{ path('invoice_send_pdf', { id: invoice.id }) }}"
-               class="btn btn-info">
-                <i class="ti-envelope"></i> {{ 'send_pdf_to_customer'|trans }}
-            </a>
+                <button type="submit"
+                        class="btn btn-warning"
+                        name="after_save"
+                        value="pdf"
+                        style="color: white;"
+                        formtarget="_blank">
+                    {{ 'print_pdf'|trans }}
+                </button>
+                <button type="submit"
+                        class="btn btn-info"
+                        name="after_save"
+                        style="color: white;"
+                        value="send">
+                    <i class="ti-envelope"></i> {{ 'send_pdf_to_customer'|trans }}
+                </button>
             {% endif %}
         </div>
         <div class="col-sm-4" style="text-align: right;">
