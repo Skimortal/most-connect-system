@@ -14,26 +14,38 @@
                                 <div class="col-sm-6">
                                     <div class="peers ai-c jc-sb fxw-nw bdB pY-15">
                                         <div class="peer">
-                                            <span>{{ 'invoices_open'|trans }}</span>
+                                            <a href="{{ path('invoice_list', {'invoice_filter': {'status': constant('App\\Enum\\InvoiceStatus::OFFEN').value}}) }}">
+                                                <span>{{ 'invoices_open'|trans }}</span>
+                                            </a>
                                         </div>
                                         <div class="peer">
-                                            {{ invoicesOpen }}
-                                        </div>
-                                    </div>
-                                    <div class="peers ai-c jc-sb fxw-nw bdB pY-15">
-                                        <div class="peer">
-                                            <span>{{ 'invoices_sent'|trans }}</span>
-                                        </div>
-                                        <div class="peer">
-                                            {{ invoicesSent }}
+                                            <a href="{{ path('invoice_list', {'invoice_filter': {'status': constant('App\\Enum\\InvoiceStatus::OFFEN').value}}) }}">
+                                                {{ invoicesOpen }}
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="peers ai-c jc-sb fxw-nw bdB pY-15">
                                         <div class="peer">
-                                            <span>{{ 'invoices_payed'|trans }}</span>
+                                            <a href="{{ path('invoice_list', {'invoice_filter': {'status': constant('App\\Enum\\InvoiceStatus::VERSENDET').value}}) }}">
+                                                <span>{{ 'invoices_sent'|trans }}</span>
+                                            </a>
                                         </div>
                                         <div class="peer">
-                                            {{ invoicesPayed }}
+                                            <a href="{{ path('invoice_list', {'invoice_filter': {'status': constant('App\\Enum\\InvoiceStatus::VERSENDET').value}}) }}">
+                                                {{ invoicesSent }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="peers ai-c jc-sb fxw-nw bdB pY-15">
+                                        <div class="peer">
+                                            <a href="{{ path('invoice_list', {'invoice_filter': {'status': constant('App\\Enum\\InvoiceStatus::BEZAHLT').value}}) }}">
+                                                <span>{{ 'invoices_payed'|trans }}</span>
+                                            </a>
+                                        </div>
+                                        <div class="peer">
+                                            <a href="{{ path('invoice_list', {'invoice_filter': {'status': constant('App\\Enum\\InvoiceStatus::BEZAHLT').value}}) }}">
+                                                {{ invoicesPayed }}
+                                            </a>
                                         </div>
                                     </div>
 
