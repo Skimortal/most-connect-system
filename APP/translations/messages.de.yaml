@@ -131,3 +131,11 @@ sums.label: Summen
 total_netto.label: Zwischensumme Netto
 tax_sum.label: Summe Steuern
 choose_empty: Bitte wählen
+email_templates: E-Mail Templates
+email_template_list: E-Mail Template Liste
+templateKey.label: Template für
+locale.label: "Sprache (Locale)"
+subjectTemplate.label: Betreff
+htmlTemplate.label: HTML-Text
+textTemplate.label: Text pur
+email_template_detail_title: E-Mail Template Detail

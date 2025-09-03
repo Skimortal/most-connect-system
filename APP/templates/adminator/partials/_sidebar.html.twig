@@ -50,6 +50,7 @@
         {# Beispiel: tax_rate_list nur für Admins #}
         {% set settingsChildren = settingsChildren|merge([
             { route: 'tax_rate_list', icon: 'ti-money c-deep-orange-500', label: 'tax_rates', roles: ['ROLE_ADMIN'] },
+            { route: 'email_template_list', icon: 'ti-email c-purple-500', label: 'email_templates', roles: ['ROLE_ADMIN'] },
         ]) %}
 
         {# Hier kannst du beliebig weitere Settings einfügen, inkl. Parametern:

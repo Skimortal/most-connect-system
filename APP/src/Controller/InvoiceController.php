@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\User;
+use App\Enum\EmailTemplateKey;
 use App\Enum\InvoiceDesign;
 use App\Enum\InvoiceStatus;
 use App\Form\InvoiceFilterType;
@@ -11,12 +12,16 @@ use App\Form\InvoiceType;
 use App\Model\InvoiceFilter;
 use App\Repository\CustomerRepository;
 use App\Repository\InvoiceRepository;
+use App\Service\MailTemplateRenderer;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
+use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -207,7 +212,15 @@ class InvoiceController extends AbstractController {
     }
 
     #[Route('/{id}/send-pdf', name: 'invoice_send_pdf', methods: ['GET'])]
-    public function sendPdf(Invoice $invoice, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
+    public function sendPdf(
+        Invoice $invoice,
+        Request $request,
+        MailerInterface $mailer,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $t,
+        MailTemplateRenderer $templates,
+        LoggerInterface $logger
+    ): Response
     {
         // ------- LOGO ---------
         $logoPath = $this->getParameter('kernel.project_dir')
@@ -252,15 +265,35 @@ class InvoiceController extends AbstractController {
         $pdfOutput = $dompdf->output();
 
         // 2. Mail zusammenstellen
-        $email = (new Email())
-            ->from('no-reply@ineasy.at')
-            ->to($invoice->getCustomer()->getEmail())
-            ->subject('Ihre Rechnung ' . $invoice->getInvoiceNumber())
-            ->text('Sehr geehrte/r ' . $invoice->getCustomer() . ', im Anhang finden Sie Ihre Rechnung.')
-            ->attach($pdfOutput, 'Rechnung-' . $invoice->getInvoiceNumber() . '.pdf', 'application/pdf');
+        // bevorzugte Locale (User > Request)
+        $user = $this->getUser();
+        $locale = method_exists($user, 'getLocale') && $user->getLocale()
+            ? $user->getLocale()
+            : $request->getLocale();
 
-        // 3. Mail versenden
-        $mailer->send($email);
+        $company = $user->getCompany() ? $user->getCompany() : null;
+
+        try {
+            // DB-Template "password_reset_request" rendern
+            $rendered = $templates->render(EmailTemplateKey::CUSTOMER_INVOICE, $locale, [
+                'invoice'      => $invoice,
+            ], $company);
+
+            $email = (new \Symfony\Component\Mime\Email())
+                ->from(new Address('no-reply@ineasy.at', 'inEasy.at'))
+                ->to($invoice->getCustomer()->getEmail())
+                ->subject($rendered->subject)
+                ->html($rendered->html);
+
+            if ($rendered->text) {
+                $email->text($rendered->text);
+            }
+
+            $mailer->send($email);
+        } catch (\Throwable $e) {
+            // Fallback: vorhandenes Twig-File weiterverwenden
+            $logger->error('Mail-Template-Rendering fehlgeschlagen', ['exception' => $e]);
+        }
 
         if($invoice->getStatus() == InvoiceStatus::OFFEN) {
             $invoice->setStatus(InvoiceStatus::VERSENDET);
