@@ -277,13 +277,16 @@ class InvoiceController extends AbstractController {
             // DB-Template "password_reset_request" rendern
             $rendered = $templates->render(EmailTemplateKey::CUSTOMER_INVOICE, $locale, [
                 'invoice'      => $invoice,
+                'customer'      => $invoice->getCustomer(),
+                'company'      => $invoice->getCompany(),
             ], $company);
 
             $email = (new \Symfony\Component\Mime\Email())
                 ->from(new Address('no-reply@ineasy.at', 'inEasy.at'))
                 ->to($invoice->getCustomer()->getEmail())
                 ->subject($rendered->subject)
-                ->html($rendered->html);
+                ->html($rendered->html)
+                ->attach($pdfOutput, 'Rechnung-' . $invoice->getInvoiceNumber() . '.pdf', 'application/pdf');;
 
             if ($rendered->text) {
                 $email->text($rendered->text);

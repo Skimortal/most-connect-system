@@ -81,7 +81,6 @@ class ResetPasswordController extends AbstractController
 
                     $mailer->send($email);
                 } catch (\Throwable $e) {
-                    dd($e);
                     // Fallback: vorhandenes Twig-File weiterverwenden
                     $logger->error('Mail-Template-Rendering fehlgeschlagen', ['exception' => $e]);
                 }
