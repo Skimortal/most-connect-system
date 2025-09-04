@@ -1,0 +1,94 @@
+@import "~adminator-admin-dashboard/src/assets/styles/index.scss";
+
+/* A4 Hochformat (Portrait) – Höhe = 297/210 * Breite */
+.ratio-a4-portrait {
+    --bs-aspect-ratio: calc(297 / 210 * 100%); /* ≈ 141.421% */
+}
+
+/* A4 Querformat (Landscape) – Höhe = 210/297 * Breite */
+.ratio-a4-landscape {
+    --bs-aspect-ratio: calc(210 / 297 * 100%); /* ≈ 70.710% */
+}
+
+/* Bild-Fit je nach Wunsch */
+.img-obj-cover  { width:100%; height:100%; object-fit:cover;  display:block; }
+.img-obj-contain{ width:100%; height:100%; object-fit:contain; display:block; background:#f8f9fa; }
+
+.mcDataTable th {
+    background-color: rgb(32, 35, 42)
+}
+
+table.dataTable thead > tr > th.dt-orderable-asc,
+table.dataTable thead > tr > th.dt-orderable-desc,
+table.dataTable thead > tr > td.dt-orderable-asc,
+table.dataTable thead > tr > td.dt-orderable-desc,
+table.table.dataTable>:not(caption)>*>*,
+.table.table-bordered,
+.table.table-bordered td,
+.table.table-bordered th {
+    background-color: transparent;
+}
+
+.form-control:disabled {
+    color: black;
+}
+
+.alert-success {
+    background: color-mix(in srgb, var(--c-success) 85%, var(--c-border));
+    border-color: var(--c-success);
+}
+
+.alert-danger {
+    background: color-mix(in srgb, var(--c-danger) 85%, var(--c-border));
+    border-color: var(--c-danger);
+}
+
+.alert-warning {
+    background: color-mix(in srgb, var(--gmap-highway-hue) 85%, var(--c-border));
+    border-color: var(--gmap-highway-hue);
+}
+
+.alert-info {
+    background: color-mix(in srgb, var(--vmap-scale-start) 85%, var(--c-border));
+    border-color: var(--vmap-scale-start);
+}
+
+.help-text {
+    color: wheat;
+}
+@media screen and (max-width: 767px) {
+    .header .nav-left:before {
+        content: "" !important;
+        display: inline-block !important;
+        background-image: url("images/logo-mc.png") !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: contain !important;
+        background-color: transparent !important;
+    }
+}
+@media screen and (max-width: 479px) {
+    .header .nav-left:before {
+        content: "" !important;
+        display: inline-block !important;
+        background-image: url("images/logo-mc.png") !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: contain !important;
+        background-color: transparent !important;
+    }
+}
+
+.collapse-toggle {
+    cursor: pointer;
+    user-select: none;
+}
+
+.collapse-toggle .chev {
+    transition: transform .2s ease;
+    display: inline-block;
+}
+
+.collapse-toggle[aria-expanded="true"] .chev {
+    transform: rotate(180deg);
+}

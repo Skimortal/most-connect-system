@@ -1,0 +1,79 @@
+homepage_title: MC Base
+date.label: Datum
+username.label: Benutzername
+username.password: Passwort
+firstName.label: Vorname
+lastName.label: Nachname
+email.label: E-Mail
+phoneNumber.label: Telefon
+mobileNumber.label: Mobil
+faxNumber.label: Fax
+position.label: Position
+department.label: Abteilung
+password.label: Passwort
+my_profile: Mein Profil
+isActive.label: Aktiv
+confirm_delete: "Möchten Sie den Datensatz wirklich löschen?"
+delete: Löschen
+type.label: Typ
+uid.label: UID
+name.label: Name
+phone.label: Telefon
+website.label: Webseite
+logoFile.label: Logo
+categories.label: Kategorien
+id.label: ID
+logo.label: Logo
+save: Speichern
+cancel: Abbrechen
+back_to_list: Zurück zur Liste
+dashboard: Dashboard
+users: Benutzer
+user_list: Benutzer Liste
+create_new: Neuer Eintrag
+no_data_found: Keine Daten gefunden
+user_detail_title: Benutzer Detail
+street.label: Straße
+city.label: Ort
+zip.label: PLZ
+country.label: Land
+firstname.label: Vorname
+lastname.label: Nachname
+title.label: Titel
+description.label: Beschreibung
+remove: Entfernen
+action: Aktion
+print_pdf: PDF drucken
+confirm_remove: Wollen Sie diesen Eintrag wirklich löschen?
+data_saved_success: Die Daten wurden erfolgreich gespeichert!
+data_save_error: Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal. Falls der Fehler weiterhin auftreten soll, melden Sie sich bitte Ihrem Administrator.
+data_deleted_success: Daten erfolgreich gelöscht!
+superadmin_delete_error: "!!!Superadmin darf nicht gelöscht werden!!!"
+status.label: Status
+receiver: "EmpfängerIn"
+logos: Logos
+avatarFile.label: Avatar
+my_profile_title: Mein Profil
+edit: Bearbeiten
+roles.label: Rollen
+user_data: Benutzerdaten
+passwordRepeat.label: Password wiederholen
+password_change_headline: Neues Passwort vergeben
+change_password: Passwort ändern
+filter: Filtern
+reset: Reset
+filter_title: Filter
+settings: Einstellungen
+login.label: Login
+password_forgotten: Passwort vergessen
+forgot_password_headline: Neues Passwort generieren
+request_password_new_link: Link anfordern
+choose_empty: Bitte wählen
+email_templates: E-Mail Templates
+email_template_list: E-Mail Template Liste
+templateKey.label: Template für
+locale.label: "Sprache (Locale)"
+subjectTemplate.label: Betreff
+htmlTemplate.label: HTML-Text
+textTemplate.label: Text pur
+email_template_detail_title: E-Mail Template Detail

@@ -1,0 +1,3 @@
+# Erzwingt LF‑Zeilenenden für PHP‑Files
+*.php text eol=lf
+bin/console text eol=lf

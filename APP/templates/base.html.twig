@@ -1,0 +1,48 @@
+{# templates/adminator/base.html.twig #}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ 'homepage_title'|trans }} - {% block title %}{% endblock %}</title>
+
+{#    {% if app.environment == 'dev' %}#}
+{#        #}{# Lokale Umgebung #}
+{#        {{ encore_entry_link_tags('app') }}#}
+{#    {% else %}#}
+{#        #}{# Produktion #}
+{#        <link rel="stylesheet" href="{{ asset('build/app.css') }}">#}
+{#    {% endif %}#}
+{#    <link rel="stylesheet" href="{{ asset('adminator/style.css') }}">#}
+
+    <link rel="icon" href="{{ asset('images/favicon/favicon.ico') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-32x32.png') }}" sizes="32x32">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-16x16.png') }}" sizes="16x16">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon/apple-touch-icon.png') }}"> {# 180×180 #}
+    <link rel="manifest" href="{{ asset('images/favicon/site.webmanifest') }}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-dark.svg') }}" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="{{ asset('images/favicon/favicon-light.svg') }}" type="image/svg+xml" media="(prefers-color-scheme: light)">
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+{#    {% if app.environment == 'dev' %}#}
+{#        #}{# Lokale Umgebung #}
+{#        {{ encore_entry_script_tags('app') }}#}
+{#    {% else %}#}
+{#        #}{# Produktion #}
+{#        <script src="{{ asset('build/runtime.js') }}"></script>#}
+{#        <script src="{{ asset('build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ar-81d16d.js') }}"></script>#}
+{#        <script src="{{ asset('build/app.js') }}"></script>#}
+{#    {% endif %}#}
+</head>
+<body class="app">
+{% block body %}{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>
