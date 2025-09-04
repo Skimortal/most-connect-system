@@ -60,17 +60,16 @@ class ResetPasswordController extends AbstractController
                     ? $user->getLocale()
                     : $request->getLocale();
 
-                $company = $user->getCompany() ? $user->getCompany() : null;
                 try {
                     // DB-Template "password_reset_request" rendern
                     $rendered = $templates->render(EmailTemplateKey::PASSWORD_RESET_REQUEST, $locale, [
                         'user'      => $user,
                         'resetUrl'  => $resetUrl,
                         'expiresAt' => $user->getResetTokenExpiresAt(),
-                    ], $company);
+                    ]);
 
                     $email = (new \Symfony\Component\Mime\Email())
-                        ->from(new Address('no-reply@ineasy.at', 'inEasy.at'))
+                        ->from(new Address('no-reply@mc-base.at', 'MC Base'))
                         ->to($user->getEmail())
                         ->subject($rendered->subject)
                         ->html($rendered->html);

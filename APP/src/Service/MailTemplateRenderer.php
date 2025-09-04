@@ -2,7 +2,6 @@
 // src/Service/MailTemplateRenderer.php
 namespace App\Service;
 
-use App\Entity\Company;
 use App\Enum\EmailTemplateKey;
 use App\Repository\EmailTemplateRepository;
 use Twig\Environment as TwigEnvironment;
@@ -18,22 +17,20 @@ class MailTemplateRenderer
     public function render(
         EmailTemplateKey|string $key,
         ?string $locale,
-        array $context,
-        ?Company $company = null
+        array $context
     ): RenderedMail {
         $keyValue = $key instanceof EmailTemplateKey ? $key->value : $key;
 
-        $tpl = $this->repo->findOneByKeyCompanyLocaleFallback(
+        $tpl = $this->repo->findOneByKeyLocaleFallback(
             $keyValue,
-            $company,
             $locale,
             $this->defaultLocale
         );
 
         if (!$tpl) {
             throw new \RuntimeException(sprintf(
-                'Mail-Template "%s" (%s) nicht gefunden (Company: %s).',
-                $keyValue, $locale ?? '—', $company?->getId() ?? '—'
+                'Mail-Template "%s" (%s) nicht gefunden.',
+                $keyValue, $locale ?? '—'
             ));
         }
 

@@ -30,11 +30,6 @@ class UserController extends AbstractController {
         if ($this->isGranted('ROLE_SUPERUSER')) {
             $users = $userRepository->findAll();
         }
-        // Admin sieht nur Benutzer in derselben Company
-        elseif ($this->isGranted('ROLE_ADMIN')) {
-            $company = $currentUser->getCompany();
-            $users = $userRepository->findBy(['company' => $company]);
-        }
         else {
             // Fallback – sollte nie erreicht werden
             $users = [];

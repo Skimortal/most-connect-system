@@ -60,7 +60,7 @@ table.table.dataTable>:not(caption)>*>*,
     .header .nav-left:before {
         content: "" !important;
         display: inline-block !important;
-        background-image: url("images/logo-in-easy-white.svg") !important;
+        background-image: url("images/logo-mc.png") !important;
         background-repeat: no-repeat !important;
         background-position: center !important;
         background-size: contain !important;
@@ -71,99 +71,12 @@ table.table.dataTable>:not(caption)>*>*,
     .header .nav-left:before {
         content: "" !important;
         display: inline-block !important;
-        background-image: url("images/logo-in-easy-white.svg") !important;
+        background-image: url("images/logo-mc.png") !important;
         background-repeat: no-repeat !important;
         background-position: center !important;
         background-size: contain !important;
         background-color: transparent !important;
     }
-}
-
-.design-input{
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Klick-Ziel */
-.design-option{
-    cursor: pointer;
-}
-
-/* Karte: Grundzustand gedimmt */
-.design-card{
-    position: relative;
-    border: 2px solid var(--bs-border-color);
-    border-radius: .75rem;
-    overflow: hidden;
-    background: #fff;
-    transition: border-color .18s ease, box-shadow .18s ease,
-    filter .18s ease, opacity .18s ease;
-    filter: grayscale(30%) brightness(.9);
-    opacity: .6;
-}
-
-.design-option .form-check {
-    display: none;
-}
-
-/* Hover: aufhellen + blauer Ring */
-.design-option:hover .design-card{
-    filter: none;
-    opacity: 1;
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .18),
-    0 .35rem .9rem rgba(0,0,0,.06);
-}
-
-/* Tastaturfokus */
-.design-input:focus + .design-card{
-    outline: 2px dashed var(--bs-primary);
-    outline-offset: 2px;
-}
-
-/* Ausgewählt (persistentes Highlight) */
-.design-input:checked + .design-card,
-.design-option.is-selected .design-card{
-    filter: none;
-    opacity: 1;
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 .3rem rgba(var(--bs-primary-rgb), .22),
-    0 .5rem 1rem rgba(0,0,0,.10);
-}
-
-/* ✓-Badge oben rechts, wenn ausgewählt */
-.design-input:checked + .design-card::after,
-.design-option.is-selected .design-card::after{
-    content: "✓";
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    width: 1.35rem;
-    height: 1.35rem;
-    border-radius: 50%;
-    background: var(--bs-primary);
-    color: #fff;
-    font-weight: 700;
-    font-size: .9rem;
-    line-height: 1.35rem;
-    text-align: center;
-}
-
-/* Bild-Handling im Ratio-Container */
-.img-obj-cover{  width:100%; height:100%; object-fit:cover;  display:block; }
-.img-obj-contain{width:100%; height:100%; object-fit:contain; display:block; background:#f8f9fa; }
-
-/* A4-Seitenverhältnisse */
-.ratio-a4-portrait { --bs-aspect-ratio: calc(297 / 210 * 100%); } /* ≈ 141.4% */
-.ratio-a4-landscape{ --bs-aspect-ratio: calc(210 / 297 * 100%); } /* ≈ 70.7%  */
-
-/* Beschriftung */
-.design-name{
-    font-size: .875rem;
-    color: var(--bs-body-color);
-    text-align: center;
-    padding: .5rem 0;
 }
 
 .collapse-toggle {
@@ -178,8 +91,4 @@ table.table.dataTable>:not(caption)>*>*,
 
 .collapse-toggle[aria-expanded="true"] .chev {
     transform: rotate(180deg);
-}
-
-#invoiceFilters {
-    border-bottom: 1px solid black;
 }

@@ -50,10 +50,6 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $faxNumber = null;
 
-    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Company $company = null;
-
     #[ORM\Column(type:"boolean")]
     private bool $isActive = true;
 
@@ -204,16 +200,6 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
         $this->faxNumber = $faxNumber;
     }
 
-    public function getCompany(): ?Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(?Company $company): void
-    {
-        $this->company = $company;
-    }
-
     public function isActive(): bool
     {
         return $this->isActive;
@@ -258,9 +244,6 @@ class User extends Base implements UserInterface, PasswordAuthenticatedUserInter
         $this->lastName      = $data['lastName'] ?? null;
         $this->email         = $data['email'] ?? null;
         $this->avatarFilename= $data['avatarFilename'] ?? null;
-
-        // IMPORTANT: do NOT restore relations
-        $this->company       = null;
     }
 
     #[\Deprecated]

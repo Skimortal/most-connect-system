@@ -17,7 +17,7 @@ services:
         networks:
             webnet:
                 aliases:
-                    - ineasy_php
+                    - ${PHP_CONTAINER_NAME}
 
     nginx:
         image: nginx:${NGINX_VERSION}
@@ -40,7 +40,7 @@ services:
         networks:
             webnet:
                 aliases:
-                    - ineasy_nginx
+                    - ${NGINX_CONTAINER_NAME}
 
     db:
         image: ${DB_IMAGE}

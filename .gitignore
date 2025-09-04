@@ -24,7 +24,6 @@ APP/composer.phar
 APP/public/.htaccess
 APP/public/stats/*
 APP/bin/*
-APP/config/packages/webpack_encore.yaml
 
 docker-dev/.env
 docker-prod/.env

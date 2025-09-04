@@ -1,8 +1,7 @@
-homepage_title: inEasy
+homepage_title: MC Base
 date.label: Datum
 username.label: Benutzername
 username.password: Passwort
-company.label: Firma
 firstName.label: Vorname
 lastName.label: Nachname
 email.label: E-Mail
@@ -25,111 +24,50 @@ logoFile.label: Logo
 categories.label: Kategorien
 id.label: ID
 logo.label: Logo
-company_detail_title: Firma Detail
 save: Speichern
 cancel: Abbrechen
 back_to_list: Zurück zur Liste
 dashboard: Dashboard
 users: Benutzer
-companies: Firmen
 user_list: Benutzer Liste
 create_new: Neuer Eintrag
 no_data_found: Keine Daten gefunden
-company_list: Firmen Liste
 user_detail_title: Benutzer Detail
-adress_list: Adressen
-company_data: Firmendaten
 street.label: Straße
 city.label: Ort
 zip.label: PLZ
 country.label: Land
-address_detail_title: Adresse Detail
-isMain.label: Hauptadresse
-rate.label: Steuersatz
-tax_rates: Steuersätze
-tax_rate_list: Steuersatz Liste
-tax_rate_detail_title: Steuersatz Detail
-customers: Kunden
-customer_detail_title: Kunde Detail
-customer_data: Kundendaten
-invoice_list: Rechnungen
 firstname.label: Vorname
 lastname.label: Nachname
-invoiceNumber.label: Rechnungsnummer
-companyName.label: Firmenname
-invoiceDate.label: Rechnungsdatum
-invoice_detail_title: Rechnung Detail
-invoices: Rechnungen
 title.label: Titel
 description.label: Beschreibung
-quantity.label: Menge
-unitPrice.label: Einzelpreis
-taxRate.label: Steuersatz
-customer.label: Kunde
-invoice_items: Rechnungspositionen
 remove: Entfernen
-addInvoiceItem: Position hinzufügen
 action: Aktion
 print_pdf: PDF drucken
-send_pdf_to_customer: PDF an Kunden senden
 confirm_remove: Wollen Sie diesen Eintrag wirklich löschen?
 data_saved_success: Die Daten wurden erfolgreich gespeichert!
 data_save_error: Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal. Falls der Fehler weiterhin auftreten soll, melden Sie sich bitte Ihrem Administrator.
 data_deleted_success: Daten erfolgreich gelöscht!
 superadmin_delete_error: "!!!Superadmin darf nicht gelöscht werden!!!"
-customer_list: Kundenliste
 status.label: Status
 receiver: "EmpfängerIn"
-netto_price: Preis netto
-no_invoice_items: Keine Positionen
-our_banc_information: Unsere Kontoinformationen
-tax_rate_short: Steuer
-unitPrice_short: EPr.
-logoSmallFile.label: Logo klein
 logos: Logos
-invoice.label: Rechnung
-banc_account_informations: Kontoinformationen
-bancAccountInstitute.label: Institut
-bancAccountOwner.label: Inhaber
-bancAccountIBAN.label: IBAN
-bancAccountBIC.label: BIC
-entryText.label: Einleitungstext
-paymentInfoText.label: Zahlungsinformation
-bottomText.label: Abschlusstext
 avatarFile.label: Avatar
 my_profile_title: Mein Profil
 edit: Bearbeiten
-total.label: Gesamtsumme
 roles.label: Rollen
 user_data: Benutzerdaten
 passwordRepeat.label: Password wiederholen
 password_change_headline: Neues Passwort vergeben
 change_password: Passwort ändern
-invoiceDate.from: Datum von
-invoiceDate.to: Datum bis
-total.from: Summe von
-total.to: Summe bis
 filter: Filtern
 reset: Reset
 filter_title: Filter
-invoices_open: Rechnungen offen
-invoices_sent: Rechnungen versendet
-invoices_payed: Rechnungen bezahlt
-invoices_dashboard: Schnellübersicht Rechnungen
-invoices_open_sum: Summe offen
-invoices_sent_sum: Summe versendet
-invoices_payed_sum: Summe bezahlt
-goToInvoices: Zu den Rechnungen
-my_company: Meine Firmendaten
 settings: Einstellungen
 login.label: Login
 password_forgotten: Passwort vergessen
 forgot_password_headline: Neues Passwort generieren
 request_password_new_link: Link anfordern
-design.label: Design
-sums.label: Summen
-total_netto.label: Zwischensumme Netto
-tax_sum.label: Summe Steuern
 choose_empty: Bitte wählen
 email_templates: E-Mail Templates
 email_template_list: E-Mail Template Liste

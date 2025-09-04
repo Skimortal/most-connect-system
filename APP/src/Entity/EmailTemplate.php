@@ -9,15 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EmailTemplateRepository::class)]
 #[ORM\Table(name: 'email_template')]
 #[ORM\UniqueConstraint(
-    name: 'uniq_template_key_locale_company',
-    columns: ['template_key', 'locale', 'company_id']
+    name: 'uniq_template_key_locale',
+    columns: ['template_key', 'locale']
 )]
 class EmailTemplate extends Base
 {
-
-    #[ORM\ManyToOne(targetEntity: Company::class)]
-    #[ORM\JoinColumn(name: 'company_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    private ?Company $company = null;
 
     #[ORM\Column(type: 'string', length: 190, enumType: EmailTemplateKey::class)]
     private EmailTemplateKey $templateKey;
@@ -37,16 +33,6 @@ class EmailTemplate extends Base
 
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $variablesHint = null;
-
-    public function getCompany(): ?Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(?Company $company): void
-    {
-        $this->company = $company;
-    }
 
     public function getTemplateKey(): EmailTemplateKey
     {

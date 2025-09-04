@@ -2,10 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Company;
 use App\Entity\User;
 use App\Enum\UserRole;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -43,11 +41,6 @@ class UserType extends AbstractType
                     new Length(['min' => 8, 'minMessage' => 'Mind. {{ limit }} Zeichen']),
                     // new NotCompromisedPassword(), // optional
                 ],
-            ])
-            ->add('company', EntityType::class, [
-                'class' => Company::class,
-                'required' => false,
-                'placeholder' => '--',
             ])
             ->add('firstName')
             ->add('lastName')

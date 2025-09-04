@@ -5,9 +5,9 @@
                 <div class="peer peer-greed"><a class="sidebar-link td-n" href="/">
                     <div class="peers ai-c fxw-nw">
                         <div class="peer">
-                            <div class="logo"><img src="{{ asset('images/logo-in-easy-white.svg') }}" alt=""></div>
+                            <div class="logo"><img src="{{ asset('images/logo-mc.png') }}" alt=""></div>
                         </div>
-                        <div class="peer peer-greed"><h5 class="lh-1 mB-0 logo-text">inEasy.at</h5></div>
+                        <div class="peer peer-greed"><h5 class="lh-1 mB-0 logo-text">MC Base</h5></div>
                     </div>
                 </a></div>
                 <div class="peer">
@@ -23,33 +23,15 @@
             { route: 'my_profile',    icon: 'ti-user c-orange-500',   label: 'my_profile', roles: ['ROLE_USER'] },
         ] %}
 
-        {# Dynamischer Firmen-Link #}
-        {% if app.user and app.user.company %}
-            {% set menu = menu|merge([
-                {
-                    route: 'company_edit',
-                    icon: 'ti-briefcase c-green-600',
-                    label: 'my_company',
-                    roles: ['ROLE_USER'],
-                    params: { id: app.user.company.id }
-                }
-            ]) %}
-        {% endif %}
-
         {# Weitere Top-Level Items #}
         {% set menu = menu|merge([
             { route: 'user_list',     icon: 'ti-user c-red-500',        label: 'users',      roles: ['ROLE_SUPERUSER'] },
-            { route: 'company_list',  icon: 'ti-briefcase c-brown-500', label: 'companies',  roles: ['ROLE_SUPERUSER'] },
-            { route: 'customer_list', icon: 'ti-server c-deep-purple-500', label: 'customers', roles: ['ROLE_USER'] },
-            { route: 'invoice_list',  icon: 'ti-receipt c-indigo-500',  label: 'invoices',   roles: ['ROLE_USER'] },
         ]) %}
 
         {# --- Settings Dropdown dynamisch zusammenbauen --- #}
         {% set settingsChildren = [] %}
 
-        {# Beispiel: tax_rate_list nur für Admins #}
         {% set settingsChildren = settingsChildren|merge([
-            { route: 'tax_rate_list', icon: 'ti-money c-deep-orange-500', label: 'tax_rates', roles: ['ROLE_ADMIN'] },
             { route: 'email_template_list', icon: 'ti-email c-purple-500', label: 'email_templates', roles: ['ROLE_ADMIN'] },
         ]) %}
 

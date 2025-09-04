@@ -42,22 +42,15 @@ security:
         - { path: ^/reset-password(?:/[ ^/ ]+)?$, roles: PUBLIC_ACCESS }
 
         # --- Strengeres zuerst: Lösch-Endpunkte ---
-        - { path: ^/company/address/delete/\d+$, roles: ROLE_ADMIN }
-        - { path: ^/(company|customer|invoice|tax_rate|user)/\d+$, roles: ROLE_ADMIN }
+        - { path: ^/(user)/\d+$, roles: ROLE_ADMIN }
         # Hinweis: Deine *delete*-Routen liegen genau auf /{resource}/{id}
 
         # --- Schreibend: new/edit ---
-        - { path: ^/(company|customer|invoice|tax_rate|user)/new$, roles: ROLE_EDITOR }
-        - { path: ^/(company|customer|invoice|tax_rate|user)/\d+/edit$, roles: ROLE_EDITOR }
-        - { path: ^/company/\d+/address/new$, roles: ROLE_EDITOR }
-        - { path: ^/company/address/\d+$, roles: ROLE_EDITOR }     # address edit
-
-        # --- Spezialfälle Rechnungen ---
-        - { path: ^/invoice/\d+/send-pdf$, roles: ROLE_EDITOR }    # z.B. Mailversand nur Editor+
-        - { path: ^/invoice/\d+/pdf$,      roles: ROLE_USER }      # PDF anzeigen darf jeder eingeloggte
+        - { path: ^/(user)/new$, roles: ROLE_EDITOR }
+        - { path: ^/(user)/\d+/edit$, roles: ROLE_EDITOR }
 
         # --- Lesen/Listen & sonstige Seiten ---
-        - { path: ^/(company|customer|invoice|tax_rate|user)$, roles: ROLE_USER }
+        - { path: ^/(user)$, roles: ROLE_USER }
         - { path: ^/(|dashboard|me)$, roles: ROLE_USER }           # "/", "/dashboard", "/me"
 
         # --- Fallback: alles andere erfordert Login ---

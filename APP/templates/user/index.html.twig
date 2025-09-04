@@ -27,7 +27,6 @@
                     <table class="mcDataTable table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th>{{ 'company.label'|trans }}</th>
                             <th>{{ 'username.label'|trans }}</th>
                             <th>{{ 'roles.label'|trans }}</th>
                             <th>{{ 'firstName.label'|trans }}</th>
@@ -43,7 +42,6 @@
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>{{ 'company.label'|trans }}</th>
                             <th>{{ 'username.label'|trans }}</th>
                             <th>{{ 'roles.label'|trans }}</th>
                             <th>{{ 'firstName.label'|trans }}</th>
@@ -60,7 +58,6 @@
                         <tbody>
                         {% for user in users %}
                             <tr>
-                                <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.company }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.username }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.roles|join(', ') }}</a></td>
                                 <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.firstName }}</a></td>

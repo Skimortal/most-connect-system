@@ -3,9 +3,8 @@
 namespace App\Form;
 
 use App\Entity\EmailTemplate;
-use App\Entity\Company;
 use App\Enum\EmailTemplateKey;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Attribute\AsFormType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -13,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsFormType] // Symfony 6.3+ / 7: registriert den Type als Service
 final class EmailTemplateType extends AbstractType
@@ -46,17 +44,6 @@ final class EmailTemplateType extends AbstractType
                 'required' => false,
                 'attr' => ['rows' => 8, 'spellcheck' => 'false', 'data-code' => 'twig'],
             ]);
-
-        // company nur für Superuser
-        if ($this->security->isGranted('ROLE_SUPERUSER')) {
-            $builder->add('company', EntityType::class, [
-                'class' => Company::class,
-                'choice_label' => 'name',
-                'placeholder' => '— Basis (keine Company) —',
-                'required' => false,
-                'label' => 'Company (Override)',
-            ]);
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

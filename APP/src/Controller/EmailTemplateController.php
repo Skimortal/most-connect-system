@@ -28,11 +28,6 @@ class EmailTemplateController extends AbstractController {
         if ($this->isGranted('ROLE_SUPERUSER')) {
             $emailTemplates = $emailTemplateRepository->findAll();
         }
-        // Admin sieht nur Benutzer in derselben Company
-        elseif ($this->isGranted('ROLE_ADMIN')) {
-            $company = $currentUser->getCompany();
-            $emailTemplates = $emailTemplateRepository->findBy(['company' => $company]);
-        }
         else {
             // Fallback – sollte nie erreicht werden
             $emailTemplates = [];
