@@ -2,7 +2,7 @@ FROM php:8.3-fpm
 
 # System-Dependencies (z.B. für Doctrine-DBAL, ZIP-Handling, ext-Installationen)
 RUN apt-get update \
-  && apt-get install -y git unzip zip libicu-dev libonig-dev libjpeg-dev libpng-dev zlib1g-dev \
+  && apt-get install -y git unzip zip libicu-dev libonig-dev libjpeg-dev libpng-dev zlib1g-dev dos2unix \
   && docker-php-ext-install pdo_mysql intl opcache gd
 
 # Composer vom offiziellen Composer-Image übernehmen
