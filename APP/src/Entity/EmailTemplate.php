@@ -1,5 +1,4 @@
 <?php
-// src/Entity/EmailTemplate.php
 namespace App\Entity;
 
 use App\Enum\EmailTemplateKey;
