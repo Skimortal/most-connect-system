@@ -1,4 +1,4 @@
-homepage_title: MC Base
+homepage_title: MC Sys
 date.label: Datum
 username.label: Benutzername
 username.password: Passwort
@@ -77,3 +77,10 @@ subjectTemplate.label: Betreff
 htmlTemplate.label: HTML-Text
 textTemplate.label: Text pur
 email_template_detail_title: E-Mail Template Detail
+customers: Kunden
+companyName.label: Firmenname
+customer_detail_title: Kunde Detail
+vatId.label: UID
+registrationNumber.label: Firmenbuchnummer
+postalCode.label: PLZ
+notes.label: Notizen
