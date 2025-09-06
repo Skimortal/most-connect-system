@@ -84,3 +84,15 @@ vatId.label: UID
 registrationNumber.label: Firmenbuchnummer
 postalCode.label: PLZ
 notes.label: Notizen
+customer_list: Kundenliste
+tarifs: Tarife
+tarif_list: Tarif Liste
+tarif_detail_title: Tarif Detail
+validFrom.label: Gültig ab
+validTo.label: Gültig bis
+furtherInfo.label: Weitere Informationen
+tarif_positions: Tarif Positionen
+category.label: Kategorie
+numberLabel.label: Kennzeichnung
+tarifValue.label: Tarifkosten
+addTarifPosition: Tarif Position hinzufügen

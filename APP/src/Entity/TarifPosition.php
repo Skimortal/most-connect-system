@@ -28,14 +28,6 @@ class TarifPosition extends Base
     #[Assert\PositiveOrZero]
     private string $tarifValue = '0.0000';
 
-    public function __construct(TarifItemCategory $category, string $numberLabel, string $name, float $tarifValue)
-    {
-        $this->category = $category;
-        $this->numberLabel = $numberLabel;
-        $this->name = $name;
-        $this->setTarifValue($tarifValue);
-    }
-
     public function getTarif(): ?Tarif
     {
         return $this->tarif;

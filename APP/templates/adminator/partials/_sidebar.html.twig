@@ -27,6 +27,7 @@
         {% set menu = menu|merge([
             { route: 'user_list',     icon: 'ti-user c-red-500',        label: 'users',      roles: ['ROLE_SUPERUSER'] },
             { route: 'customer_list',     icon: 'ti-server c-blue-600',        label: 'customers',      roles: ['ROLE_USER'] },
+            { route: 'tarif_list',     icon: 'ti-money c-purple-600',        label: 'tarifs',      roles: ['ROLE_USER'] },
         ]) %}
 
         {# --- Settings Dropdown dynamisch zusammenbauen --- #}

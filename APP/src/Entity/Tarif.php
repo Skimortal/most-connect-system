@@ -35,13 +35,10 @@ class Tarif extends Base
     #[ORM\OneToMany(mappedBy: 'tarif', targetEntity: TarifPosition::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $positions;
 
-    public function __construct(string $name, \DateTimeImmutable $validFrom)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->validFrom = $validFrom;
         $this->positions = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -59,7 +56,6 @@ class Tarif extends Base
         return $this;
     }
 
-
     public function getValidFrom(): \DateTimeImmutable
     {
         return $this->validFrom;
@@ -70,7 +66,6 @@ class Tarif extends Base
         $this->validFrom = $d;
         return $this;
     }
-
 
     public function getValidTo(): ?\DateTimeImmutable
     {
@@ -83,7 +78,6 @@ class Tarif extends Base
         return $this;
     }
 
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -94,7 +88,6 @@ class Tarif extends Base
         $this->description = $t;
         return $this;
     }
-
 
     public function getFurtherInfo(): ?string
     {
@@ -107,7 +100,6 @@ class Tarif extends Base
         return $this;
     }
 
-
     public function isActive(): bool
     {
         return $this->active;
@@ -119,13 +111,11 @@ class Tarif extends Base
         return $this;
     }
 
-
     /** @return Collection<int, TarifPosition> */
     public function getPositions(): Collection
     {
         return $this->positions;
     }
-
 
     public function addPosition(TarifPosition $p): self
     {
@@ -136,7 +126,6 @@ class Tarif extends Base
         return $this;
     }
 
-
     public function removePosition(TarifPosition $p): self
     {
         if ($this->positions->removeElement($p)) {
@@ -146,7 +135,6 @@ class Tarif extends Base
         }
         return $this;
     }
-
 
     public function __toString(): string
     {
